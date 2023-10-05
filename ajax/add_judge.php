@@ -12,6 +12,4 @@ $form_data = array(
 
 $sql = $judge_id > 0? sql_update("tbl_judges", $form_data, "judge_id = '$judge_id'") : sql_insert("tbl_judges", $form_data);
 
-$mysqli->query($sql);
-
-echo json_encode($form_data);
+echo $mysqli->query($sql);

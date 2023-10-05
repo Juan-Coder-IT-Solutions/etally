@@ -1,5 +1,9 @@
 <?php
 
+// START THE SESSION
+session_start();
+$_SESSION['etally']['user_id'] = 1;
+
 $mysqli = new mysqli("localhost", "root", "", "etally_db");
 // Check connection
 if ($mysqli->connect_errno) {

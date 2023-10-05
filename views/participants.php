@@ -1,7 +1,7 @@
 <div class="container-fluid">
 
 <div class="d-sm-flex align-items-center justify-content-between mb-4">
-    <h1 class="h3 mb-0 text-gray-800">Judges</h1>
+    <h1 class="h3 mb-0 text-gray-800">Participants</h1>
     <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-outline-success shadow-sm" onclick="addModal()">
         <i class="fas fa-plus-circle fa-sm"></i> Add Record
     </a>

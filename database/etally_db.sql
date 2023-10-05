@@ -19,6 +19,24 @@
 CREATE DATABASE IF NOT EXISTS `etally_db` /*!40100 DEFAULT CHARACTER SET latin1 */;
 USE `etally_db`;
 
+-- Dumping structure for table etally_db.tbl_events
+CREATE TABLE IF NOT EXISTS `tbl_events` (
+  `event_id` int(11) NOT NULL AUTO_INCREMENT,
+  `event_name` varchar(150) NOT NULL,
+  `event_start` date NOT NULL,
+  `event_end` date NOT NULL,
+  `participant_needed` int(11) NOT NULL DEFAULT '0',
+  `encoded_by` int(11) NOT NULL DEFAULT '0',
+  `date_added` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `date_modified` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`event_id`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+
+-- Dumping data for table etally_db.tbl_events: ~2 rows (approximately)
+INSERT INTO `tbl_events` (`event_id`, `event_name`, `event_start`, `event_end`, `participant_needed`, `encoded_by`, `date_added`, `date_modified`) VALUES
+	(1, 'Badminton', '2023-10-26', '0000-00-00', 5, 0, '2023-10-05 16:08:20', '2023-10-05 16:18:37'),
+	(2, 'asdasd', '2023-10-05', '0000-00-00', 5, 0, '2023-10-05 16:18:29', '2023-10-05 16:18:29');
+
 -- Dumping structure for table etally_db.tbl_judges
 CREATE TABLE IF NOT EXISTS `tbl_judges` (
   `judge_id` int(11) NOT NULL AUTO_INCREMENT,
@@ -29,11 +47,11 @@ CREATE TABLE IF NOT EXISTS `tbl_judges` (
   `date_added` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `date_modified` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`judge_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
 
 -- Dumping data for table etally_db.tbl_judges: ~2 rows (approximately)
 INSERT INTO `tbl_judges` (`judge_id`, `judge_name`, `judge_affiliation`, `judge_img`, `encoded_by`, `date_added`, `date_modified`) VALUES
-	(1, 'Eduard RIno Carton', 'Programmer,BPFC', '', 0, '2023-10-04 15:29:31', '2023-10-04 15:29:31'),
+	(1, 'Eduard RIno Carton', 'Programmer,BPFC', '', 0, '2023-10-04 15:29:31', '2023-10-05 15:13:25'),
 	(2, 'Freedi Coach', 'SMX', 'user.png', 0, '2023-10-04 15:53:20', '2023-10-04 15:53:20');
 
 -- Dumping structure for table etally_db.tbl_users

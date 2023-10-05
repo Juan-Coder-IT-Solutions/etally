@@ -16,6 +16,7 @@
   <!-- Custom styles for this template-->
   <link href="assets/css/sb-admin-2.min.css" rel="stylesheet">
   <link href="assets/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+  <link href="assets/vendor/sweet-alert/sweetalert2.min.css" rel="stylesheet">
   <style>
     .bg-gradient-etally {
       background-color: #1cc88a;
@@ -40,6 +41,32 @@
   <!-- Core plugin JavaScript-->
   <script src="assets/vendor/jquery-easing/jquery.easing.min.js"></script>
   <script src="assets/js/sb-admin-2.js"></script>
+  <script src="assets/vendor/sweet-alert/sweetalert2.all.min.js"></script>
+  <script>
+	function swal_error(title, desc = '') {
+		Swal.fire(title, desc, 'error');
+	}
+
+	function success_add(title = 'Data Entry') {
+		Swal.fire(title, "Successfully added new entry!", 'success');
+	}
+
+    function success_update(title = 'Data Entry') {
+		Swal.fire(title, "Successfully updated entry!", 'success');
+	}
+
+    function success_delete(title = 'Data Entry') {
+		Swal.fire(title, "Successfully deleted entry!", 'success');
+	}
+
+	function swal_warning(title, desc = '') {
+		Swal.fire(title, desc, 'warning');
+	}
+
+	function swal_info(title, desc = '') {
+		Swal.fire(title, desc, 'info');
+	}
+  </script>
 </head>
 
 <body id="page-top">

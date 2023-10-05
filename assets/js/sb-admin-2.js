@@ -1,6 +1,8 @@
 (function($) {
   "use strict"; // Start of use strict
 
+  $(document).ready(function(){
+
   // Toggle the side navigation
   $("#sidebarToggle, #sidebarToggleTop").on('click', function(e) {
     $("body").toggleClass("sidebar-toggled");
@@ -33,6 +35,10 @@
       e.preventDefault();
     }
   });
+
+  
+
+});
 
   // Scroll to top button appear
   $(document).on('scroll', function() {
