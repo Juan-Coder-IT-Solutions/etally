@@ -12,9 +12,10 @@
   <link
       href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
       rel="stylesheet">
-
+      
   <!-- Custom styles for this template-->
   <link href="assets/css/sb-admin-2.min.css" rel="stylesheet">
+  
   <link href="assets/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
   <link href="assets/vendor/sweet-alert/sweetalert2.min.css" rel="stylesheet">
   <style>
@@ -26,6 +27,18 @@
 
     .bg-etally {
       background-color: #33673c;
+    }
+
+    .bg-gradient-primary-to-secondary {
+        background-color: #0061f2 !important;
+        background-image: linear-gradient(135deg, #0061f2 0%, rgba(105, 0, 199, 0.8) 100%) !important;
+    }
+
+    .bg-gradient-etally2 {
+        background-color: #00dd8d;
+        background-image: linear-gradient(180deg,#36cf51 10%,#3fd15a 100%);
+        background-size: cover;
+        color: #fff;
     }
   </style>
 
