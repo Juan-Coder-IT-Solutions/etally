@@ -43,3 +43,21 @@ function sql_insert($table_name, $form_data)
 
 	return $sql;
 }
+
+function getJudgeName($judge_id)
+{
+	global $mysqli;
+	$sql = "SELECT judge_name FROM tbl_judges WHERE judge_id = '$judge_id'";
+	$fetch = $mysqli->query($sql);
+	$row = $fetch->fetch_array();
+	return $row['judge_name'];
+}
+
+function getParticipantName($participant_id)
+{
+	global $mysqli;
+	$sql = "SELECT participant_name FROM tbl_participants WHERE participant_id = '$participant_id'";
+	$fetch = $mysqli->query($sql);
+	$row = $fetch->fetch_array();
+	return $row['participant_name'];
+}

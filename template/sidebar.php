@@ -1,6 +1,6 @@
 <!-- Sidebar - Brand -->
 <li class="nav-item">
-    <a class="nav-link" href="tables.html">
+    <a class="nav-link" href="index.php">
       <center><img class="img-fluid" src="assets/img/logo.png" style="width: 50%;"></center>
     </a>
 </li>
@@ -10,7 +10,7 @@
 
 <!-- Nav Item - Dashboard -->
 <li class="nav-item active">
-    <a class="nav-link" href="index.html">
+    <a class="nav-link" href="index.php">
         <i class="fas fa-fw fa-tachometer-alt"></i>
         <span>Dashboard</span></a>
 </li>
@@ -31,12 +31,6 @@
 </li>
 
 <li class="nav-item">
-    <a class="nav-link" href="tables.html">
-        <i class="fas fa-fw fa-calculator"></i>
-        <span>Criteria</span></a>
-</li>
-
-<li class="nav-item">
     <a class="nav-link" href="index.php?page=judges">
         <i class="fas fa-fw fa-users"></i>
         <span>Judges</span></a>
@@ -46,6 +40,12 @@
     <a class="nav-link" href="index.php?page=participants">
         <i class="fas fa-fw fa-users"></i>
         <span>Participants</span></a>
+</li>
+
+<li class="nav-item">
+    <a class="nav-link" href="index.php?page=users">
+        <i class="fas fa-fw fa-user"></i>
+        <span>User</span></a>
 </li>
 <!-- Divider -->
 <hr class="sidebar-divider d-none d-md-block">

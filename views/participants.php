@@ -37,15 +37,15 @@
       </div>
       <div class="modal-body">
         <form class="forms-sample" id="formEntry">
-            <input type="hidden" name="judge_id" id="judge_id" class="form-input">
+          <input type="hidden" name="participant_id" id="participant_id" class="form-input">
           <div class="form-group">
-            <label for="judge_name">Judge Name</label>
-            <input type="text" class="form-control form-input" id="judge_name" name="judge_name" placeholder="Account Name"
+            <label for="participant_name">Participant Name</label>
+            <input type="text" class="form-control form-input" id="participant_name" name="participant_name" placeholder="Participant Name"
               required>
           </div>
           <div class="form-group">
-            <label for="judge_affiliation">Affiliation</label>
-            <textarea class="form-control form-input" id="judge_affiliation" name="judge_affiliation" placeholder="Affiliation" required></textarea>
+            <label for="participant_affiliation">Participant Affiliation</label>
+            <input type="text" class="form-control form-input" id="participant_affiliation" name="participant_affiliation" placeholder="Affiliation">
           </div>
         </form>
       </div>
@@ -89,38 +89,37 @@ function editModal(form_data) {
   $("#modalEntry").modal('show');
 }
 
-function deleteEntry(judge_id){
+function deleteEntry(participant_id){
   Swal.fire({
-			icon: 'question',
-			title: 'Judges',
-			text: 'Are you sure to delete entry?',
-			showCancelButton: true,
-			allowOutsideClick: false
-		}).then((result) => {
-			/* Read more about isConfirmed, isDenied below */
-			if (result.isConfirmed) {
-        $.post("ajax/delete_judge.php", {
-            judge_id:judge_id
-        }, function(data, status) {
-          if(data == 1){
-            success_add("Judges");
-          }
-          renderData();
-        });
-			} else {
-			}
-		});
-
+    icon: 'question',
+    title: 'Participants',
+    text: 'Are you sure to delete entry?',
+    showCancelButton: true,
+    allowOutsideClick: false
+  }).then((result) => {
+    /* Read more about isConfirmed, isDenied below */
+    if (result.isConfirmed) {
+      $.post("ajax/delete_participant.php", {
+        participant_id:participant_id
+      }, function(data, status) {
+        if(data == 1){
+          success_add("Participants");
+        }
+        renderData();
+      });
+    } else {
+    }
+  });
 }
 
 function renderData(){ 
   $('#tblEntry').DataTable().destroy();
   table = $("#tblEntry").DataTable({
-      ajax: "ajax/get_judges.php",
+      ajax: "ajax/get_participants.php",
       columns: [
         {
           mRender: function(data, type, row) {
-            return `<input type="checkbox" value="${row.judge_id}">`;
+            return `<input type="checkbox" value="${row.participant_id}">`;
           }
         },
         { 
@@ -128,12 +127,12 @@ function renderData(){
                 return `<img class="img-rounded" src="assets/img/undraw_profile.svg" alt="Image" style="width: 30px;">`;
             }
          },
-        { data: 'judge_name' },
-        { data: 'judge_affiliation' },
+        { data: 'participant_name' },
+        { data: 'participant_affiliation' },
         {
           mRender: function(data, type, row) {
             return `<button type="button" class="btn btn-warning btn-rounded btn-icon btn-sm btn-update-data"><i class="fas fa-edit"></i></button>
-            <button type="button" class="btn btn-danger btn-rounded btn-icon btn-sm" onclick="deleteEntry(${row.judge_id})"><i class="fas fa-trash"></i></button>`;
+            <button type="button" class="btn btn-danger btn-rounded btn-icon btn-sm" onclick="deleteEntry(${row.participant_id})"><i class="fas fa-trash"></i></button>`;
           }
         },
       ]
@@ -145,9 +144,9 @@ $("#formEntry").submit(function(e) {
     var form_data = $(this).serialize();
     console.log(form_data);
     $("#btn_submit").prop("disabled",true).html("<span class='fa fa-spin fa-spinner'></span> Loading");
-    $.post("ajax/add_judge.php", form_data, function(data, status) {
+    $.post("ajax/add_participant.php", form_data, function(data, status) {
       if(data == 1){
-        $("#judge_id").val() > 0 ? success_update("Judges"):  success_add("Judges");
+        $("#participant_id").val() > 0 ? success_update("Participants"):  success_add("Participants");
       }
       $("#modalEntry").modal('hide');
       renderData();
