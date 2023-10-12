@@ -47,6 +47,16 @@
             <label for="judge_affiliation">Affiliation</label>
             <textarea class="form-control form-input" id="judge_affiliation" name="judge_affiliation" placeholder="Affiliation" required></textarea>
           </div>
+          <div class="form-group">
+            <label for="username">Username</label>
+            <input type="text" class="form-control form-input" id="username" name="username" placeholder="Username"
+              required>
+          </div>
+          <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password" class="form-control form-input" id="password" name="password" placeholder="Password"
+              required>
+          </div>
         </form>
       </div>
       <div class="modal-footer">
@@ -148,6 +158,10 @@ $("#formEntry").submit(function(e) {
     $.post("ajax/add_judge.php", form_data, function(data, status) {
       if(data == 1){
         $("#judge_id").val() > 0 ? success_update("Judges"):  success_add("Judges");
+      }else if(data == 2){
+        swal_error("Judge","Username already exist.");
+      }else{
+
       }
       $("#modalEntry").modal('hide');
       renderData();

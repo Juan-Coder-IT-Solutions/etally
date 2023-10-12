@@ -66,13 +66,12 @@ CREATE TABLE IF NOT EXISTS `tbl_event_judges` (
   PRIMARY KEY (`event_judge_id`),
   KEY `event_id` (`event_id`),
   KEY `judge_id` (`judge_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 
--- Dumping data for table etally_db.tbl_event_judges: ~3 rows (approximately)
+-- Dumping data for table etally_db.tbl_event_judges: ~0 rows (approximately)
 INSERT INTO `tbl_event_judges` (`event_judge_id`, `event_id`, `judge_id`, `judge_no`, `status`, `date_added`, `date_modified`) VALUES
-	(1, 1, 1, 1, 1, '2023-10-11 15:35:05', '2023-10-11 15:40:39'),
-	(3, 1, 2, 2, 1, '2023-10-11 15:40:39', '2023-10-11 15:40:39'),
-	(4, 2, 1, 1, 1, '2023-10-11 15:45:20', '2023-10-11 15:45:20');
+	(1, 1, 1, 1, 1, '2023-10-12 14:38:19', '2023-10-12 14:38:19'),
+	(2, 1, 3, 2, 1, '2023-10-12 14:38:19', '2023-10-12 14:38:19');
 
 -- Dumping structure for table etally_db.tbl_event_participants
 CREATE TABLE IF NOT EXISTS `tbl_event_participants` (
@@ -85,9 +84,12 @@ CREATE TABLE IF NOT EXISTS `tbl_event_participants` (
   PRIMARY KEY (`event_participant_id`) USING BTREE,
   KEY `event_id` (`event_id`) USING BTREE,
   KEY `participant_id` (`participant_id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 
--- Dumping data for table etally_db.tbl_event_participants: ~0 rows (approximately)
+-- Dumping data for table etally_db.tbl_event_participants: ~2 rows (approximately)
+INSERT INTO `tbl_event_participants` (`event_participant_id`, `event_id`, `participant_id`, `status`, `date_added`, `date_modified`) VALUES
+	(1, 1, 1, 1, '2023-10-12 11:21:12', '2023-10-12 11:21:12'),
+	(2, 1, 4, 1, '2023-10-12 11:21:12', '2023-10-12 11:21:12');
 
 -- Dumping structure for table etally_db.tbl_judges
 CREATE TABLE IF NOT EXISTS `tbl_judges` (
@@ -101,11 +103,11 @@ CREATE TABLE IF NOT EXISTS `tbl_judges` (
   PRIMARY KEY (`judge_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
 
--- Dumping data for table etally_db.tbl_judges: ~3 rows (approximately)
+-- Dumping data for table etally_db.tbl_judges: ~0 rows (approximately)
 INSERT INTO `tbl_judges` (`judge_id`, `judge_name`, `judge_affiliation`, `judge_img`, `encoded_by`, `date_added`, `date_modified`) VALUES
-	(1, 'Judge 1', 'a', 'user.png', 0, '2023-10-10 16:18:46', '2023-10-10 16:18:46'),
-	(2, 'Judge 2', 'CHMSU Talisay', 'user.png', 0, '2023-10-10 16:39:00', '2023-10-10 16:39:00'),
-	(3, 'Judge 3', 'aa', 'user.png', 0, '2023-10-11 15:45:11', '2023-10-11 15:45:11');
+	(1, 'Judge 1', 'Organization', 'user.png', 0, '2023-10-12 14:37:37', '2023-10-12 14:37:37'),
+	(2, 'Judge 2', 'Organization', 'user.png', 0, '2023-10-12 14:37:54', '2023-10-12 14:37:54'),
+	(3, 'Judge 3', 'Organization', 'user.png', 0, '2023-10-12 14:38:08', '2023-10-12 14:38:08');
 
 -- Dumping structure for table etally_db.tbl_participants
 CREATE TABLE IF NOT EXISTS `tbl_participants` (
@@ -117,7 +119,7 @@ CREATE TABLE IF NOT EXISTS `tbl_participants` (
   PRIMARY KEY (`participant_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
 
--- Dumping data for table etally_db.tbl_participants: ~3 rows (approximately)
+-- Dumping data for table etally_db.tbl_participants: ~2 rows (approximately)
 INSERT INTO `tbl_participants` (`participant_id`, `participant_name`, `participant_affiliation`, `date_added`, `date_modified`) VALUES
 	(1, 'Participant 1', '', '2023-10-11 16:06:36', '2023-10-11 16:11:19'),
 	(2, 'Participant 2', 'BSIS', '2023-10-11 16:09:16', '2023-10-11 16:11:25'),
@@ -126,21 +128,22 @@ INSERT INTO `tbl_participants` (`participant_id`, `participant_name`, `participa
 -- Dumping structure for table etally_db.tbl_users
 CREATE TABLE IF NOT EXISTS `tbl_users` (
   `user_id` int(11) NOT NULL AUTO_INCREMENT,
+  `account_id` int(11) NOT NULL DEFAULT '0',
   `account_name` varchar(50) NOT NULL DEFAULT '0',
   `username` varchar(50) NOT NULL DEFAULT '0',
   `password` varchar(32) NOT NULL DEFAULT '0',
   `user_category` varchar(1) NOT NULL DEFAULT '0',
+  `date_added` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `date_modified` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`user_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=latin1;
 
--- Dumping data for table etally_db.tbl_users: ~6 rows (approximately)
-INSERT INTO `tbl_users` (`user_id`, `account_name`, `username`, `password`, `user_category`) VALUES
-	(1, 'asdas', 'asd', 'asdas', 'U'),
-	(2, 'sadasda', 'asdasd', 'asdasd', 'U'),
-	(3, 'asdasd', 'asda', 'asd', 'U'),
-	(4, 'asdasdasd', 'asdads', 'sadasd', 'U'),
-	(5, 'sdfsdfsdf', 'sdfsdf', 'sdfsdf', 'A'),
-	(6, 'gdgdfg', 'dfgdg', 'dfgdfg', 'U');
+-- Dumping data for table etally_db.tbl_users: ~1 rows (approximately)
+INSERT INTO `tbl_users` (`user_id`, `account_id`, `account_name`, `username`, `password`, `user_category`, `date_added`, `date_modified`) VALUES
+	(1, 0, 'Event Organizer', 'admin', '0cc175b9c0f1b6a831c399e269772661', 'O', '2023-10-12 09:22:59', '2023-10-12 09:23:29'),
+	(7, 1, 'Judge 1', 'judge1', '0cc175b9c0f1b6a831c399e269772661', 'J', '2023-10-12 14:37:37', '2023-10-12 14:37:37'),
+	(8, 2, 'Judge 2', 'judge2', '0cc175b9c0f1b6a831c399e269772661', 'J', '2023-10-12 14:37:54', '2023-10-12 14:37:54'),
+	(9, 3, 'Judge 3', 'judge3', '0cc175b9c0f1b6a831c399e269772661', 'J', '2023-10-12 14:38:08', '2023-10-12 14:38:08');
 
 /*!40103 SET TIME_ZONE=IFNULL(@OLD_TIME_ZONE, 'system') */;
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;

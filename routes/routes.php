@@ -7,6 +7,8 @@ if ($page == 'dashboard') {
 	require_once 'views/events.php';
 } else if ($page == 'event-details') {
 	require_once 'views/event_details.php';
+} else if ($page == 'judge-events') {
+	require_once 'views/judge_events.php';
 } else if ($page == 'judges') {
 	require_once 'views/judges.php';
 } else if ($page == 'participants') {

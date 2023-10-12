@@ -2,7 +2,6 @@
 
 // START THE SESSION
 session_start();
-$_SESSION['etally']['user_id'] = 1;
 
 $mysqli = new mysqli("localhost", "root", "", "etally_db");
 // Check connection
@@ -60,4 +59,11 @@ function getParticipantName($participant_id)
 	$fetch = $mysqli->query($sql);
 	$row = $fetch->fetch_array();
 	return $row['participant_name'];
+}
+
+function checkIfUsernameExists($username)
+{
+	global $mysqli;
+	$fetch = $mysqli->query("SELECT user_id FROM tbl_users WHERE username = '$username'");
+	return $fetch->num_rows;
 }

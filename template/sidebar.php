@@ -5,6 +5,7 @@
     </a>
 </li>
 
+<?php if($_SESSION['etally']['user_category'] == 'O'){ ?>
 <!-- Divider -->
 <hr class="sidebar-divider my-0">
 
@@ -49,7 +50,16 @@
 </li>
 <!-- Divider -->
 <hr class="sidebar-divider d-none d-md-block">
-
+<?php } ?>
+<?php if($_SESSION['etally']['user_category'] == 'J'){ ?>
+<hr class="sidebar-divider my-0">
+    <li class="nav-item">
+        <a class="nav-link" href="index.php?page=judge-events">
+            <i class="fas fa-fw fa-table"></i>
+            <span>Event</span></a>
+    </li>
+<hr class="sidebar-divider d-none d-md-block">
+<?php } ?>
 <!-- Sidebar Toggler (Sidebar) -->
 <div class="text-center d-none d-md-inline">
     <button class="rounded-circle border-0" id="sidebarToggle"></button>

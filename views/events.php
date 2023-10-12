@@ -14,6 +14,7 @@
                         <tr>
                             <th>#</th>
                             <th>Event</th>
+                            <th>Mechanics</th>
                             <th>Participants</th>
                             <th>Event Start</th>
                             <th>Action</th>
@@ -129,6 +130,11 @@ function renderData(){
         },
         { data: 'event_name' },
         {
+          mRender: function(data,type,row){
+            return `<button type="button" class="btn btn-info btn-circle btn-icon btn-sm" onclick="viewMechanics(${row.event_id})"><i class="fas fa-file"></i></button>`;
+          }
+        },
+        {
           mRender: function(data, type, row) {
             return `${row.participants} / ${row.participant_needed}`;
           }
@@ -143,6 +149,10 @@ function renderData(){
         },
       ]
     });
+}
+
+function viewMechanics(event_id){
+  alert(event_id);
 }
 
 $("#formEntry").submit(function(e) {

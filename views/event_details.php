@@ -9,7 +9,10 @@
     <!-- Nav tabs -->
     <ul class="nav nav-tabs">
     <li class="nav-item">
-        <a class="nav-link active" data-toggle="tab" href="#criteria">Criteria</a>
+        <a class="nav-link active" data-toggle="tab" href="#tabulation">Tabulation</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" data-toggle="tab" href="#criteria">Criteria</a>
     </li>
     <li class="nav-item">
         <a class="nav-link" data-toggle="tab" href="#participants">Participants</a>
@@ -21,7 +24,23 @@
 
     <!-- Tab panes -->
     <div class="tab-content">
-        <div class="tab-pane active container" id="criteria">
+        <div class="tab-pane active container" id="tabulation">
+            <div class="row">
+                <div class="card shadow mt-4 col border-left-success">
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-bordered" id="tblTabulation" cellspacing="0" width="100%">
+                                <thead style="text-align: center;">
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="tab-pane container" id="criteria">
             <div class="row">
                 <div class="card shadow mt-4 col border-left-success">
                     <div class="card-body">
@@ -32,7 +51,7 @@
                             </a>
                         </div>
                         <div class="table-responsive">
-                            <table class="table table-bordered" id="tblCriteria" cellspacing="0">
+                            <table class="table table-bordered" id="tblCriteria" cellspacing="0" width="100%">
                                 <thead>
                                     <tr>
                                         <th>#</th>
@@ -126,6 +145,7 @@
         });
     }
 </script>
+<?php include 'event_tabs/event_tabulation.php' ?>
 <?php include 'event_tabs/event_criteria.php' ?>
 <?php include 'event_tabs/event_judge.php' ?>
 <?php include 'event_tabs/event_participant.php' ?>
