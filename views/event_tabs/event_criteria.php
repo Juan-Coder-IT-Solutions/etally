@@ -43,7 +43,14 @@
     function renderCriteriaData(){ 
         $('#tblCriteria').DataTable().destroy();
         table_criteria = $("#tblCriteria").DataTable({
-            ajax: "ajax/get_event_criterias.php",
+            "ajax": {
+                "type":"POST",
+				"url": "ajax/get_event_criterias.php",
+				"dataSrc": "data",
+                "data":{
+                    params: `WHERE event_id = '${event_id}'`
+                },
+			},
             columns: [
                 { data: 'criteria_id' },
                 { data: 'criteria' },

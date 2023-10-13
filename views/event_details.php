@@ -1,25 +1,27 @@
-<div class="container-fluid">
+
     <!-- DataTales Example -->
     <div style="background-color: #ffc254;padding: 5px;border-radius: 6px;color: #fff;margin-bottom: 7px;">
         <h1 id="event_name"></h1>
-        <p></p>
+        <p id="event_description"></p>
         <input type="hidden" id="event_id" value="<?=$_GET['event_id']?>">
     </div>
-
     <!-- Nav tabs -->
     <ul class="nav nav-tabs">
-    <li class="nav-item">
-        <a class="nav-link active" data-toggle="tab" href="#tabulation">Tabulation</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" data-toggle="tab" href="#criteria">Criteria</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" data-toggle="tab" href="#participants">Participants</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" data-toggle="tab" href="#judges">Judges</a>
-    </li>
+        <li class="nav-item" onclick="renderTabulationData()">
+            <a class="nav-link active" data-toggle="tab" href="#tabulation">Tabulation</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" data-toggle="tab" href="#mechanics">Mechanics</a>
+        </li>
+        <li class="nav-item" onclick="renderCriteriaData()">
+            <a class="nav-link" data-toggle="tab" href="#criteria">Criteria</a>
+        </li>
+        <li class="nav-item" onclick="renderParticipantData()">
+            <a class="nav-link" data-toggle="tab" href="#participants">Participants</a>
+        </li>
+        <li class="nav-item" onclick="renderJudgeData()">
+            <a class="nav-link" data-toggle="tab" href="#judges">Judges</a>
+        </li>
     </ul>
 
     <!-- Tab panes -->
@@ -39,6 +41,9 @@
                     </div>
                 </div>
             </div>
+        </div>
+        <div class="tab-pane container" id="mechanics">
+            <div class="pdfviewer"></div>
         </div>
         <div class="tab-pane container" id="criteria">
             <div class="row">
@@ -123,7 +128,6 @@
             </div>
         </div>
     </div>
-</div>
 <script>
     var table_criteria,table_judges;
     var event_id = <?=$_GET['event_id']?>;
@@ -142,6 +146,10 @@
             var res = JSON.parse(data);
             var event_data = res.data[0];
             $("#event_name").html(event_data.event_name);
+            $("#event_description").html(event_data.event_description);
+            $(".pdfviewer").html(`<object id="preview" data="assets/img/mechanics/${event_data.event_mechanics}" type="application/pdf" width="100%" height="500">
+                <p>This browser does not support PDFs. Please download the PDF to view it: <a href="" id="downloadLink" target="_blank">Download PDF</a>.</p>
+              </object>`);
         });
     }
 </script>

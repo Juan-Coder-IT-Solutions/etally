@@ -45,20 +45,39 @@ function sql_insert($table_name, $form_data)
 
 function getJudgeName($judge_id)
 {
+	return getJudgeData($judge_id);
+}
+
+function getJudgeData($judge_id, $data_column = "judge_name")
+{
 	global $mysqli;
-	$sql = "SELECT judge_name FROM tbl_judges WHERE judge_id = '$judge_id'";
+	$sql = "SELECT $data_column FROM tbl_judges WHERE judge_id = '$judge_id'";
 	$fetch = $mysqli->query($sql);
 	$row = $fetch->fetch_array();
-	return $row['judge_name'];
+	return $row[$data_column];
 }
 
 function getParticipantName($participant_id)
 {
+	return getParticipantData($participant_id);
+}
+
+function getParticipantData($participant_id, $data_column = "participant_name")
+{
 	global $mysqli;
-	$sql = "SELECT participant_name FROM tbl_participants WHERE participant_id = '$participant_id'";
+	$sql = "SELECT $data_column FROM tbl_participants WHERE participant_id = '$participant_id'";
 	$fetch = $mysqli->query($sql);
 	$row = $fetch->fetch_array();
-	return $row['participant_name'];
+	return $row[$data_column];
+}
+
+function getEventData($event_id, $data_column = "event_name")
+{
+	global $mysqli;
+	$sql = "SELECT $data_column FROM tbl_events WHERE event_id = '$event_id'";
+	$fetch = $mysqli->query($sql);
+	$row = $fetch->fetch_array();
+	return $row[$data_column];
 }
 
 function checkIfUsernameExists($username)
@@ -66,4 +85,14 @@ function checkIfUsernameExists($username)
 	global $mysqli;
 	$fetch = $mysqli->query("SELECT user_id FROM tbl_users WHERE username = '$username'");
 	return $fetch->num_rows;
+}
+
+function generateRandomString($length = 10) {
+    $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    $charactersLength = strlen($characters);
+    $randomString = '';
+    for ($i = 0; $i < $length; $i++) {
+        $randomString .= $characters[rand(0, $charactersLength - 1)];
+    }
+    return $randomString;
 }

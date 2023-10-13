@@ -51,7 +51,7 @@
                 const judgeElem = res.data[judgeIndex];
                 judge_ids.push(judgeElem.judge_id);
                 tbody_tr += `<tr>
-                    <td>${judgeElem.judge_id}</td>
+                    <td>${judgeElem.judge_no}</td>
                     <td>${judgeElem.judge_name}</td>
                     <td></td>
                 </tr>`;

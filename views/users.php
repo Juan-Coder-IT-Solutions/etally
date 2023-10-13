@@ -1,34 +1,28 @@
-<div class="row">
-  <div class="col-sm-12 mb-4 mb-xl-0">
-    <h4 class="font-weight-bold text-dark">User Management</h4>
-    <p class="font-weight-normal mb-2 text-muted">Manage users here.</p>
-  </div>
-  <div class="col-sm-12 mb-5 mb-xl-0">
-    <button class="btn btn-rounded btn-primary" onclick="addUserModal()">Add</button>
-  </div>
-  <div class="col-lg-12 grid-margin stretch-card">
-    <div class="card">
-      <div class="card-body">
+<div class="d-sm-flex align-items-center justify-content-between mb-4">
+    <h1 class="h3 mb-0 text-gray-800">Users</h1>
+    <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-outline-success shadow-sm" onclick="addUserModal()">
+        <i class="fas fa-plus-circle fa-sm"></i> Add Record
+    </a>
+</div>
+
+<div class="card shadow mb-4 border-left-success">
+    <div class="card-body">
         <div class="table-responsive">
-          <table class="table table-hover" id="tbl_user">
-            <thead>
-              <tr>
-                <th></th>
-                <th>#</th>
-                <th>Account Name</th>
-                <th>Username</th>
-                <th>Category</th>
-                <th>Status</th>
-                <th></th>
-              </tr>
-            </thead>
-            <tbody>
-            </tbody>
-          </table>
+            <table class="table table-hover table-bordered" id="tbl_user" width="100%" cellspacing="0">
+                <thead>
+                    <tr>
+                      <th>#</th>
+                      <th>Account Name</th>
+                      <th>Username</th>
+                      <th>Category</th>
+                      <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
         </div>
-      </div>
     </div>
-  </div>
 </div>
 <div class="modal fade" id="userModal" role="dialog">
   <div class="modal-dialog">
@@ -38,22 +32,23 @@
       </div>
       <div class="modal-body">
         <form class="forms-sample" id="userForm">
+          <input type="hidden" name="user_id" id="user_id" class="form-input">
           <div class="form-group">
             <label for="account_name">Account Name</label>
-            <input type="text" class="form-control" id="account_name" name="account_name" placeholder="Account Name"
+            <input type="text" class="form-control form-input" id="account_name" name="account_name" placeholder="Account Name"
               required>
           </div>
           <div class="form-group">
             <label for="user_category">Category</label>
-            <select class="form-control" id="user_category" name="user_category" required>
+            <select class="form-control form-input" id="user_category" name="user_category" required>
               <option value="">&mdash; Please Select &mdash;</option>
-              <option value="A"> Administrator </option>
-              <option value="U"> User </option>
+              <option value="O"> Organizer </option>
+              <option value="J"> Judge </option>
             </select>
           </div>
           <div class="form-group">
             <label for="username">Username</label>
-            <input type="text" class="form-control" id="username" name="username" placeholder="Username" required>
+            <input type="text" class="form-control form-input" id="username" name="username" placeholder="Username" required>
           </div>
           <div class="form-group">
             <label for="password">Password</label>
@@ -62,38 +57,45 @@
         </form>
       </div>
       <div class="modal-footer">
-        <button class="btn btn-primary" form="userForm" type="submit">Submit</button>
-        <button class="btn btn-danger" data-dismiss="modal">Close</button>
+        <button class="btn btn-sm btn-outline-success" form="userForm" type="submit" id="btn_submit">
+            <span class="fa fa-check-circle"></span> Submit
+        </button>
+        <button class="btn btn-sm btn-outline-danger" data-dismiss="modal">
+            <span class="fa fa-times-circle"></span> Close
+        </button>
       </div>
     </div>
   </div>
 </div>
 <script>
-  var isEdit = false;
+  var isEdit = false, table;
   $(document).ready(function() {
     renderUser();
+
+    $('#tbl_user tbody').on('click', '.btn-update-data', function() {
+        var data = table.row($(this).closest('tr')).data();
+        editModal(data);
+        // You can access and use the data as needed
+    });
   });
   function renderUser() {
     $("#tbl_user").DataTable().destroy();
-    $("#tbl_user").DataTable({
+    table = $("#tbl_user").DataTable({
       ajax: "ajax/get_user.php",
       columns: [
-        {
-          mRender: function(data, type, row) {
-            return `<input type="checkbox" value="${row.user_id}">`;
-          }
-        },
-        { data: 'user_id' },
+        { data: 'count' },
         { data: 'account_name' },
         { data: 'username' },
-        { data: 'user_category' },
-        { data: 'user_category' },
         {
           mRender: function(data, type, row) {
-            return `<div class="flex flex2">
-              <button type="button" class="btn btn-primary btn-rounded btn-icon btn-sm flex-items"><i class="mdi mdi-pencil-outline"></i></button>
-              <button type="button" class="btn btn-danger btn-rounded btn-icon btn-sm flex-items"><i class="mdi mdi-delete-outline"></i></button>
-            </div>`;
+            return row.user_category == 'O' ? "Organizer" : (row.user_category == 'J' ? "Judge" : "");
+          }
+        },
+        {
+          mRender: function(data, type, row) {
+            var btn_delete = row.user_category == 'O' ? `<button type="button" class="btn btn-danger btn-rounded btn-icon btn-sm" onclick="deleteEntry(${row.user_id})"><i class="fas fa-trash"></i></button>` : "";
+            return `<button type="button" class="btn btn-warning btn-rounded btn-icon btn-sm btn-update-data"><i class="fas fa-edit"></i></button>
+            ${btn_delete}`;
           }
         },
       ]
@@ -104,13 +106,50 @@
     $("#userModal").modal('show');
   }
 
+  function editModal(form_data) {
+    $(".modal-title").html("Edit Entry");
+    $('.form-input').each(function(index) {
+      // 'this' refers to the current element in the loop
+      var currentElement = $(this);
+      var current_id = currentElement.attr('id');
+      $(this).val(form_data[current_id]);
+    });
+    $("#userModal").modal('show');
+  }
+  function deleteEntry(user_id){
+    Swal.fire({
+      icon: 'question',
+      title: 'Users',
+      text: 'Are you sure to delete entry?',
+      showCancelButton: true,
+      allowOutsideClick: false
+    }).then((result) => {
+      /* Read more about isConfirmed, isDenied below */
+      if (result.isConfirmed) {
+        $.post("ajax/delete_user.php", {
+          user_id:user_id
+        }, function(data, status) {
+          if(data == 1){
+            success_add("Users");
+          }
+          renderUser();
+        });
+      } else {
+      }
+    });
+  }
+
   $("#userForm").submit(function(e) {
     e.preventDefault();
     var form_data = $(this).serialize();
     console.log(form_data);
     $.post("ajax/add_user.php", form_data, function(data, status) {
+      if(data == 1){
+        $("#user_id").val() > 0 ? success_update("Users"):  success_add("Users");
+      }
       $("#userModal").modal('hide');
       renderUser();
+      $("#btn_submit").prop("disabled",false).html("<span class='fa fa-check-circle'></span> Submit");
     });
   });
 </script>
