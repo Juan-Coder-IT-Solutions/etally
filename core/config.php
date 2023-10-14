@@ -3,7 +3,8 @@
 // START THE SESSION
 session_start();
 
-$mysqli = new mysqli("localhost", "root", "", "etally_db");
+//$mysqli = new mysqli("localhost", "root", "", "etally_db");
+$mysqli = new mysqli("localhost", "u814036432_root", "#VM>:m&8oQ", "u814036432_etally_db");
 // Check connection
 if ($mysqli->connect_errno) {
 	echo "Failed to connect to MySQL: " . $mysqli->connect_error;
