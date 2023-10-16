@@ -16,12 +16,24 @@ $response = array();
 
 while ($row = $fetch->fetch_assoc()) {
     $list = array();
+    $list_chart_data = array();
+
+
+    $fetch_participants = $mysqli->query("SELECT participant_name, participant_affiliation from tbl_participants p LEFT JOIN tbl_event_participants ep ON p.participant_id=ep.participant_id WHERE event_id='$row[event_id]'");
+    while ($participants_row = $fetch_participants->fetch_assoc()) {
+        $list_scores = array();
+        $list_scores['participant_name'] = $participants_row['participant_name'] . " (" . $participants_row['participant_affiliation'] . ")";
+        $list_scores['participant_affiliation'] = $participants_row['participant_affiliation'];
+        $list_scores['participant_overall_score'] = 100;
+        array_push($list_chart_data, $list_scores);
+    }
+
     $list['event_judge_id'] = $row['event_judge_id'];
     $list['event_name'] = $row['event_name'];
-    $list['event_description'] = $row['event_description'];
     $list['event_start'] = date("M d, Y", strtotime(($row['event_start'])));
     $list['status'] = $row['event_status'];
-    //S=Open For Registration;P=Ongoing;F=Finish
+    $list['participant_results'] = $list_chart_data;
+
     array_push($response, $list);
 }
 
