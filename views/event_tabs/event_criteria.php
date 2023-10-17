@@ -7,8 +7,8 @@
       </div>
       <div class="modal-body">
         <form class="forms-sample" id="formCriteria">
-            <input type="text" name="event_id" id="criteria_event_id" class="form-input">
-            <input type="text" name="criteria_id" id="criteria_id" class="form-input">
+            <input type="hidden" name="event_id" id="criteria_event_id" class="form-input">
+            <input type="hidden" name="criteria_id" id="criteria_id" class="form-input">
           <div class="form-group">
             <label for="criteria">Criteria</label>
             <textarea class="form-control form-input" id="criteria" name="criteria" placeholder="Criteria" required></textarea>

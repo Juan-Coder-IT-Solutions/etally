@@ -162,7 +162,7 @@
           },
           {
             mRender: function(data, type, row) {
-              return `${row.participants} / ${row.judge_needed}`;
+              return `${row.judges} / ${row.judge_needed}`;
             }
           },
           { data: 'event_start' },

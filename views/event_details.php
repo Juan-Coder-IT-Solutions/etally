@@ -5,6 +5,11 @@
         <p id="event_description"></p>
         <input type="hidden" id="event_id" value="<?=$_GET['event_id']?>">
     </div>
+
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h1 class="h3 mb-0 text-gray-800">&nbsp;</h1>
+        <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-outline-success shadow-sm" onclick="startEvent()" id="btn_event_status"></a>
+    </div>
     <!-- Nav tabs -->
     <ul class="nav nav-tabs">
         <li class="nav-item" onclick="renderTabulationData()">
@@ -150,7 +155,15 @@
             $(".pdfviewer").html(`<object id="preview" data="assets/img/mechanics/${event_data.event_mechanics}" type="application/pdf" width="100%" height="500">
                 <p>This browser does not support PDFs. Please download the PDF to view it: <a href="" id="downloadLink" target="_blank">Download PDF</a>.</p>
               </object>`);
+
+            if(event_data.event_status == 'S'){
+                $("#btn_event_status").html('<i class="fas fa-play fa-sm"></i> Start Event');
+            }
         });
+    }
+
+    function startEvent(){
+        alert(event_id);
     }
 </script>
 <?php include 'event_tabs/event_tabulation.php' ?>

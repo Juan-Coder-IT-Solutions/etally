@@ -77,7 +77,7 @@ CREATE TABLE IF NOT EXISTS `tbl_event_judges` (
   KEY `judge_id` (`judge_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
 
--- Dumping data for table etally_db.tbl_event_judges: ~3 rows (approximately)
+-- Dumping data for table etally_db.tbl_event_judges: ~2 rows (approximately)
 INSERT INTO `tbl_event_judges` (`event_judge_id`, `event_id`, `judge_id`, `judge_no`, `status`, `date_added`, `date_modified`) VALUES
 	(1, 1, 1, 1, 1, '2023-10-13 13:58:44', '2023-10-13 13:58:44'),
 	(2, 2, 1, 1, 1, '2023-10-13 14:25:23', '2023-10-13 14:25:23'),
@@ -96,7 +96,7 @@ CREATE TABLE IF NOT EXISTS `tbl_event_participants` (
   KEY `participant_id` (`participant_id`) USING BTREE
 ) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
 
--- Dumping data for table etally_db.tbl_event_participants: ~5 rows (approximately)
+-- Dumping data for table etally_db.tbl_event_participants: ~4 rows (approximately)
 INSERT INTO `tbl_event_participants` (`event_participant_id`, `event_id`, `participant_id`, `status`, `date_added`, `date_modified`) VALUES
 	(1, 1, 1, 1, '2023-10-13 13:58:51', '2023-10-13 14:05:03'),
 	(2, 1, 2, 1, '2023-10-13 13:58:51', '2023-10-13 14:05:03'),
@@ -129,9 +129,22 @@ CREATE TABLE IF NOT EXISTS `tbl_event_scores` (
   `date_added` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `date_modified` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`score_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=latin1;
 
--- Dumping data for table etally_db.tbl_event_scores: ~0 rows (approximately)
+-- Dumping data for table etally_db.tbl_event_scores: ~12 rows (approximately)
+INSERT INTO `tbl_event_scores` (`score_id`, `event_id`, `criteria_id`, `judge_id`, `participant_id`, `points`, `date_added`, `date_modified`) VALUES
+	(1, 2, 5, 3, 1, 27.00, '2023-10-17 16:45:46', '2023-10-17 16:45:46'),
+	(2, 2, 6, 3, 1, 17.00, '2023-10-17 16:45:46', '2023-10-17 16:45:46'),
+	(3, 2, 7, 3, 1, 30.00, '2023-10-17 16:45:46', '2023-10-17 16:45:46'),
+	(4, 2, 8, 3, 1, 10.00, '2023-10-17 16:45:46', '2023-10-17 16:45:46'),
+	(5, 2, 5, 3, 2, 30.00, '2023-10-17 16:45:46', '2023-10-17 16:45:46'),
+	(6, 2, 6, 3, 2, 27.00, '2023-10-17 16:45:46', '2023-10-17 16:45:46'),
+	(7, 2, 7, 3, 2, 24.00, '2023-10-17 16:45:46', '2023-10-17 16:45:46'),
+	(8, 2, 8, 3, 2, 10.00, '2023-10-17 16:45:46', '2023-10-17 16:45:46'),
+	(9, 2, 5, 3, 4, 17.00, '2023-10-17 16:45:46', '2023-10-17 16:45:46'),
+	(10, 2, 6, 3, 4, 27.00, '2023-10-17 16:45:46', '2023-10-17 16:45:46'),
+	(11, 2, 7, 3, 4, 30.00, '2023-10-17 16:45:46', '2023-10-17 16:45:46'),
+	(12, 2, 8, 3, 4, 10.00, '2023-10-17 16:45:46', '2023-10-17 16:45:46');
 
 -- Dumping structure for table etally_db.tbl_judges
 CREATE TABLE IF NOT EXISTS `tbl_judges` (
@@ -159,7 +172,7 @@ CREATE TABLE IF NOT EXISTS `tbl_participants` (
   `date_added` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `date_modified` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`participant_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
 
 -- Dumping data for table etally_db.tbl_participants: ~3 rows (approximately)
 INSERT INTO `tbl_participants` (`participant_id`, `participant_name`, `participant_affiliation`, `date_added`, `date_modified`) VALUES

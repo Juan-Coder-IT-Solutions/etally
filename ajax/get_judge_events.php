@@ -6,11 +6,13 @@ $sql = "SELECT e.* FROM tbl_event_judges AS ej INNER JOIN tbl_events AS e ON e.e
 $fetch = $mysqli->query($sql);
 
 $response['data'] = array();
+$response['judge_id'] = $account_id;
 
 while ($row = $fetch->fetch_assoc()) {
     $criterias = [];
     $fetch_criterias = $mysqli->query("SELECT * FROM tbl_event_criterias WHERE event_id = '$row[event_id]'");
     while ($row_criteria = $fetch_criterias->fetch_assoc()) {
+        $row_criteria['criteria'] = str_replace("\n","<br>",str_replace("\r","&#13;",$row_criteria['criteria']));
         array_push($criterias, $row_criteria);
     }
     $row['criterias'] = $criterias;

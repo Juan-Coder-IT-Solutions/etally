@@ -6,8 +6,8 @@
       </div>
       <div class="modal-body">
         <form class="forms-sample" id="formParticipant">
-            <input type="text" name="event_id" id="participant_event_id" class="form-input">
-            <input type="text" name="event_participant_id" id="event_participant_id" class="form-input">
+            <input type="hidden" name="event_id" id="participant_event_id" class="form-input">
+            <input type="hidden" name="event_participant_id" id="event_participant_id" class="form-input">
           <div class="form-group">
             <label for="participant_ids">participant Name</label>
             <select name="participant_ids[]" id="participant_ids" class="form-control" multiple="multiple" style="width: 100%;">

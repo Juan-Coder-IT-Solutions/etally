@@ -3,8 +3,8 @@
 // START THE SESSION
 session_start();
 
-//$mysqli = new mysqli("localhost", "root", "", "etally_db");
-$mysqli = new mysqli("localhost", "u814036432_root", "#VM>:m&8oQ", "u814036432_etally");
+$mysqli = new mysqli("localhost", "root", "", "etally_db");
+// $mysqli = new mysqli("localhost", "u814036432_root", "#VM>:m&8oQ", "u814036432_etally");
 // Check connection
 if ($mysqli->connect_errno) {
 	echo "Failed to connect to MySQL: " . $mysqli->connect_error;
@@ -79,6 +79,24 @@ function getEventData($event_id, $data_column = "event_name")
 	$fetch = $mysqli->query($sql);
 	$row = $fetch->fetch_array();
 	return $row[$data_column];
+}
+
+function countEventJudges($event_id)
+{
+	global $mysqli;
+	$sql = "SELECT COUNT(event_id) AS count FROM tbl_event_judges WHERE event_id = '$event_id'";
+	$fetch = $mysqli->query($sql);
+	$row = $fetch->fetch_array();
+	return $row['count'];
+}
+
+function countEventParticipants($event_id)
+{
+	global $mysqli;
+	$sql = "SELECT COUNT(event_id) AS count FROM tbl_event_participants WHERE event_id = '$event_id'";
+	$fetch = $mysqli->query($sql);
+	$row = $fetch->fetch_array();
+	return $row['count'];
 }
 
 function checkIfUsernameExists($username)
