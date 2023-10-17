@@ -28,13 +28,14 @@ if (isset($event_id) && isset($judge_id)) {
         $fetch_criteria = $mysqli->query("SELECT * from tbl_event_criterias WHERE event_id='$event_id'");
         while ($criteria_row = $fetch_criteria->fetch_assoc()) {
             $list_criteria = array();
+            $list_criteria['participant_criteria_id'] = $row['participant_id'] . "-" . $criteria_row['criteria_id'];
             $list_criteria['criteria_id'] = $criteria_row['criteria_id'];
             $list_criteria['criteria'] = $criteria_row['criteria'];
             $list_criteria['total_points'] = floor($criteria_row['points']);
 
             $fetch_score = $mysqli->query("SELECT points from tbl_event_scores WHERE event_id='$event_id' and participant_id='$row[participant_id]' and judge_id='$judge_id' and criteria_id='$criteria_row[criteria_id]' ");
-            $row_score = $fetch_score->fetch_assoc();
-            $list_criteria['score'] = floor($row_score['points']);
+            $row_score = $fetch_score->fetch_array();
+            $list_criteria['score'] = $fetch_score->num_rows > 0 ? floor($row_score['points']) : 0;
             array_push($response_criteria, $list_criteria);
         }
 

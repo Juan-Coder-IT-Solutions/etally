@@ -10,7 +10,7 @@ $data = json_decode(file_get_contents("php://input"));
 $username = $data->username;
 $password = $data->password;
 
-$sql = "SELECT * FROM tbl_users WHERE username='$username' and password=md5('$password')";
+$sql = "SELECT * FROM tbl_users WHERE username='$username' and password=md5('$password') and user_category='J'";
 $fetch = $mysqli->query($sql);
 
 $response = array();
