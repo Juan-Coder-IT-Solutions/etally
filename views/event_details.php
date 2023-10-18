@@ -4,11 +4,12 @@
         <h1 id="event_name"></h1>
         <p id="event_description"></p>
         <input type="hidden" id="event_id" value="<?=$_GET['event_id']?>">
+        <input type="hidden" id="event_status">
     </div>
 
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
         <h1 class="h3 mb-0 text-gray-800">&nbsp;</h1>
-        <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-outline-success shadow-sm" onclick="startEvent()" id="btn_event_status"></a>
+        <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-outline-success shadow-sm" id="btn_event_status"></a>
     </div>
     <!-- Nav tabs -->
     <ul class="nav nav-tabs">
@@ -18,13 +19,13 @@
         <li class="nav-item">
             <a class="nav-link" data-toggle="tab" href="#mechanics">Mechanics</a>
         </li>
-        <li class="nav-item" onclick="renderCriteriaData()">
+        <li class="nav-item" onclick="renderCriteriaData(),showHideButtons()">
             <a class="nav-link" data-toggle="tab" href="#criteria">Criteria</a>
         </li>
-        <li class="nav-item" onclick="renderParticipantData()">
+        <li class="nav-item" onclick="renderParticipantData(),showHideButtons()">
             <a class="nav-link" data-toggle="tab" href="#participants">Participants</a>
         </li>
-        <li class="nav-item" onclick="renderJudgeData()">
+        <li class="nav-item" onclick="renderJudgeData(),showHideButtons()">
             <a class="nav-link" data-toggle="tab" href="#judges">Judges</a>
         </li>
     </ul>
@@ -56,7 +57,7 @@
                     <div class="card-body">
                         <div class="d-sm-flex align-items-center justify-content-between mb-4">
                             <h1 class="h3 mb-0 text-gray-800">&nbsp;</h1>
-                            <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-outline-success shadow-sm" onclick="addCriteriaModal()">
+                            <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-outline-success shadow-sm btn-event-saved" onclick="addCriteriaModal()">
                                 <i class="fas fa-plus-circle fa-sm"></i> Add Record
                             </a>
                         </div>
@@ -84,7 +85,7 @@
                     <div class="card-body">
                         <div class="d-sm-flex align-items-center justify-content-between mb-4">
                             <h1 class="h3 mb-0 text-gray-800">&nbsp;</h1>
-                            <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-outline-success shadow-sm" onclick="addParticipantModal()">
+                            <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-outline-success shadow-sm btn-event-saved" onclick="addParticipantModal()">
                                 <i class="fas fa-check-circle fa-sm"></i> Manage Event Participants
                             </a>
                         </div>
@@ -111,7 +112,7 @@
                     <div class="card-body">
                         <div class="d-sm-flex align-items-center justify-content-between mb-4">
                             <h1 class="h3 mb-0 text-gray-800">&nbsp;</h1>
-                            <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-outline-success shadow-sm" onclick="addJudgeModal()">
+                            <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-outline-success shadow-sm btn-event-saved" onclick="addJudgeModal()">
                                 <i class="fas fa-check-circle fa-sm"></i> Manage Event Judges
                             </a>
                         </div>
@@ -141,6 +142,7 @@
         renderCriteriaData();
         renderJudgeData();
         renderParticipantData();
+        showHideButtons();
     });
 
     function getEventData(){
@@ -150,6 +152,7 @@
         },function(data,status){
             var res = JSON.parse(data);
             var event_data = res.data[0];
+            $("#event_status").val(event_data.event_status);
             $("#event_name").html(event_data.event_name);
             $("#event_description").html(event_data.event_description);
             $(".pdfviewer").html(`<object id="preview" data="assets/img/mechanics/${event_data.event_mechanics}" type="application/pdf" width="100%" height="500">
@@ -157,13 +160,44 @@
               </object>`);
 
             if(event_data.event_status == 'S'){
-                $("#btn_event_status").html('<i class="fas fa-play fa-sm"></i> Start Event');
+                $("#btn_event_status").html('<i class="fas fa-play fa-sm"></i> Start Event').attr("onclick","startEvent()");
+            }
+
+            if(event_data.event_status == 'P'){
+                $("#btn_event_status").html('<i class="fas fa-stop fa-sm"></i> Finish Event');
             }
         });
     }
 
     function startEvent(){
-        alert(event_id);
+        Swal.fire({
+            icon: 'info',
+            title: 'Events',
+            text: 'Are you sure to start event?',
+            showCancelButton: true,
+            allowOutsideClick: false
+        }).then((result) => {
+            /* Read more about isConfirmed, isDenied below */
+            if (result.isConfirmed) {
+                $.post("ajax/start_event.php", {
+                    event_id:event_id
+                }, function(data, status) {
+                    if(data == 1){
+                        success_update("Event");
+                    }else if(data == -1){
+                        swal_warning("Event Criteria","Please check total points of criteria.");
+                    }
+                    getEventData();
+                    showHideButtons();
+                    // renderJudgeData();
+                });
+            } else {
+            }
+        });
+    }
+
+    function showHideButtons(){
+        $(".btn-event-saved").hide();
     }
 </script>
 <?php include 'event_tabs/event_tabulation.php' ?>

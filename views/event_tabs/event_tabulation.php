@@ -8,7 +8,8 @@
         var params = `WHERE event_id = '${event_id}'`;
         var tbody_tr = '';
         $.post("ajax/get_event_tabulation.php",{
-            params:params
+            params:params,
+            event_id:event_id
         },function(data,status){
             var res = JSON.parse(data);
             console.log(res.data);
@@ -18,13 +19,13 @@
                 var judge_points = "";
                 for (let pIndex = 0; pIndex < tabElem.points.length; pIndex++) {
                     const point = tabElem.points[pIndex];
-                    judge_points += `<td align="center">${point}</td>`;
+                    judge_points += `<td align="center">${(point > 0 ? point : "-")}</td>`;
                 }
                 tbody_tr += `<tr>
                     <td>${tabElem.participant_name}</td>
                     ${judge_points}
                     <td align="center">${tabElem.ranks}</td>
-                    <td align="center">${tabElem.result}</td>
+                    <td align="center">${tabElem.result > 0 ? tabElem.result : "-"}</td>
                 </tr>`;
             }
             $("#tblTabulation tbody").html(tbody_tr);

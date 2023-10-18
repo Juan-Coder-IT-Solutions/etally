@@ -40,10 +40,14 @@
       var events = "";
       for (let eventIndex = 0; eventIndex < res.data.length; eventIndex++) {
         const eventElem = res.data[eventIndex];
-        var criterias_tr = "";
-        for (let criIndex = 0; criIndex < eventElem.criterias.length; criIndex++) {
-          const criElem = eventElem.criterias[criIndex];
-          criterias_tr += `<tr><td>${criElem.criteria}</td><td>${criElem.points}</td></tr>`;
+        var participants_tr = "";
+        for (let pIndex = 0; pIndex < eventElem.participants.length; pIndex++) {
+          const pElem = eventElem.participants[pIndex];
+          participants_tr += `<tr>
+            <td>${pElem.participant_name}</td>
+            <td>${pElem.scores > 0 ? pElem.scores:"-"}</td>
+            <td>${pElem.rank > 0 ? pElem.rank:"-"}</td>
+          </tr>`;
         }
         events += `<div class="card shadow mb-4">
             <a href="#eventCollapse${eventIndex}" class="d-block card-header py-3" data-toggle="collapse"
@@ -52,22 +56,27 @@
             </a>
             <div class="collapse" id="eventCollapse${eventIndex}">
                 <div class="card-body">
+                  <div class="d-sm-flex align-items-center justify-content-between mb-4">
+                      <h1 class="h3 mb-0 text-gray-800">&nbsp;</h1>
+                      <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-outline-success shadow-sm btn-event-saved" onclick="rateParticipants(${eventElem.event_id},${res.judge_id})">
+                          <i class="fas fa-check-circle fa-sm"></i> Evaluate Now
+                      </a>
+                  </div>
                   <div class="row">
                     <div class="col-md-8">
                       <iframe src="assets/img/mechanics/${eventElem.event_mechanics}" width="100%" height="500" frameborder="0"></iframe>
                     </div>
                     <div class="col-md-4">
-                      <h6>Criteria</h6>
                       <table class="table table-hover">
                         <thead>
                           <tr>
-                            <th>Criteria</th>
-                            <th>Points</th>
+                            <th>Participants</th>
+                            <th>Score</th>
+                            <th>Rank</th>
                           </tr>
                         </thead>
-                        <tbody>${criterias_tr}</tbody>
+                        <tbody>${participants_tr}</tbody>
                       </table>
-                      <button class="btn btn-sm btn-outline-primary" onclick="rateParticipants(${eventElem.event_id},${res.judge_id})"><span class="fa fa-check-circle"></span> Evaluate Now</button>
                     </div>
                   </div>
                 </div>
@@ -173,6 +182,7 @@
       $("#modalRateParticipants").modal('hide');
       if(data == 1){
         success_add("Evaluation");
+        getJudgeEvents();
       }
     });
   }

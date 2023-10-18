@@ -2,6 +2,7 @@
 include '../core/config.php';
 
 $inject = isset($_POST["params"]) ? $_POST["params"] : "";
+$event_id = $_POST['event_id'];
 
 $judge_ids = [];
 $response['judges'] = array();
@@ -18,12 +19,12 @@ while ($row = $fetch_participant->fetch_assoc()) {
 
     $points = [];
     foreach($judge_ids as $judge_id){
-        $points[] = rand(1,10);
+        $points[] = getEventRanksData($event_id,"rank","AND participant_id = '$row[participant_id]' AND judge_id = '$judge_id'") * 1;
     }
 
     $row['points'] = $points;
-    $row['ranks'] = 1;
-    $row['result'] = 1;
+    $row['ranks'] = array_sum($points);
+    $row['result'] = $row['rank'];
     $row['participant_name'] = getParticipantName($row['participant_id']);
 	array_push($response['data'], $row);
 }
