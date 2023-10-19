@@ -168,7 +168,7 @@
           { data: 'event_start' },
           {
             mRender: function(data, type, row) {
-              return row.status == 'F' ? "Finished":(row.status == 'P'?"On Going":"Open for Registration");
+              return row.event_status == 'F' ? "Finished":((row.event_status == 'P'?"On Going":"Open for Registration"));
             }
           },
           {

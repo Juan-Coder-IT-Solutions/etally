@@ -57,8 +57,8 @@
                 { data: 'points' },
                 {
                 mRender: function(data, type, row) {
-                    return `<button type="button" class="btn btn-warning btn-rounded btn-icon btn-sm btn-update-criteria-data"><i class="fas fa-edit"></i></button>
-                    <button type="button" class="btn btn-danger btn-rounded btn-icon btn-sm" onclick="deleteCriteriaEntry(${row.criteria_id})"><i class="fas fa-trash"></i></button>`;
+                    return `<button type="button" class="btn btn-warning btn-rounded btn-icon btn-sm btn-update-criteria-data btn-event-saved"><i class="fas fa-edit"></i></button>
+                    <button type="button" class="btn btn-danger btn-rounded btn-icon btn-sm btn-event-saved" onclick="deleteCriteriaEntry(${row.criteria_id})"><i class="fas fa-trash"></i></button>`;
                 }
                 },
             ]
