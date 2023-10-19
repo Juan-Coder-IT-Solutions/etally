@@ -98,6 +98,15 @@ function countEventRanksByJudges($event_id)
 	return (int) $fetch->num_rows;
 }
 
+function countEventTieBreakers($event_id)
+{
+	global $mysqli;
+	$sql = "SELECT COUNT(rank) as count_same_scores,`rank` FROM tbl_event_participants WHERE event_id = '$event_id' GROUP BY `rank` HAVING count_same_scores > 1";
+	$fetch = $mysqli->query($sql);
+	return (int) $fetch->num_rows;
+}
+
+
 function countEventJudges($event_id)
 {
 	global $mysqli;

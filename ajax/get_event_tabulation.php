@@ -6,7 +6,7 @@ $event_id = $_POST['event_id'];
 
 $judge_ids = [];
 $response['judges'] = array();
-$fetch_judge = $mysqli->query("SELECT * FROM tbl_event_judges $inject");
+$fetch_judge = $mysqli->query("SELECT * FROM tbl_event_judges $inject ORDER BY judge_no ASC");
 while ($row = $fetch_judge->fetch_assoc()) {
     $judge_ids[] = $row['judge_id'];
 	array_push($response['judges'], $row);
@@ -29,4 +29,5 @@ while ($row = $fetch_participant->fetch_assoc()) {
 	array_push($response['data'], $row);
 }
 
+$response['has_tie'] = countEventTieBreakers($event_id);
 echo json_encode($response);

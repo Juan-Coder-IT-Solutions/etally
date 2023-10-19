@@ -36,6 +36,8 @@
             <div class="row">
                 <div class="card shadow mt-4 col border-left-success">
                     <div class="card-body">
+                        <div class="d-sm-flex align-items-center justify-content-between mb-4"  id="tabulation_resolve">
+                        </div>
                         <div class="table-responsive">
                             <table class="table table-bordered" id="tblTabulation" cellspacing="0" width="100%">
                                 <thead style="text-align: center;">
