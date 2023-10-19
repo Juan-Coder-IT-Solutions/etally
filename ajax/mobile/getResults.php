@@ -18,7 +18,6 @@ while ($row = $fetch->fetch_assoc()) {
     $list = array();
     $list_chart_data = array();
 
-
     $fetch_participants = $mysqli->query("SELECT participant_name, participant_affiliation, p.participant_id from tbl_participants p LEFT JOIN tbl_event_participants ep ON p.participant_id=ep.participant_id WHERE event_id='$row[event_id]'");
     while ($participants_row = $fetch_participants->fetch_assoc()) {
         $list_scores = array();
