@@ -16,13 +16,18 @@
             skinTabulation(res.judges);
             for (let tabIndex = 0; tabIndex < res.data.length; tabIndex++) {
                 const tabElem = res.data[tabIndex];
-                var judge_points = "";
+                var judge_points = "", champion = "",trophy = "";
                 for (let pIndex = 0; pIndex < tabElem.points.length; pIndex++) {
                     const point = tabElem.points[pIndex];
                     judge_points += `<td align="center">${(point > 0 ? point : "-")}</td>`;
                 }
-                tbody_tr += `<tr>
-                    <td>${tabElem.participant_name}</td>
+
+                if(tabElem.result == 1){
+                    champion = "class='champion'";
+                    trophy = "<span class='fa fa-trophy trophy'></span>";
+                }
+                tbody_tr += `<tr ${champion}>
+                    <td>${tabElem.participant_name} ${trophy}</td>
                     ${judge_points}
                     <td align="center">${tabElem.ranks}</td>
                     <td align="center">${tabElem.result > 0 ? tabElem.result : "-"}</td>

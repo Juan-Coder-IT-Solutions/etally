@@ -90,6 +90,14 @@ function getEventRanksData($event_id,$data_column = "rank", $inject = "")
 	return $row[0];
 }
 
+function countEventRanksByJudges($event_id)
+{
+	global $mysqli;
+	$sql = "SELECT judge_id AS count FROM tbl_event_ranks WHERE event_id = '$event_id' GROUP BY judge_id";
+	$fetch = $mysqli->query($sql);
+	return (int) $fetch->num_rows;
+}
+
 function countEventJudges($event_id)
 {
 	global $mysqli;

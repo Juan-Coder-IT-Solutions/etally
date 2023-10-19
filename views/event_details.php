@@ -55,7 +55,7 @@
             <div class="row">
                 <div class="card shadow mt-4 col border-left-success">
                     <div class="card-body">
-                        <div class="d-sm-flex align-items-center justify-content-between mb-4">
+                        <div class="d-sm-flex align-items-center justify-content-between mb-4 btn-events">
                             <h1 class="h3 mb-0 text-gray-800">&nbsp;</h1>
                             <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-outline-success shadow-sm btn-event-saved" onclick="addCriteriaModal()">
                                 <i class="fas fa-plus-circle fa-sm"></i> Add Record
@@ -83,7 +83,7 @@
             <div class="row">
                 <div class="card shadow mt-4 col border-left-success">
                     <div class="card-body">
-                        <div class="d-sm-flex align-items-center justify-content-between mb-4">
+                        <div class="d-sm-flex align-items-center justify-content-between mb-4 btn-events">
                             <h1 class="h3 mb-0 text-gray-800">&nbsp;</h1>
                             <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-outline-success shadow-sm btn-event-saved" onclick="addParticipantModal()">
                                 <i class="fas fa-check-circle fa-sm"></i> Manage Event Participants
@@ -110,7 +110,7 @@
             <div class="row">
                 <div class="card shadow mt-4 col border-left-success">
                     <div class="card-body">
-                        <div class="d-sm-flex align-items-center justify-content-between mb-4">
+                        <div class="d-sm-flex align-items-center justify-content-between mb-4 btn-events">
                             <h1 class="h3 mb-0 text-gray-800">&nbsp;</h1>
                             <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-outline-success shadow-sm btn-event-saved" onclick="addJudgeModal()">
                                 <i class="fas fa-check-circle fa-sm"></i> Manage Event Judges
@@ -134,6 +134,16 @@
             </div>
         </div>
     </div>
+<style>
+    .champion{
+        background: #3a9b4c;
+        color: #fff;
+    }
+    .trophy{
+        float: right;
+        color: gold;
+    }
+</style>
 <script>
     var table_criteria,table_judges;
     var event_id = <?=$_GET['event_id']?>;
@@ -161,10 +171,11 @@
 
             if(event_data.event_status == 'S'){
                 $("#btn_event_status").html('<i class="fas fa-play fa-sm"></i> Start Event').attr("onclick","startEvent()");
-            }
-
-            if(event_data.event_status == 'P'){
-                $("#btn_event_status").html('<i class="fas fa-stop fa-sm"></i> Finish Event');
+            }else if(event_data.event_status == 'P'){
+                $("#btn_event_status").html('<i class="fas fa-stop fa-sm"></i> Finish Event').attr("onclick","finishEvent()");
+            }else{
+                $("#btn_event_status").parent().remove();
+                $(".btn-events").remove();
             }
         });
     }
@@ -195,6 +206,34 @@
             }
         });
     }
+
+    function finishEvent(){
+        Swal.fire({
+            icon: 'info',
+            title: 'Events',
+            text: 'Are you sure to finish event?',
+            showCancelButton: true,
+            allowOutsideClick: false
+        }).then((result) => {
+            /* Read more about isConfirmed, isDenied below */
+            if (result.isConfirmed) {
+                $.post("ajax/finish_event.php", {
+                    event_id:event_id
+                }, function(data, status) {
+                    if(data == 1){
+                        success_update("Event");
+                    }else if(data == -1){
+                        swal_warning("Judges Evaluation","Please make sure all judges have finished their evaluations.");
+                    }
+                    getEventData();
+                    renderTabulationData();
+                    // renderJudgeData();
+                });
+            } else {
+            }
+        });
+    }
+
 
     function showHideButtons(){
         $(".btn-event-saved").hide();

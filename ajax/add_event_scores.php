@@ -60,7 +60,7 @@ $fetch = $mysqli->query("SELECT MIN(RANK) as rank,COUNT(scores) as count_same_sc
 while($row = $fetch->fetch_assoc()){
 
     $scores = $row['scores'];
-    $rank = $row['rank'] * 1.5;
+    $rank = $row['rank'] + .5;
     
     $form_data = array(
         'rank' => $rank
