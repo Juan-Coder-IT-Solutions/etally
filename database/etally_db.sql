@@ -38,13 +38,14 @@ CREATE TABLE IF NOT EXISTS `tbl_events` (
 
 -- Dumping data for table etally_db.tbl_events: ~3 rows (approximately)
 INSERT INTO `tbl_events` (`event_id`, `event_name`, `event_description`, `event_mechanics`, `event_start`, `event_end`, `event_status`, `participant_needed`, `judge_needed`, `encoded_by`, `date_added`, `date_modified`) VALUES
-	(1, 'Radio Drama', 'Male Category', 'qLmPKMKjj.pdf', '2023-10-13', '0000-00-00', 'F', 30, 5, 0, '2023-10-13 13:57:51', '2023-10-19 15:00:05'),
+	(1, 'Radio Drama', 'Male Category', 'qLmPKMKjj.pdf', '2023-10-13', '0000-00-00', 'F', 30, 5, 0, '2023-10-13 13:57:51', '2023-10-19 15:14:14'),
 	(2, 'Instrumental Solo', ' (2017 â€“ PIANO)', 'P0NSmfyMT.pdf', '2023-10-13', '0000-00-00', 'S', 10, 3, 0, '2023-10-13 14:25:10', '2023-10-13 14:25:10'),
 	(3, 'Radio Drama', 'Male Category', 'qLmPKMKjj.pdf', '2023-10-13', '0000-00-00', 'P', 30, 5, 0, '2023-10-13 13:57:51', '2023-10-18 11:05:10');
 
 -- Dumping structure for table etally_db.tbl_event_criterias
 CREATE TABLE IF NOT EXISTS `tbl_event_criterias` (
   `criteria_id` int(11) NOT NULL AUTO_INCREMENT,
+  `ch_id` int(11) NOT NULL,
   `event_id` int(11) NOT NULL DEFAULT '0',
   `criteria` text NOT NULL,
   `points` decimal(12,2) NOT NULL DEFAULT '0.00',
@@ -54,15 +55,28 @@ CREATE TABLE IF NOT EXISTS `tbl_event_criterias` (
 ) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=latin1;
 
 -- Dumping data for table etally_db.tbl_event_criterias: ~8 rows (approximately)
-INSERT INTO `tbl_event_criterias` (`criteria_id`, `event_id`, `criteria`, `points`, `date_added`, `date_modified`) VALUES
-	(1, 1, 'Radio Drama\r\nTheme Appropriateness - 10 \r\nVariety of characters - 10\r\nScript Flow and Continuity - 10 ', 30.00, '2023-10-13 14:11:19', '2023-10-13 14:11:19'),
-	(2, 1, 'B. TECHNICAL QUALITY\r\nAppropriateness of sounds -10\r\nSmoothness of production - 10 \r\nPrecision (Timing, Pacing and Transition) -10', 30.00, '2023-10-13 14:11:38', '2023-10-13 14:11:38'),
-	(3, 1, 'C. VOCAL QUALITY \r\nVoice flexibility - 15\r\nVoice creativity - 15 ', 30.00, '2023-10-13 14:11:54', '2023-10-13 14:11:54'),
-	(4, 1, 'D. OVER-ALL APPEAL\r\nDramatic effect - 5\r\nRendering/delevery - 5', 10.00, '2023-10-13 14:12:20', '2023-10-13 14:12:20'),
-	(5, 2, 'Technique\r\n Intonation 15\r\n Dexterity 15', 30.00, '2023-10-13 14:36:54', '2023-10-13 14:36:54'),
-	(6, 2, 'Mastery (Fidelity of the score', 30.00, '2023-10-13 14:37:12', '2023-10-13 14:37:12'),
-	(7, 2, 'Artistic Quality\r\n Expression 15\r\n Interpretation 15', 30.00, '2023-10-13 14:37:25', '2023-10-13 14:37:25'),
-	(8, 2, 'Stage Deportment 10', 10.00, '2023-10-13 14:37:35', '2023-10-13 14:37:35');
+INSERT INTO `tbl_event_criterias` (`criteria_id`, `ch_id`, `event_id`, `criteria`, `points`, `date_added`, `date_modified`) VALUES
+	(1, 0, 1, 'Radio Drama\r\nTheme Appropriateness - 10 \r\nVariety of characters - 10\r\nScript Flow and Continuity - 10 ', 30.00, '2023-10-13 14:11:19', '2023-10-13 14:11:19'),
+	(2, 0, 1, 'B. TECHNICAL QUALITY\r\nAppropriateness of sounds -10\r\nSmoothness of production - 10 \r\nPrecision (Timing, Pacing and Transition) -10', 30.00, '2023-10-13 14:11:38', '2023-10-13 14:11:38'),
+	(3, 0, 1, 'C. VOCAL QUALITY \r\nVoice flexibility - 15\r\nVoice creativity - 15 ', 30.00, '2023-10-13 14:11:54', '2023-10-13 14:11:54'),
+	(4, 0, 1, 'D. OVER-ALL APPEAL\r\nDramatic effect - 5\r\nRendering/delevery - 5', 10.00, '2023-10-13 14:12:20', '2023-10-13 14:12:20'),
+	(5, 0, 2, 'Technique\r\n Intonation 15\r\n Dexterity 15', 30.00, '2023-10-13 14:36:54', '2023-10-13 14:36:54'),
+	(6, 0, 2, 'Mastery (Fidelity of the score', 30.00, '2023-10-13 14:37:12', '2023-10-13 14:37:12'),
+	(7, 0, 2, 'Artistic Quality\r\n Expression 15\r\n Interpretation 15', 30.00, '2023-10-13 14:37:25', '2023-10-13 14:37:25'),
+	(8, 0, 2, 'Stage Deportment 10', 10.00, '2023-10-13 14:37:35', '2023-10-13 14:37:35');
+
+-- Dumping structure for table etally_db.tbl_event_criteria_header
+CREATE TABLE IF NOT EXISTS `tbl_event_criteria_header` (
+  `ch_id` int(11) NOT NULL AUTO_INCREMENT,
+  `event_id` int(11) NOT NULL DEFAULT '0',
+  `criteria` varchar(255) NOT NULL DEFAULT '0',
+  `points` decimal(12,2) NOT NULL DEFAULT '0.00',
+  `date_added` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `date_modified` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`ch_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- Dumping data for table etally_db.tbl_event_criteria_header: ~0 rows (approximately)
 
 -- Dumping structure for table etally_db.tbl_event_judges
 CREATE TABLE IF NOT EXISTS `tbl_event_judges` (
@@ -110,8 +124,8 @@ INSERT INTO `tbl_event_participants` (`event_participant_id`, `event_id`, `parti
 	(5, 2, 2, 1, 0.00, 0.00, '2023-10-13 14:25:34', '2023-10-13 14:25:34'),
 	(6, 2, 4, 1, 0.00, 0.00, '2023-10-13 14:25:34', '2023-10-13 14:25:34'),
 	(7, 1, 4, 1, 5.00, 3.00, '2023-10-18 11:17:42', '2023-10-19 14:47:55'),
-	(8, 1, 5, 1, 4.00, 1.00, '2023-10-18 11:36:55', '2023-10-19 15:00:05'),
-	(9, 1, 6, 1, 4.00, 2.00, '2023-10-18 11:36:55', '2023-10-19 15:00:05'),
+	(8, 1, 5, 1, 4.00, 1.50, '2023-10-18 11:36:55', '2023-10-19 15:14:14'),
+	(9, 1, 6, 1, 4.00, 1.50, '2023-10-18 11:36:55', '2023-10-19 15:14:14'),
 	(10, 3, 1, 1, 0.00, 0.00, '2023-10-18 15:55:00', '2023-10-18 15:55:00'),
 	(11, 3, 2, 1, 0.00, 0.00, '2023-10-18 15:55:00', '2023-10-18 15:55:00'),
 	(12, 3, 4, 1, 0.00, 0.00, '2023-10-18 15:55:00', '2023-10-18 15:55:00'),
@@ -131,7 +145,7 @@ CREATE TABLE IF NOT EXISTS `tbl_event_ranks` (
   PRIMARY KEY (`rank_id`) USING BTREE
 ) ENGINE=InnoDB AUTO_INCREMENT=51 DEFAULT CHARSET=latin1 ROW_FORMAT=COMPACT;
 
--- Dumping data for table etally_db.tbl_event_ranks: ~16 rows (approximately)
+-- Dumping data for table etally_db.tbl_event_ranks: ~14 rows (approximately)
 INSERT INTO `tbl_event_ranks` (`rank_id`, `event_id`, `judge_id`, `participant_id`, `rank`, `scores`, `date_added`, `date_modified`) VALUES
 	(35, 1, 1, 1, 5.00, 86.00, '2023-10-19 14:46:35', '2023-10-19 14:46:35'),
 	(36, 1, 1, 2, 1.50, 94.00, '2023-10-19 14:46:35', '2023-10-19 14:46:35'),
