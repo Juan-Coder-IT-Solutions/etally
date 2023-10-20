@@ -117,8 +117,10 @@
           form_participants.criterias.push(form_criterias);
 
           pc_tbody += `<tr data-participant-id="${pIndex}" data-criteria-id="${cIndex}">
-              <td>`+pcRow.criteria+`</td>
-              <td>
+              <td style="padding:5px;"></td>
+              <td style="padding:5px;"></td>
+              <td style="padding:5px;">`+pcRow.criteria+`</td>
+              <td style="padding:5px;">
               <div class="range-container">
                 <input type="range" min="0" max="${pcRow.points * 1}" value="0" class="form-control pc-${pIndex}" onchange="evaluateParticipant(this)">
                 <span class="range-value" id="pc-${pIndex}-${cIndex}">0</span>
@@ -131,17 +133,18 @@
         modalRateParticipants_body += `<table class="table table-bordered mt-2">
           <thead>
             <tr>
-              <th colspan="2">${pRow.participant_name}</th>
+              <th colspan="4">${pRow.participant_name}</th>
             </tr>
             <tr>
-              <th>Criteria</th>
-              <th>Points</th>
+              <th style="width:5%;">#</th>
+              <th colspan="2">Criteria</th>
+              <th style="width:25%;">Points</th>
             </tr>
           </thead>
           <tbody>${pc_tbody}</tbody>
           <tfooter>
             <tr>
-              <th style="text-align:right;">Total Points</th>
+              <th style="text-align:right;" colspan="3">Total Points</th>
               <th id="participant-${pIndex}">0</th>
             </tr>
           </tfooter>

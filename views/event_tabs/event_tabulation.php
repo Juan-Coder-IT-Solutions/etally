@@ -1,6 +1,63 @@
+<div class="modal fade" id="modalTieBreaker" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Resolve Tie Breaker</h5>
+      </div>
+      <div class="modal-body">
+        <ul id="sortableList">
+            <li class="draggable" data-id="1">Item 1</li>
+            <li class="draggable" data-id="2">Item 2</li>
+            <li class="draggable" data-id="3">Item 3</li>
+            <li class="draggable" data-id="4">Item 4</li>
+            <li class="draggable" data-id="5">Item 5</li>
+        </ul>
+        
+  <button id="getOrderButton">Get Order</button>
+  <div id="orderDisplay"></div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-sm btn-outline-success" form="formCriteria" type="submit" id="btn_submit_tie_breaker">
+            <span class="fa fa-check-circle"></span> Submit
+        </button>
+        <button class="btn btn-sm btn-outline-danger" data-dismiss="modal">
+            <span class="fa fa-times-circle"></span> Close
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+<style>
+#sortableList {
+  list-style: none;
+  padding: 0;
+}
+
+#sortableList>li {
+  background-color: #3498db;
+  color: #fff;
+  text-align: center;
+  line-height: 40px;
+  margin: 5px;
+  cursor: grab;
+}
+
+.dragging {
+  cursor: grabbing;
+}
+</style>
+
 <script>
     $(document).ready(function(){
         renderTabulationData();
+
+        $("#sortableList").sortable();
+        $("#sortableList").disableSelection();
+
+        $("#getOrderButton").click(function() {
+            const order = $("#sortableList").sortable("toArray", { attribute: "data-id" });
+            $("#orderDisplay").text("Order: " + order.join(", "));
+        });
     });
 
     function renderTabulationData(){
@@ -34,6 +91,12 @@
                 </tr>`;
             }
             $("#tblTabulation tbody").html(tbody_tr);
+            if(res.has_tie > 0){
+                $("#tabulation_resolve").html(`<h1 class="h3 mb-0 text-gray-800">&nbsp;</h1>
+                <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-outline-success shadow-sm" onclick="resolveTieBreakerModal()">
+                    <i class="fas fa-check-circle fa-sm"></i> Resolve Tie Breakers
+                </a>`);
+            }
         });
     }
 
@@ -51,6 +114,10 @@
         </tr>
         <tr>${tr}</tr>`;
         $("#tblTabulation thead").html(thead);
+    }
+
+    function resolveTieBreakerModal(){
+        $("#modalTieBreaker").modal('show');
     }
 
     $("#formJudge").submit(function(e) {

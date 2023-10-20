@@ -1,19 +1,45 @@
 <?php
 include '../core/config.php';
 
-$table_name = "tbl_event_criterias";
+$table_header = "tbl_event_criteria_header";
+$table_sub = "tbl_event_criterias";
 
-$criteria_id    = (int) $_POST['criteria_id'];
-$event_id       = (int) $_POST['event_id'];
-$criteria       = $_POST['criteria'];
-$points         = $_POST['points'];
+$form = json_decode($_POST['data'], true);
 
-$form_data = array(
+$ch_id		= (int) $form['ch_id'];
+$event_id	= (int) $form['event_id'];
+$criteria	= $form['criteria'];
+$points		= $form['points'];
+$details	= $form['details'];
+$deletes	= $form['deleted_criterias'];
+
+$form_header = array(
+	'event_id'  => $event_id,
 	'criteria'  => $criteria,
 	'points'    => $points,
-	'event_id'  => $event_id
 );
 
-$sql = $criteria_id > 0? sql_update($table_name, $form_data, "criteria_id = '$criteria_id'") : sql_insert($table_name, $form_data);
+$sql = $ch_id > 0? sql_update($table_header, $form_header, "ch_id = '$ch_id'") : sql_insert($table_header, $form_header);
+$mysqli->query($sql);
 
-echo $mysqli->query($sql);
+if($ch_id < 1){
+	$ch_id = $mysqli->insert_id;
+}
+
+foreach($details as $detail){
+	$criteria_id = $detail['criteria_id'];
+	$form_detail = array(
+		'ch_id'		=> $ch_id,
+		'event_id'  => $event_id,
+		'criteria'  => $detail['name'],
+		'points'    => $detail['points'],
+	);
+	$sql = $criteria_id > 0? sql_update($table_sub, $form_detail, "criteria_id = '$criteria_id'") : sql_insert($table_sub, $form_detail);
+	$mysqli->query($sql);
+}
+
+if(count($deletes) > 0){
+	$mysqli->query("DELETE FROM $table_sub WHERE criteria_id IN(".implode(",",$deletes).")");
+}
+
+echo 1;

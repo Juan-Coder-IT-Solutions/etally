@@ -39,6 +39,22 @@ while($row = $fetch->fetch_assoc()){
     $rank++;
 }
 
+
+// TIE BREAKER
+$fetch = $mysqli->query("SELECT MIN(rank) as rank,COUNT(total_ranks) as count_same_scores,total_ranks FROM tbl_event_participants WHERE event_id = '$event_id' GROUP BY total_ranks HAVING count_same_scores > 1");
+while($row = $fetch->fetch_assoc()){
+
+    $total_ranks = $row['total_ranks'];
+    $rank = $row['rank'] + .5;
+    
+    $form_data = array(
+        'rank' => $rank
+    );
+
+    $sql = sql_update("tbl_event_participants", $form_data,"event_id = '$event_id' AND total_ranks = '$total_ranks'");
+    $mysqli->query($sql);
+}
+
 echo 1;
 
 
