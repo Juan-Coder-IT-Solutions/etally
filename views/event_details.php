@@ -20,7 +20,7 @@
             <a class="nav-link" data-toggle="tab" href="#mechanics">Mechanics</a>
         </li>
         <li class="nav-item" onclick="renderCriteriaData(),showHideButtons()">
-            <a class="nav-link" data-toggle="tab" href="#criteria">Criteria</a>
+            <a class="nav-link" data-toggle="tab" href="#criteria_tab">Criteria</a>
         </li>
         <li class="nav-item" onclick="renderParticipantData(),showHideButtons()">
             <a class="nav-link" data-toggle="tab" href="#participants">Participants</a>
@@ -53,7 +53,7 @@
         <div class="tab-pane container" id="mechanics">
             <div class="pdfviewer"></div>
         </div>
-        <div class="tab-pane container" id="criteria">
+        <div class="tab-pane container" id="criteria_tab">
             <div class="row">
                 <div class="card shadow mt-4 col border-left-success">
                     <div class="card-body">
@@ -68,7 +68,7 @@
                                 <thead>
                                     <tr>
                                         <th>#</th>
-                                        <th>Criteria</th>
+                                        <th colspan="2">Criteria</th>
                                         <th>Points</th>
                                         <th>Action</th>
                                     </tr>

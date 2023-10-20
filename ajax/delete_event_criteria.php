@@ -1,9 +1,11 @@
 <?php
 include '../core/config.php';
 
-$criteria_id = (int) $_POST['criteria_id'];
+$ch_id = (int) $_POST['ch_id'];
 
+$sql = "DELETE FROM tbl_event_criterias WHERE ch_id = '$ch_id'";
+$mysqli->query($sql);
 
-$sql = "DELETE FROM tbl_event_criterias WHERE criteria_id = '$criteria_id'";
-
-echo $mysqli->query($sql);
+$sql = "DELETE FROM tbl_event_criteria_header WHERE ch_id = '$ch_id'";
+$mysqli->query($sql);
+echo 1;
