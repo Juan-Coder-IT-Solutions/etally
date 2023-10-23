@@ -7,11 +7,10 @@ header('Content-Type: text/html; charset=utf-8');
 include '../../core/config.php';
 
 $data = json_decode(file_get_contents("php://input"));
-$username = $data->username;
-$password = $data->password;
+$user_id = $data->user_id;
 
-if (isset($username) && isset($password)) {
-    $sql = "SELECT * FROM tbl_users WHERE username='$username' and password=md5('$password') and user_category='J'";
+if (isset($user_id)) {
+    $sql = "SELECT * FROM tbl_users WHERE account_id='$user_id'";
     $fetch = $mysqli->query($sql);
 
     $response = array();
