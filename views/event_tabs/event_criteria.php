@@ -114,6 +114,10 @@
                 }
             }
             $("#tblCriteria tbody").html(tbody_tr);
+            if($("#event_status").val() != 'S'){
+                $("#tblCriteria th:nth-child(4)").hide();
+                $("#tblCriteria td:nth-child(5)").hide();
+            }
         });
     }
     function addCriteriaModal(){

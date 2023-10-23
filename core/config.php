@@ -81,6 +81,15 @@ function getEventData($event_id, $data_column = "event_name")
 	return $row[$data_column];
 }
 
+function getEventScoresData($event_id,$data_column = "points", $inject = "")
+{
+	global $mysqli;
+	$sql = "SELECT $data_column FROM tbl_event_scores WHERE event_id = '$event_id' $inject";
+	$fetch = $mysqli->query($sql);
+	$row = $fetch->fetch_array();
+	return $row[0];
+}
+
 function getEventRanksData($event_id,$data_column = "rank", $inject = "")
 {
 	global $mysqli;
