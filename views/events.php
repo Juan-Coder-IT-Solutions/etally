@@ -173,9 +173,10 @@
           },
           {
             mRender: function(data, type, row) {
+              var btn_delete = row.event_status != 'S' ? "disabled": "";
               return `<button type="button" class="btn btn-success btn-rounded btn-icon btn-sm" onclick="viewEntry(${row.event_id})"><i class="fas fa-tasks"></i></button>
               <button type="button" class="btn btn-warning btn-rounded btn-icon btn-sm btn-update-data"><i class="fas fa-edit"></i></button>
-              <button type="button" class="btn btn-danger btn-rounded btn-icon btn-sm" onclick="deleteEntry(${row.event_id})"><i class="fas fa-trash"></i></button>`;
+              <button type="button" class="btn btn-danger btn-rounded btn-icon btn-sm" onclick="deleteEntry(${row.event_id})" ${btn_delete}><i class="fas fa-trash"></i></button>`;
             }
           },
         ]
