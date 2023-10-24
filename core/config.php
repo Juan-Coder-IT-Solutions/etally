@@ -3,8 +3,8 @@
 // START THE SESSION
 session_start();
 
-//$mysqli = new mysqli("localhost", "root", "", "etally_db");
-$mysqli = new mysqli("localhost", "u814036432_root", "#VM>:m&8oQ", "u814036432_etally");
+$mysqli = new mysqli("localhost", "root", "", "etally_db");
+// $mysqli = new mysqli("localhost", "u814036432_root", "#VM>:m&8oQ", "u814036432_etally");
 // Check connection
 if ($mysqli->connect_errno) {
 	echo "Failed to connect to MySQL: " . $mysqli->connect_error;
@@ -47,6 +47,15 @@ function sql_insert($table_name, $form_data)
 function getJudgeName($judge_id)
 {
 	return getJudgeData($judge_id);
+}
+
+function getUserData($user_id, $data_column = "account_name")
+{
+	global $mysqli;
+	$sql = "SELECT $data_column FROM tbl_users WHERE user_id = '$user_id'";
+	$fetch = $mysqli->query($sql);
+	$row = $fetch->fetch_array();
+	return $row[$data_column];
 }
 
 function getJudgeData($judge_id, $data_column = "judge_name")

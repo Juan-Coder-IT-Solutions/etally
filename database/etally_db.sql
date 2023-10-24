@@ -55,7 +55,7 @@ CREATE TABLE IF NOT EXISTS `tbl_event_criterias` (
   PRIMARY KEY (`criteria_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=latin1;
 
--- Dumping data for table etally_db.tbl_event_criterias: ~10 rows (approximately)
+-- Dumping data for table etally_db.tbl_event_criterias: ~9 rows (approximately)
 INSERT INTO `tbl_event_criterias` (`criteria_id`, `ch_id`, `event_id`, `criteria`, `points`, `date_added`, `date_modified`) VALUES
 	(9, 1, 4, 'Intonation', 10.00, '2023-10-20 14:31:57', '2023-10-20 14:31:57'),
 	(10, 1, 4, 'Resonance', 20.00, '2023-10-20 14:31:57', '2023-10-20 14:31:57'),
@@ -79,7 +79,7 @@ CREATE TABLE IF NOT EXISTS `tbl_event_criteria_header` (
   PRIMARY KEY (`ch_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
 
--- Dumping data for table etally_db.tbl_event_criteria_header: ~4 rows (approximately)
+-- Dumping data for table etally_db.tbl_event_criteria_header: ~2 rows (approximately)
 INSERT INTO `tbl_event_criteria_header` (`ch_id`, `event_id`, `criteria`, `points`, `date_added`, `date_modified`) VALUES
 	(1, 4, 'Tone Quality', 30.00, '2023-10-20 14:31:57', '2023-10-20 14:31:57'),
 	(3, 4, 'Technique Interpretation', 30.00, '2023-10-20 14:57:47', '2023-10-20 14:57:47'),
@@ -147,7 +147,7 @@ CREATE TABLE IF NOT EXISTS `tbl_event_ranks` (
   PRIMARY KEY (`rank_id`) USING BTREE
 ) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=latin1 ROW_FORMAT=COMPACT;
 
--- Dumping data for table etally_db.tbl_event_ranks: ~5 rows (approximately)
+-- Dumping data for table etally_db.tbl_event_ranks: ~10 rows (approximately)
 INSERT INTO `tbl_event_ranks` (`rank_id`, `event_id`, `judge_id`, `participant_id`, `rank`, `scores`, `date_added`, `date_modified`) VALUES
 	(6, 4, 3, 1, 3.00, 92.00, '2023-10-23 15:28:31', '2023-10-23 15:28:32'),
 	(7, 4, 3, 2, 1.50, 97.00, '2023-10-23 15:28:31', '2023-10-23 15:28:32'),
@@ -173,7 +173,7 @@ CREATE TABLE IF NOT EXISTS `tbl_event_scores` (
   PRIMARY KEY (`score_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=151 DEFAULT CHARSET=latin1;
 
--- Dumping data for table etally_db.tbl_event_scores: ~50 rows (approximately)
+-- Dumping data for table etally_db.tbl_event_scores: ~100 rows (approximately)
 INSERT INTO `tbl_event_scores` (`score_id`, `event_id`, `criteria_id`, `judge_id`, `participant_id`, `points`, `date_added`, `date_modified`) VALUES
 	(51, 4, 9, 3, 1, 9.00, '2023-10-23 15:28:31', '2023-10-23 15:28:31'),
 	(52, 4, 10, 3, 1, 20.00, '2023-10-23 15:28:31', '2023-10-23 15:28:31'),
@@ -320,16 +320,17 @@ CREATE TABLE IF NOT EXISTS `tbl_users` (
   `username` varchar(50) NOT NULL DEFAULT '0',
   `password` varchar(32) NOT NULL DEFAULT '0',
   `user_category` varchar(1) NOT NULL DEFAULT '0',
+  `user_img` varchar(15) NOT NULL DEFAULT 'user_img.png',
   `date_added` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `date_modified` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`user_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=latin1;
 
 -- Dumping data for table etally_db.tbl_users: ~3 rows (approximately)
-INSERT INTO `tbl_users` (`user_id`, `account_id`, `account_name`, `username`, `password`, `user_category`, `date_added`, `date_modified`) VALUES
-	(1, 0, 'Event Organizer', 'admin', '0cc175b9c0f1b6a831c399e269772661', 'O', '2023-10-12 09:22:59', '2023-10-12 09:23:29'),
-	(11, 1, 'Eduard RIno Cartons', 'eduard1', '0cc175b9c0f1b6a831c399e269772661', 'J', '2023-10-13 13:47:59', '2023-10-13 13:47:59'),
-	(13, 3, 'Judge 1', 'judge1', '0cc175b9c0f1b6a831c399e269772661', 'J', '2023-10-13 14:24:25', '2023-10-13 14:24:25');
+INSERT INTO `tbl_users` (`user_id`, `account_id`, `account_name`, `username`, `password`, `user_category`, `user_img`, `date_added`, `date_modified`) VALUES
+	(1, 0, 'Event Organizer', 'admin', '0cc175b9c0f1b6a831c399e269772661', 'O', 'iaXlMxv4s.png', '2023-10-12 09:22:59', '2023-10-24 16:36:12'),
+	(11, 1, 'Eduard RIno Cartons', 'eduard1', '0cc175b9c0f1b6a831c399e269772661', 'J', 'user_img.png', '2023-10-13 13:47:59', '2023-10-13 13:47:59'),
+	(13, 3, 'Judge 1', 'judge1', '0cc175b9c0f1b6a831c399e269772661', 'J', 'user_img.png', '2023-10-13 14:24:25', '2023-10-13 14:24:25');
 
 /*!40103 SET TIME_ZONE=IFNULL(@OLD_TIME_ZONE, 'system') */;
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;

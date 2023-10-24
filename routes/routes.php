@@ -15,6 +15,8 @@ if ($page == 'dashboard') {
 	require_once 'views/participants.php';
 } else if ($page == 'users') {
 	require_once 'views/users.php';
+} else if ($page == 'profile') {
+	require_once 'views/profile.php';
 } else {
 	require_once 'views/404.php';
 }
