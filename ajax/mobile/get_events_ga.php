@@ -10,14 +10,13 @@ $data = json_decode(file_get_contents("php://input"));
 $user_id = $data->user_id;
 
 if (isset($user_id)) {
-    $sql = "SELECT e.event_id, ej.event_judge_id, e.event_name, e.event_description, e.event_start, e.event_status, e.event_mechanics FROM tbl_event_judges ej LEFT JOIN tbl_events e ON ej.event_id=e.event_id ORDER BY e.event_start DESC";
+    $sql = "SELECT * FROM tbl_events ORDER BY event_start DESC";
     $fetch = $mysqli->query($sql);
 
     $response = array();
 
     while ($row = $fetch->fetch_assoc()) {
         $list = array();
-        $list['event_judge_id'] = $row['event_judge_id'];
         $list['event_id'] = $row['event_id'];
         $list['event_name'] = $row['event_name'];
         $list['event_mechanics'] = $row['event_mechanics'];

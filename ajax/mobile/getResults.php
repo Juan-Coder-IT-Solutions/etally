@@ -25,9 +25,24 @@ while ($row = $fetch->fetch_assoc()) {
         $list_scores['participant_affiliation'] = $participants_row['participant_affiliation'];
 
         // fetch total score
-        $fetch_total_score = $mysqli->query("SELECT sum(points) from tbl_event_scores WHERE participant_id='$participants_row[participant_id]' and event_id='$row[event_id]' ");
-        $total_score = $fetch_total_score->fetch_array();
-        $list_scores['participant_overall_score'] = $total_score[0];
+        //$fetch_total_score = $mysqli->query("SELECT sum(points) from tbl_event_scores WHERE participant_id='$participants_row[participant_id]' and event_id='$row[event_id]' ");
+        //$total_score = $fetch_total_score->fetch_array();
+        //$list_scores['participant_overall_score'] = $total_score[0];
+
+
+        // fetch scores per judge
+        $fetch_judges = $mysqli->query("SELECT * FROM tbl_event_judges ej LEFT JOIN tbl_events e ON ej.event_id=e.event_id WHERE e.event_id='$row[event_id]'");
+        $overall_scores = 0;
+
+        while ($judges_row = $fetch_judges->fetch_array()) {
+            $fetch_total_score = $mysqli->query("SELECT sum(points) from tbl_event_scores WHERE participant_id='$participants_row[participant_id]' and event_id='$row[event_id]' and judge_id='$judges_row[judge_id]' ");
+            $total_score = $fetch_total_score->fetch_array();
+            $list_scores["J" . $judges_row['judge_no']] = $total_score[0] * 1;
+            $judge_count++;
+            $overall_scores += $total_score[0];
+        }
+
+        $list_scores['participant_overall_score'] = $overall_scores;
         array_push($list_chart_data, $list_scores);
     }
 
