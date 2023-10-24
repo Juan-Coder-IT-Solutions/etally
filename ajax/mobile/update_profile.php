@@ -10,6 +10,7 @@ $data = json_decode(file_get_contents("php://input"));
 $user_id = $data->user_id;
 $username = $data->username;
 $password = $data->password;
+$judge_name = $data->judge_name;
 
 if (isset($username) && isset($password)) {
 
@@ -20,6 +21,7 @@ if (isset($username) && isset($password)) {
     }
 
     if ($sql) {
+        $mysqli->query("UPDATE tbl_judges set judge_name='$judge_name' WHERE  judge_id='$user_id' ");
         $response = 1;
     } else {
         $response = 0;
