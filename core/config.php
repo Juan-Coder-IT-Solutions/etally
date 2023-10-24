@@ -3,8 +3,8 @@
 // START THE SESSION
 session_start();
 
-$mysqli = new mysqli("localhost", "root", "", "etally_db");
-// $mysqli = new mysqli("localhost", "u814036432_root", "#VM>:m&8oQ", "u814036432_etally");
+//$mysqli = new mysqli("localhost", "root", "", "etally_db");
+$mysqli = new mysqli("localhost", "u814036432_root", "#VM>:m&8oQ", "u814036432_etally");
 // Check connection
 if ($mysqli->connect_errno) {
 	echo "Failed to connect to MySQL: " . $mysqli->connect_error;
@@ -81,7 +81,7 @@ function getEventData($event_id, $data_column = "event_name")
 	return $row[$data_column];
 }
 
-function getEventRanksData($event_id,$data_column = "rank", $inject = "")
+function getEventRanksData($event_id, $data_column = "rank", $inject = "")
 {
 	global $mysqli;
 	$sql = "SELECT $data_column FROM tbl_event_ranks WHERE event_id = '$event_id' $inject";
@@ -132,12 +132,13 @@ function checkIfUsernameExists($username)
 	return $fetch->num_rows;
 }
 
-function generateRandomString($length = 10) {
-    $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-    $charactersLength = strlen($characters);
-    $randomString = '';
-    for ($i = 0; $i < $length; $i++) {
-        $randomString .= $characters[rand(0, $charactersLength - 1)];
-    }
-    return $randomString;
+function generateRandomString($length = 10)
+{
+	$characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+	$charactersLength = strlen($characters);
+	$randomString = '';
+	for ($i = 0; $i < $length; $i++) {
+		$randomString .= $characters[rand(0, $charactersLength - 1)];
+	}
+	return $randomString;
 }
