@@ -41,6 +41,7 @@
       for (let eventIndex = 0; eventIndex < res.data.length; eventIndex++) {
         const eventElem = res.data[eventIndex];
         var participants_tr = "";
+        var btn_evaluate = eventElem.event_status == "P" ? "" : "disabled";
         for (let pIndex = 0; pIndex < eventElem.participants.length; pIndex++) {
           const pElem = eventElem.participants[pIndex];
           participants_tr += `<tr>
@@ -58,9 +59,9 @@
                 <div class="card-body">
                   <div class="d-sm-flex align-items-center justify-content-between mb-4">
                       <h1 class="h3 mb-0 text-gray-800">&nbsp;</h1>
-                      <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-outline-success shadow-sm btn-event-saved" onclick="rateParticipants(${eventElem.event_id},${res.judge_id})">
+                      <button type="button" class="d-none d-sm-inline-block btn btn-sm btn-outline-success shadow-sm btn-event-saved" onclick="rateParticipants(${eventElem.event_id},${res.judge_id})" ${btn_evaluate}>
                           <i class="fas fa-check-circle fa-sm"></i> Evaluate Now
-                      </a>
+                      </button>
                   </div>
                   <div class="row">
                     <div class="col-md-8">
@@ -107,25 +108,42 @@
           participant_id:pRow.participant_id,
           criterias:[]
         };
-        for (let cIndex = 0; cIndex < pRow.criterias.length; cIndex++) {
-          const pcRow = pRow.criterias[cIndex];
-          var form_criterias = {
-            criteria_id:pcRow.criteria_id,
-            score:0
-          };
 
-          form_participants.criterias.push(form_criterias);
+        var criteria_index = 0;
 
-          pc_tbody += `<tr data-participant-id="${pIndex}" data-criteria-id="${cIndex}">
+        for (let cmIndex = 0; cmIndex < pRow.main_criterias.length; cmIndex++) {
+          const cmRow = pRow.main_criterias[cmIndex];
+          pc_tbody += `<tr data-participant-id="${pIndex}" data-main-criteria-id="${cmIndex}">
+            <th style="padding:5px;">${cmIndex+1}</th>
+            <th style="padding:5px;" colspan="2">${cmRow.criteria}</th>
+            <th style="padding:5px;">${cmRow.points*1}</th>
+            <th style="padding:5px;">
+              <span style="float:right;" id="pmc-${pIndex}-${cmIndex}">${cmRow.score*1}</span>
+            </th>
+          </tr>`;
+          for (let cIndex = 0; cIndex < cmRow.criterias.length; cIndex++) {
+            const pcRow = cmRow.criterias[cIndex];
+            var form_criterias = {
+              criteria_id:pcRow.criteria_id,
+              score:pcRow.score
+            };
+
+            form_participants.criterias.push(form_criterias);
+
+            pc_tbody += `<tr data-participant-id="${pIndex}" data-criteria-id="${criteria_index}" data-main-criteria-id="${cmIndex}">
               <td style="padding:5px;"></td>
               <td style="padding:5px;"></td>
-              <td style="padding:5px;">`+pcRow.criteria+`</td>
+              <td style="padding:5px;">${pcRow.criteria}</td>
+              <td style="padding:5px;">${pcRow.points*1}</td>
               <td style="padding:5px;">
-              <div class="range-container">
-                <input type="range" min="0" max="${pcRow.points * 1}" value="0" class="form-control pc-${pIndex}" onchange="evaluateParticipant(this)">
-                <span class="range-value" id="pc-${pIndex}-${cIndex}">0</span>
+                <div class="range-container">
+                  <input type="range" min="0" max="${pcRow.points * 1}" value="${pcRow.score * 1}" class="form-control pc-${pIndex} pmc-${pIndex}-${cmIndex}" onchange="evaluateParticipant(this)">
+                  <span class="range-value" id="pc-${pIndex}-${criteria_index}-${cmIndex}">${pcRow.score * 1}</span>
+                </div>
               </td>
             </tr>`;
+            criteria_index++;
+          }
         }
 
         form_evaluation.push(form_participants);
@@ -133,19 +151,21 @@
         modalRateParticipants_body += `<table class="table table-bordered mt-2">
           <thead>
             <tr>
-              <th colspan="4">${pRow.participant_name}</th>
+              <th colspan="5">${pRow.participant_name}</th>
             </tr>
             <tr>
               <th style="width:5%;">#</th>
               <th colspan="2">Criteria</th>
-              <th style="width:25%;">Points</th>
+              <th style="width:5%;">Points</th>
+              <th style="width:25%;">Score</th>
             </tr>
           </thead>
           <tbody>${pc_tbody}</tbody>
           <tfooter>
             <tr>
               <th style="text-align:right;" colspan="3">Total Points</th>
-              <th id="participant-${pIndex}">0</th>
+              <th></th>
+              <th id="participant-${pIndex}">${pRow.score*1}</th>
             </tr>
           </tfooter>
         </table>`;
@@ -159,19 +179,27 @@
     var tr_element = ele.parentNode.parentNode.parentNode;
     var participant_id = tr_element.getAttribute("data-participant-id");
     var criteria_id = tr_element.getAttribute("data-criteria-id");
+    var main_criteria_id = tr_element.getAttribute("data-main-criteria-id");
 
     // alert(ele.value);
     form_evaluation[participant_id].criterias[criteria_id].score = ele.value * 1;
-    $("#pc-"+participant_id+"-"+criteria_id).html(ele.value);
+    $("#pc-"+participant_id+"-"+criteria_id+"-"+main_criteria_id).html(ele.value);
   
-    const elementsWithClass = document.querySelectorAll(".pc-"+participant_id);
+    const pc_class = document.querySelectorAll(".pc-"+participant_id);
+    const pmc_class = document.querySelectorAll(".pmc-"+participant_id+"-"+main_criteria_id);
 
+    let pc_sum = sumWithClass(pc_class);
+    let pmc_sum = sumWithClass(pmc_class);
+    $("#participant-"+participant_id).html(pc_sum);
+    $("#pmc-"+participant_id+"-"+main_criteria_id).html(pmc_sum);
+  }
+
+  function sumWithClass(element_class){
     let sum = 0;
-    elementsWithClass.forEach((element) => {
+    element_class.forEach((element) => {
       sum += parseFloat(element.value);
     });
-
-    $("#participant-"+participant_id).html(sum);
+    return sum;
   }
 
   function submitEvaluation(){

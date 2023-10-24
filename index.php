@@ -92,6 +92,10 @@ if(!isset($_SESSION['etally']['user_id'])){
 	function swal_info(title, desc = '') {
 		Swal.fire(title, desc, 'info');
 	}
+
+  function swal_success(title, desc = '') {
+    Swal.fire(title, desc, 'success');
+  }
   </script>
 </head>
 
