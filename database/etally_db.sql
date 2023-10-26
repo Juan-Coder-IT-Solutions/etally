@@ -312,6 +312,23 @@ INSERT INTO `tbl_participants` (`participant_id`, `participant_name`, `participa
 	(5, 'Participant 4', 'as', '2023-10-18 11:36:37', '2023-10-18 11:36:37'),
 	(6, 'Participant 5', 'asda', '2023-10-18 11:36:43', '2023-10-18 11:36:43');
 
+-- Dumping structure for table etally_db.tbl_protests
+CREATE TABLE IF NOT EXISTS `tbl_protests` (
+  `protest_id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_token` varchar(50) NOT NULL DEFAULT '0',
+  `event_id` int(11) NOT NULL DEFAULT '0',
+  `protest` text NOT NULL,
+  `date_added` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `date_modified` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`protest_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+
+-- Dumping data for table etally_db.tbl_protests: ~0 rows (approximately)
+INSERT INTO `tbl_protests` (`protest_id`, `user_token`, `event_id`, `protest`, `date_added`, `date_modified`) VALUES
+	(1, 'cmD2m', 4, '        $("#protest").html("");\r\n        $.post("ajax/get_protests.php",{\r\n            params:"WHERE protest_id > 0 ORDER BY date_added DESC"\r\n        },function(data){\r\n            var res = JSON.parse(data);\r\n\r\n            $("#protest-title").html(`Protest (${res.data.length})`);\r\n\r\n            for (let protestIndex = 0; protestIndex < res.data.length; protestIndex++) {\r\n                const protest_row = res.data[protestIndex];\r\n                $("#protest").append(`<div class="timeline-item">\r\n                        <div class="timeline-item-marker">\r\n                            <div class="timeline-item-marker-text">${protest_row.time_past}</div>\r\n                        </div>\r\n                        <div class="timeline-item-content">\r\n                            <a class="fw-bold text-dark" href="index.php?page=event-details&event_id=${protest_row.event_id}">${protest_row.event_name}</a><br>\r\n                            ${protest_row.protest}\r\n                        </div>\r\n                </div>`);\r\n            }\r\n        });', '2023-10-26 15:48:20', '2023-10-26 15:48:20'),
+	(2, 'zLMra', 4, '        $("#protest").html("");\r\n        $.post("ajax/get_protests.php",{\r\n            params:"WHERE protest_id > 0 ORDER BY date_added DESC"\r\n        },function(data){\r\n            var res = JSON.parse(data);\r\n\r\n            $("#protest-title").html(`Protest (${res.data.length})`);\r\n\r\n            for (let protestIndex = 0; protestIndex < res.data.length; protestIndex++) {\r\n                const protest_row = res.data[protestIndex];\r\n                $("#protest").append(`<div class="timeline-item">\r\n                        <div class="timeline-item-marker">\r\n                            <div class="timeline-item-marker-text">${protest_row.time_past}</div>\r\n                        </div>\r\n                        <div class="timeline-item-content">\r\n                            <a class="fw-bold text-dark" href="index.php?page=event-details&event_id=${protest_row.event_id}">${protest_row.event_name}</a><br>\r\n                            ${protest_row.protest}\r\n                        </div>\r\n                </div>`);\r\n            }\r\n        });', '2023-10-26 15:48:44', '2023-10-26 15:48:44'),
+	(3, 'sHIlF', 4, '        $("#protest").html("");\r\n        $.post("ajax/get_protests.php",{\r\n            params:"WHERE protest_id > 0 ORDER BY date_added DESC"\r\n        },function(data){\r\n            var res = JSON.parse(data);\r\n\r\n            $("#protest-title").html(`Protest (${res.data.length})`);\r\n\r\n            for (let protestIndex = 0; protestIndex < res.data.length; protestIndex++) {\r\n                const protest_row = res.data[protestIndex];\r\n                $("#protest").append(`<div class="timeline-item">\r\n                        <div class="timeline-item-marker">\r\n                            <div class="timeline-item-marker-text">${protest_row.time_past}</div>\r\n                        </div>\r\n                        <div class="timeline-item-content">\r\n                            <a class="fw-bold text-dark" href="index.php?page=event-details&event_id=${protest_row.event_id}">${protest_row.event_name}</a><br>\r\n                            ${protest_row.protest}\r\n                        </div>\r\n                </div>`);\r\n            }\r\n        });', '2023-10-26 15:48:51', '2023-10-26 15:48:51');
+
 -- Dumping structure for table etally_db.tbl_users
 CREATE TABLE IF NOT EXISTS `tbl_users` (
   `user_id` int(11) NOT NULL AUTO_INCREMENT,
