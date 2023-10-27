@@ -12,49 +12,44 @@ $user_id = $data->user_id;
 $sql = "SELECT * FROM tbl_event_judges ej LEFT JOIN tbl_events e ON ej.event_id=e.event_id WHERE judge_id='$user_id' AND e.event_status='F' ORDER BY e.event_start DESC";
 $fetch = $mysqli->query($sql);
 
-$response = array();
-
+$data = array();
 while ($row = $fetch->fetch_assoc()) {
-    $list = array();
-    $list_chart_data = array();
+    $response = array();
+    $response = $row;
 
-    $fetch_participants = $mysqli->query("SELECT participant_name, participant_affiliation, p.participant_id from tbl_participants p LEFT JOIN tbl_event_participants ep ON p.participant_id=ep.participant_id WHERE event_id='$row[event_id]'");
-    while ($participants_row = $fetch_participants->fetch_assoc()) {
-        $list_scores = array();
-        $list_scores['participant_name'] = $participants_row['participant_name'] . " (" . $participants_row['participant_affiliation'] . ")";
-        $list_scores['participant_affiliation'] = $participants_row['participant_affiliation'];
-
-        // fetch total score
-        //$fetch_total_score = $mysqli->query("SELECT sum(points) from tbl_event_scores WHERE participant_id='$participants_row[participant_id]' and event_id='$row[event_id]' ");
-        //$total_score = $fetch_total_score->fetch_array();
-        //$list_scores['participant_overall_score'] = $total_score[0];
-
-
-        // fetch scores per judge
-        $fetch_judges = $mysqli->query("SELECT * FROM tbl_event_judges ej LEFT JOIN tbl_events e ON ej.event_id=e.event_id WHERE e.event_id='$row[event_id]'");
-        $overall_scores = 0;
-
-        while ($judges_row = $fetch_judges->fetch_array()) {
-            $fetch_total_score = $mysqli->query("SELECT sum(points) from tbl_event_scores WHERE participant_id='$participants_row[participant_id]' and event_id='$row[event_id]' and judge_id='$judges_row[judge_id]' ");
-            $total_score = $fetch_total_score->fetch_array();
-            $list_scores["J" . $judges_row['judge_no']] = $total_score[0] * 1;
-            $judge_count++;
-            $overall_scores += $total_score[0];
-        }
-
-        $list_scores['participant_overall_score'] = $overall_scores;
-        array_push($list_chart_data, $list_scores);
+    $response['judges'] = array();
+    $judges = [];
+    $fetch_judges = $mysqli->query("SELECT judge_name, j.judge_id, ej.judge_no FROM tbl_event_judges ej LEFT JOIN tbl_judges j ON ej.judge_id=j.judge_id WHERE ej.event_id='$row[event_id]' ORDER BY ej.judge_no ASC");
+    while ($judges_row = $fetch_judges->fetch_assoc()) {
+        $judges[] = $judges_row;
+        array_push($response['judges'], $judges_row);
     }
 
-    $list['event_judge_id'] = $row['event_judge_id'];
-    $list['event_id'] = $row['event_id'];
-    $list['event_name'] = $row['event_name'];
-    $list['event_description'] = $row['event_description'];
-    $list['event_start'] = date("M d, Y", strtotime(($row['event_start'])));
-    $list['status'] = $row['event_status'];
-    $list['participant_results'] = $list_chart_data;
+    $fetch_participants = $mysqli->query("SELECT * FROM tbl_participants p LEFT JOIN tbl_event_participants ep ON p.participant_id=ep.participant_id WHERE event_id='$row[event_id]'");
 
-    array_push($response, $list);
+    $response['participants'] = array();
+    while ($participants_row = $fetch_participants->fetch_assoc()) {
+        $participants_row['participant_result'] = $participants_row['rank'];
+        // fetch judges
+        $response_judges = [];
+        $total_rank = 0;
+        foreach ($judges as $judges_row) {
+            $fetch_ranks = $mysqli->query("SELECT * from tbl_event_ranks WHERE event_id='$row[event_id]' and participant_id='$participants_row[participant_id]' and judge_id='$judges_row[judge_id]'");
+            $ranks_row = $fetch_ranks->fetch_assoc();
+            $judges_row['scores'] = $ranks_row['scores'];
+            $judges_row['rank'] = $ranks_row['rank'];
+            $total_rank += $ranks_row['rank'];
+            array_push($response_judges, $judges_row);
+        }
+
+        $participants_row['total_rank'] = $total_rank;
+        $participants_row['ranks'] = $response_judges;
+
+        array_push($response['participants'], $participants_row);
+    }
+
+
+    array_push($data, $response);
 }
 
-echo json_encode($response);
+echo json_encode($data);
