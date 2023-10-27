@@ -98,8 +98,16 @@ if(!isset($_SESSION['etally']['user_id'])){
   }
   </script>
 </head>
+<style>
+  /* .nav-fixed>#wrapper>#content-wrapper{
+    margin-left: 224px;
+  }
+  .nav-fixed.sidebar-toggled>#wrapper>#content-wrapper{
+    margin-left: 104px !important;
+  } */
+</style>
 
-<body id="page-top">
+<body id="page-top" class="nav-fixed">
 
     <!-- Page Wrapper -->
     <div id="wrapper">

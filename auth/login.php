@@ -74,7 +74,7 @@ if(isset($_SESSION['etally']['user_id'])){
                                     </form>
                                     <hr>
                                     <div class="text-center">
-                                        <a class="small" href="register.php">Create an Account!</a>
+                                        <a class="small" href="#" onclick="createProtest()">Submit a Protest</a>
                                     </div>
                                 </div>
                             </div>
@@ -90,6 +90,36 @@ if(isset($_SESSION['etally']['user_id'])){
             </div>
         </div>
     </div>
+    <div class="modal fade" id="modalProtest">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5>Create a Protest</h5>
+                </div>
+                <div class="modal-body">
+                <form class="forms-sample" id="formProtest">
+                    <div class="form-group">
+                        <label for="judge_ids">Event</label>
+                        <select name="event_id" id="event_id" class="form-control" style="width: 100%;" required>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="judge_ids">Remarks</label>
+                        <textarea class="form-control" name="protest" id="protest" cols="30" rows="5" placeholder="Discuss your protest here, don't worry you are anonymous!" required></textarea>
+                    </div>
+                </form>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-sm btn-outline-success" form="formProtest" type="submit" id="btn_submit_protest">
+                        <span class="fa fa-check-circle"></span> Submit
+                    </button>
+                    <button class="btn btn-sm btn-outline-danger" data-dismiss="modal">
+                        <span class="fa fa-times-circle"></span> Close
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- Bootstrap core JavaScript-->
     <script src="../assets/vendor/jquery/jquery.min.js"></script>
@@ -100,14 +130,15 @@ if(isset($_SESSION['etally']['user_id'])){
 
     <!-- Custom scripts for all pages-->
     <script src="../assets/js/sb-admin-2.min.js"></script>
+    <script src="../assets/vendor/sweet-alert/sweetalert2.all.min.js"></script>
 
     <script>
         $("#frmLogin").submit(function(e){
             e.preventDefault();
             $.post("ajax/login.php",$(this).serialize(),function(data,status){
                 if(data == 1){
-                    var index = 4;
-                    $(".login-response").html(`<div class="alert alert-success" role="alert">Successfully login, redirecting in <b>5</b>.</div>`);
+                    var index = 3;
+                    $(".login-response").html(`<div class="alert alert-success" role="alert">Successfully login, redirecting in <b>3</b>.</div>`);
                     setInterval(function(){
                         $(".login-response").html(`<div class="alert alert-success" role="alert">Successfully login, redirecting in <b>${index}</b>.</div>`);
                         index--;
@@ -120,6 +151,34 @@ if(isset($_SESSION['etally']['user_id'])){
                 }
             });
         });
+
+        
+        $("#formProtest").submit(function(e){
+            e.preventDefault();
+            $.post("../ajax/add_protest.php",$(this).serialize(),function(data,status){
+                $("#modalProtest").modal('hide');
+                if(data == 1){
+                    Swal.fire("Protest", "Successfully submit protest!", 'success');
+                }else{
+                    Swal.fire("Protest", "Error occur while processing data!", 'error');
+                }
+            });
+        });
+
+        function createProtest(){
+            $("#event_id").html("<option value=''> Please Select </option>");
+            $("#protest").val("");
+            $("#modalProtest").modal('show');
+            $.post("../ajax/get_events.php",{
+                params:"WHERE event_status != 'S'"
+            },function(data,status){
+                var res = JSON.parse(data);
+                for(let eventIndex = 0; eventIndex <= res.data.length; eventIndex++){
+                    const event_row = res.data[eventIndex];
+                    $("#event_id").append(`<option value='${event_row.event_id}'> ${event_row.event_name} </option>`);
+                }
+            });
+        }
     </script>
 
 </body>
