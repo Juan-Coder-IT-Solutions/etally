@@ -95,9 +95,11 @@
                             <table class="table table-bordered" id="tblParticipant" cellspacing="0" width="100%">
                                 <thead>
                                     <tr>
-                                        <th>#</th>
-                                        <th>Participant Name</th>
-                                        <th>Action</th>
+                                        <th>Participant #</th>
+                                        <th>Fullname</th>
+                                        <th>Year</th>
+                                        <th>Program</th>
+                                        <th>Image</th>
                                     </tr>
                                 </thead>
                                 <tbody>

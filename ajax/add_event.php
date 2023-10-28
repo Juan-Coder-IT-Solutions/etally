@@ -4,6 +4,7 @@ include '../core/config.php';
 $table_name = "tbl_events";
 
 $event_id			= (int) $_POST['event_id'];
+$event_category_id	= (int) $_POST['event_category_id'];
 $event_name			= $_POST['event_name'];
 $event_description	= $_POST['event_description'];
 $event_start        = $_POST['event_start'];
@@ -12,6 +13,7 @@ $judge_needed		= $_POST['judge_needed'];
 
 $form_data = array(
 	'event_name'            => $event_name,
+	'event_category_id'		=> $event_category_id,
 	'event_description'		=> $event_description,
 	'event_start'           => $event_start,
 	'participant_needed'	=> $participant_needed,

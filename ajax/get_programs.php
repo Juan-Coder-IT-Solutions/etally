@@ -1,14 +1,15 @@
 <?php
 include '../core/config.php';
 
-$sql = "SELECT * FROM tbl_participants";
+$inject = isset($_POST["params"]) ? $_POST["params"] : "";
+$sql = "SELECT * FROM tbl_programs $inject";
 $fetch = $mysqli->query($sql);
 
 $response['data'] = array();
 
+$count = 1;
 while ($row = $fetch->fetch_assoc()) {
-	$row['events'] = getParticipantEvents($row['participant_id']);
-	$row['program_name'] = getProgramData($row['program_id']);
+    $row['count'] = $count++;
 	array_push($response['data'], $row);
 }
 

@@ -51,9 +51,11 @@
                 const participantElem = res.data[participantIndex];
                 participant_ids.push(participantElem.participant_id);
                 tbody_tr += `<tr>
-                    <td>${participantElem.participant_id}</td>
-                    <td>${participantElem.participant_name}</td>
-                    <td></td>
+                    <td>${participantIndex+1}</td>
+                    <td>${participantElem.participants.participant_name}</td>
+                    <td>${participantElem.participants.participant_year}</td>
+                    <td>${participantElem.program_name}</td>
+                    <td><img class="img-profile img-rounded" src="assets/img/profiles/${participantElem.participants.participant_img}" alt="Image" style="width: 100px;"></td>
                 </tr>`;
             }
             $("#tblParticipant tbody").html(tbody_tr);

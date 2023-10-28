@@ -21,7 +21,7 @@
 
 <!-- Heading -->
 <div class="sidebar-heading">
-    Menu
+    Transaction
 </div>
 
 <!-- Nav Item - Tables -->
@@ -29,6 +29,23 @@
     <a class="nav-link" href="index.php?page=events">
         <i class="fas fa-fw fa-table"></i>
         <span>Event</span></a>
+</li>
+
+<!-- Heading -->
+<div class="sidebar-heading mt-2">
+    Master Data
+</div>
+
+<li class="nav-item">
+    <a class="nav-link" href="index.php?page=event-category">
+        <i class="fas fa-fw fa-list"></i>
+        <span>Event Category</span></a>
+</li>
+
+<li class="nav-item">
+    <a class="nav-link" href="index.php?page=programs">
+        <i class="fas fa-fw fa-building"></i>
+        <span>Program</span></a>
 </li>
 
 <li class="nav-item">
