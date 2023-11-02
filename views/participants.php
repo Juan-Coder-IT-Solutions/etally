@@ -14,8 +14,10 @@
                     <tr>
                         <th>#</th>
                         <th></th>
-                        <th>Name</th>
-                        <th>Affiliation</th>
+                        <th>Fullname</th>
+                        <th>Year</th>
+                        <th>Program</th>
+                        <th>Event</th>
                         <th>Action</th>
                     </tr>
                 </thead>
@@ -40,8 +42,19 @@
               required>
           </div>
           <div class="form-group">
-            <label for="participant_affiliation">Participant Affiliation</label>
-            <input type="text" class="form-control form-input" id="participant_affiliation" name="participant_affiliation" placeholder="Affiliation">
+            <label for="participant_year">Year</label>
+            <select name="participant_year" id="participant_year" class="form-control form-input select2" style="width: 100%;" required>
+              <option value="">Please Select</option>
+              <option value="First Year">First Year</option>
+              <option value="Second Year">Second Year</option>
+              <option value="Third Year">Third Year</option>
+              <option value="Fourth Year">Fourth Year</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="program_id">Program Name</label>
+            <select name="program_id" id="program_id" class="form-control select2" style="width: 100%;" required>
+            </select>
           </div>
         </form>
       </div>
@@ -69,12 +82,30 @@ $(document).ready(function() {
 });
 
 function addModal() {
+  $("#participant_id").val(0);
   $(".modal-title").html("Add Entry");
   $("#modalEntry").modal('show');
   $('#formEntry')[0].reset();
+  renderSelectPrograms();
+  $(".select2").select2();
+}
+
+  
+function renderSelectPrograms(program_id){
+  $("#program_id").html("<option value=''> Please Select </option>");
+  $.post("ajax/get_programs.php",{},function(data,status){
+      var res = JSON.parse(data);
+      console.log(res.data);
+      for (let programIndex = 0; programIndex < res.data.length; programIndex++) {
+        const program_row = res.data[programIndex];
+        var selected = program_row.program_id == program_id ? "selected":'';
+        $("#program_id").append(`<option ${selected} value='${program_row.program_id}'>${program_row.program_name}</option>`);
+      }
+  });
 }
 
 function editModal(form_data) {
+  renderSelectPrograms(form_data.program_id);
   $(".modal-title").html("Edit Entry");
   $('.form-input').each(function(index) {
     // 'this' refers to the current element in the loop
@@ -83,6 +114,7 @@ function editModal(form_data) {
     $(this).val(form_data[current_id]);
   });
   $("#modalEntry").modal('show');
+  $(".select2").select2();
 }
 
 function deleteEntry(participant_id){
@@ -120,11 +152,13 @@ function renderData(){
         },
         { 
             mRender:function(data,type,row){
-                return `<img class="img-rounded" src="assets/img/undraw_profile.svg" alt="Image" style="width: 30px;">`;
+                return `<img class="img-rounded" src="assets/img/profiles/${row.participant_img}" alt="Image" style="width: 50px;">`;
             }
          },
         { data: 'participant_name' },
-        { data: 'participant_affiliation' },
+        { data: 'participant_year' },
+        { data: 'program_name' },
+        { data: 'events' },
         {
           mRender: function(data, type, row) {
             return `<button type="button" class="btn btn-warning btn-rounded btn-icon btn-sm btn-update-data"><i class="fas fa-edit"></i></button>

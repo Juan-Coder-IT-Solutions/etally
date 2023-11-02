@@ -76,10 +76,23 @@ function getParticipantName($participant_id)
 function getParticipantData($participant_id, $data_column = "participant_name")
 {
 	global $mysqli;
-	$sql = "SELECT $data_column FROM tbl_participants WHERE participant_id = '$participant_id'";
+	$select = is_array($data_column) ? implode(",",$data_column) : $data_column;
+	$sql = "SELECT $select FROM tbl_participants WHERE participant_id = '$participant_id'";
 	$fetch = $mysqli->query($sql);
-	$row = $fetch->fetch_array();
-	return $row[$data_column];
+	$row = $fetch->fetch_assoc();
+	return is_array($data_column) ? $row : $row[$data_column];
+}
+
+function getParticipantEvents($participant_id)
+{
+	global $mysqli;
+	$events = [];
+	$sql = "SELECT e.event_name FROM tbl_participants AS p,tbl_event_participants AS ep,tbl_events AS e WHERE ep.participant_id = p.participant_id AND e.event_id = ep.event_id AND p.participant_id = '$participant_id'";
+	$fetch = $mysqli->query($sql);
+	while($row = $fetch->fetch_assoc()){
+		$events[] = $row['event_name'];
+	}
+	return implode("<br>",$events);
 }
 
 function getEventData($event_id, $data_column = "event_name")
@@ -107,6 +120,15 @@ function getEventRanksData($event_id, $data_column = "rank", $inject = "")
 	$fetch = $mysqli->query($sql);
 	$row = $fetch->fetch_array();
 	return $row[0];
+}
+
+function getProgramData($program_id, $data_column = "program_name")
+{
+	global $mysqli;
+	$sql = "SELECT $data_column FROM tbl_programs WHERE program_id = '$program_id'";
+	$fetch = $mysqli->query($sql);
+	$row = $fetch->fetch_array();
+	return $row[$data_column];
 }
 
 function countEventRanksByJudges($event_id)
