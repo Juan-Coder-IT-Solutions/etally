@@ -3,8 +3,8 @@
 // START THE SESSION
 session_start();
 
-$mysqli = new mysqli("localhost", "root", "", "etally_db");
-// $mysqli = new mysqli("localhost", "u814036432_root", "#VM>:m&8oQ", "u814036432_etally");
+//$mysqli = new mysqli("localhost", "root", "", "etally_db");
+$mysqli = new mysqli("localhost", "u814036432_root", "#VM>:m&8oQ", "u814036432_etally");
 // Check connection
 if ($mysqli->connect_errno) {
 	echo "Failed to connect to MySQL: " . $mysqli->connect_error;
@@ -162,43 +162,44 @@ function generateRandomString($length = 10)
 	return $randomString;
 }
 
-function getTimeAgo($timestamp) {
-    $timeAgo = '';
+function getTimeAgo($timestamp)
+{
+	$timeAgo = '';
 
-    // Get the current timestamp
-    $now = new DateTime();
+	// Get the current timestamp
+	$now = new DateTime();
 
-    // Create a DateTime object from the provided timestamp
-    $date = new DateTime($timestamp);
+	// Create a DateTime object from the provided timestamp
+	$date = new DateTime($timestamp);
 
-    // Calculate the difference between the current time and the provided timestamp
-    $interval = $now->diff($date);
+	// Calculate the difference between the current time and the provided timestamp
+	$interval = $now->diff($date);
 
-    // Define the time intervals
-    $intervals = [
-        'y' => 'yr',
-        'm' => 'mo',
-        'd' => 'day',
-        'h' => 'hr',
-        'i' => 'min',
-        's' => 'sec'
-    ];
+	// Define the time intervals
+	$intervals = [
+		'y' => 'yr',
+		'm' => 'mo',
+		'd' => 'day',
+		'h' => 'hr',
+		'i' => 'min',
+		's' => 'sec'
+	];
 
-    // Iterate through the intervals and create the time ago string
-    foreach ($intervals as $key => $value) {
-        if ($interval->$key > 1) {
-            $timeAgo = $interval->$key . ' ' . $value . 's';
-            break;
-        } elseif ($interval->$key == 1) {
-            $timeAgo = $interval->$key . ' ' . $value;
-            break;
-        }
-    }
+	// Iterate through the intervals and create the time ago string
+	foreach ($intervals as $key => $value) {
+		if ($interval->$key > 1) {
+			$timeAgo = $interval->$key . ' ' . $value . 's';
+			break;
+		} elseif ($interval->$key == 1) {
+			$timeAgo = $interval->$key . ' ' . $value;
+			break;
+		}
+	}
 
-    // If the time difference is less than a second, display "Just now"
-    if ($timeAgo == '') {
-        $timeAgo = 'Just now';
-    }
+	// If the time difference is less than a second, display "Just now"
+	if ($timeAgo == '') {
+		$timeAgo = 'Just now';
+	}
 
-    return $timeAgo;
+	return $timeAgo;
 }
