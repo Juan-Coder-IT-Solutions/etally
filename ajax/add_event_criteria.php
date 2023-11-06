@@ -8,6 +8,7 @@ $form = json_decode($_POST['data'], true);
 
 $ch_id		= (int) $form['ch_id'];
 $event_id	= (int) $form['event_id'];
+$is_normal	= (int) $form['is_normal'];
 $criteria	= $form['criteria'];
 $points		= $form['points'];
 $details	= $form['details'];
@@ -17,6 +18,7 @@ $form_header = array(
 	'event_id'  => $event_id,
 	'criteria'  => $criteria,
 	'points'    => $points,
+	'is_normal' => $is_normal
 );
 
 $sql = $ch_id > 0? sql_update($table_header, $form_header, "ch_id = '$ch_id'") : sql_insert($table_header, $form_header);
@@ -24,6 +26,17 @@ $mysqli->query($sql);
 
 if($ch_id < 1){
 	$ch_id = $mysqli->insert_id;
+
+	if($is_normal == 1){
+		$form_detail = array(
+			'ch_id'		=> $ch_id,
+			'event_id'  => $event_id,
+			'criteria'  => $criteria,
+			'points'    => $points,
+		);
+		$sql = sql_insert($table_sub, $form_detail);
+		$mysqli->query($sql);
+	}
 }
 
 foreach($details as $detail){

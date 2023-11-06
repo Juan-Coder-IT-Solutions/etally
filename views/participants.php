@@ -28,34 +28,47 @@
     </div>
 </div>
 <div class="modal fade" id="modalEntry" role="dialog">
-  <div class="modal-dialog">
+  <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title">Add</h5>
       </div>
       <div class="modal-body">
-        <form class="forms-sample" id="formEntry">
-          <input type="hidden" name="participant_id" id="participant_id" class="form-input">
-          <div class="form-group">
-            <label for="participant_name">Participant Name</label>
-            <input type="text" class="form-control form-input" id="participant_name" name="participant_name" placeholder="Participant Name"
-              required>
+        <form class="forms-sample" id="formEntry" enctype="multipart/form-data">
+        <div class="row">
+          <div class="col-md-6">
+            <center>
+            <img id="image-preview" class="img-account-profile rounded-circle mb-2" src="assets/img/profiles/user.png" alt="" style="width: 300px; height: 300px;">
+          </center>
           </div>
-          <div class="form-group">
-            <label for="participant_year">Year</label>
-            <select name="participant_year" id="participant_year" class="form-control form-input select2" style="width: 100%;" required>
-              <option value="">Please Select</option>
-              <option value="First Year">First Year</option>
-              <option value="Second Year">Second Year</option>
-              <option value="Third Year">Third Year</option>
-              <option value="Fourth Year">Fourth Year</option>
-            </select>
+            <div class="col-md-6">
+            <input type="hidden" name="participant_id" id="participant_id" class="form-input">
+            <div class="form-group">
+              <label for="participant_name">Participant Name</label>
+              <input type="text" class="form-control form-input" id="participant_name" name="participant_name" placeholder="Participant Name"
+                required>
+            </div>
+            <div class="form-group">
+              <label for="participant_img">Participant Image</label>
+              <input class="form-control" type="file" name="participant_img" id="participant_img" accept="image/jpeg, image/png" onchange="previewImage(event)" required />
+            </div>
+            <div class="form-group">
+              <label for="participant_year">Year</label>
+              <select name="participant_year" id="participant_year" class="form-control form-input select2" style="width: 100%;" required>
+                <option value="">Please Select</option>
+                <option value="First Year">First Year</option>
+                <option value="Second Year">Second Year</option>
+                <option value="Third Year">Third Year</option>
+                <option value="Fourth Year">Fourth Year</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="program_id">Program Name</label>
+              <select name="program_id" id="program_id" class="form-control select2" style="width: 100%;" required>
+              </select>
+            </div>
           </div>
-          <div class="form-group">
-            <label for="program_id">Program Name</label>
-            <select name="program_id" id="program_id" class="form-control select2" style="width: 100%;" required>
-            </select>
-          </div>
+        </div>
         </form>
       </div>
       <div class="modal-footer">
@@ -81,6 +94,20 @@ $(document).ready(function() {
     });
 });
 
+function previewImage(event) {
+    const input = event.target;
+    if (input.files && input.files[0]) {
+        const reader = new FileReader();
+
+        reader.onload = function (e) {
+            const imagePreview = document.getElementById('image-preview');
+            imagePreview.src = e.target.result;
+        };
+
+        reader.readAsDataURL(input.files[0]);
+    }
+}
+
 function addModal() {
   $("#participant_id").val(0);
   $(".modal-title").html("Add Entry");
@@ -88,6 +115,9 @@ function addModal() {
   $('#formEntry')[0].reset();
   renderSelectPrograms();
   $(".select2").select2();
+  $("#participant_img").prop({"required":true}).val('');
+  const imagePreview = document.getElementById('image-preview');
+  imagePreview.src = "assets/img/profiles/user.png";
 }
 
   
@@ -113,8 +143,11 @@ function editModal(form_data) {
     var current_id = currentElement.attr('id');
     $(this).val(form_data[current_id]);
   });
+  $("#participant_img").prop({"required":false}).val('');
   $("#modalEntry").modal('show');
   $(".select2").select2();
+  const imagePreview = document.getElementById('image-preview');
+  imagePreview.src = "assets/img/profiles/"+form_data.participant_img;
 }
 
 function deleteEntry(participant_id){
@@ -171,16 +204,27 @@ function renderData(){
 
 $("#formEntry").submit(function(e) {
     e.preventDefault();
-    var form_data = $(this).serialize();
-    console.log(form_data);
+  
+    var formData = new FormData(this);
     $("#btn_submit").prop("disabled",true).html("<span class='fa fa-spin fa-spinner'></span> Loading");
-    $.post("ajax/add_participant.php", form_data, function(data, status) {
-      if(data == 1){
-        $("#participant_id").val() > 0 ? success_update("Participants"):  success_add("Participants");
+    $.ajax({
+      type: "POST",
+      url: "ajax/add_participant.php",
+      data: formData,
+      processData: false,
+      contentType: false,
+      success: function(response) {
+        if(response == 1){
+          $("#participant_id").val() > 0 ? success_update("Participants"):  success_add("Participants");
+        }else if(response == 2){
+          swal_error("Participants","Username already exist.");
+        }else{
+
+        }
+        $("#modalEntry").modal('hide');
+        renderData();
+        $("#btn_submit").prop("disabled",false).html("<span class='fa fa-check-circle'></span> Submit");
       }
-      $("#modalEntry").modal('hide');
-      renderData();
-      $("#btn_submit").prop("disabled",false).html("<span class='fa fa-check-circle'></span> Submit");
     });
 });
 </script>

@@ -8,7 +8,7 @@ if (isset($_FILES["image"]) && $_FILES["image"]["error"] == 0) {
     $maxFileSize = 5 * 1024 * 1024; // 5 MB in bytes
 
     if ($fileSize <= $maxFileSize) {
-        $filename = generateRandomString(9).".".pathinfo($_FILES['image']['name'], PATHINFO_EXTENSION);;
+        $filename = generateRandomString(9).".".pathinfo($_FILES['image']['name'], PATHINFO_EXTENSION);
         $uploadDirectory = "../assets/img/profiles/";
         $uploadedFile = $uploadDirectory . $filename;
 

@@ -1,15 +1,26 @@
 
 <div class="modal fade" id="modalCriteria" role="dialog">
-  <div class="modal-dialog modal-xl">
+  <div class="modal-dialog modal-xl" id="modalCriteria_dialog">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title">Criteria Management</h5>
       </div>
       <div class="modal-body">
             <div class="col-md-12 row">
-                <div class="col-md-5 border-left-primary">
+                <div class="col-md-5 border-left-primary main-criteria">
                     <form class="forms-sample" id="formCriteria">
                         <h6 class="badge-primary">Main Criteria</h6>
+                        <div class="form-group" style="display: flex; flex-direction: row;">
+                            <div class="form-check" style="margin-right: 20px;">
+                                <input class="form-check-input" type="radio" name="criteria_type" id="normalType" value="1" onchange="changeType(1)">
+                                <label class="form-check-label" for="normalType">Normal</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="criteria_type" id="withSubType" value="0" onchange="changeType(0)" checked>
+                                <label class="form-check-label" for="withSubType">With Sub</label>
+                            </div>
+                        </div>
+
                         <div class="form-group">
                             <label for="criteria">Criteria</label>
                             <textarea class="form-control form-input" id="criteria" name="criteria" placeholder="Criteria" onchange="form_criteria.criteria = this.value" required></textarea>
@@ -20,7 +31,7 @@
                         </div>
                     </form>
                 </div>
-                <div class="col-md-7 border-left-success">
+                <div class="col-md-7 border-left-success sub-criteria">
                     <h6 class="badge-success">Sub Criteria</h6>
                     <div class="col-md-12 mb-3" style="padding-left: unset;padding-right:unset;">
                         <form class="forms-sample input-group" id="formSubCriteria">
@@ -73,12 +84,27 @@
         ch_id:0,
         criteria:"",
         points:0,
+        is_normal:0,
         details:[],
         deleted_criterias:[]
     };
 
     $(document).ready(function(){
     });
+
+    function changeType(val){
+
+        form_criteria.is_normal = val;
+        if(val == 1){
+            $("#modalCriteria_dialog").removeClass('modal-xl');
+            $(".sub-criteria").hide();
+            $(".main-criteria").removeClass('col-md-5').addClass('col-md-12');
+        }else{
+            $("#modalCriteria_dialog").addClass('modal-xl');
+            $(".main-criteria").removeClass('col-md-12').addClass('col-md-5');
+            $(".sub-criteria").show();
+        }
+    }
 
     function renderCriteriaData(){ 
 
@@ -102,15 +128,17 @@
                         <button type="button" class="btn btn-danger btn-rounded btn-icon btn-sm" onclick="deleteCriteriaEntry(${chRow.ch_id})"><i class="fas fa-trash"></i></button>
                     </th>
                 </tr>`;
-                for (let chDetailsIndex = 0; chDetailsIndex < chRow.details.length; chDetailsIndex++) {
-                    const chDetailsRow = chRow.details[chDetailsIndex];
-                    tbody_tr += `<tr>
-                        <td></td>
-                        <td></td>
-                        <td>${chDetailsRow.criteria}</td>
-                        <td>${chDetailsRow.points}</td>
-                        <td></td>
-                    </tr>`;
+                if(chRow.is_normal == 0){
+                    for (let chDetailsIndex = 0; chDetailsIndex < chRow.details.length; chDetailsIndex++) {
+                        const chDetailsRow = chRow.details[chDetailsIndex];
+                        tbody_tr += `<tr>
+                            <td></td>
+                            <td></td>
+                            <td>${chDetailsRow.criteria}</td>
+                            <td>${chDetailsRow.points}</td>
+                            <td></td>
+                        </tr>`;
+                    }
                 }
             }
             $("#tblCriteria tbody").html(tbody_tr);
@@ -141,6 +169,7 @@
         form_criteria.ch_id = ch_data.ch_id;
         form_criteria.criteria = ch_data.criteria;
         form_criteria.points = ch_data.points * 1;
+        form_criteria.is_normal = ch_data.is_normal * 1;
 
         for (let chDetailsIndex = 0; chDetailsIndex < ch_data.details.length; chDetailsIndex++) {
             const chDetailsRow = ch_data.details[chDetailsIndex];
@@ -156,43 +185,60 @@
         
         $("#criteria").html(ch_data.criteria);
         $("#points").val(ch_data.points);
+
+        if(form_criteria.is_normal == 1){
+            $("#normalType").prop("checked",true);
+            $("#withSubType").prop("checked",false);
+        }else{
+            $("#normalType").prop("checked",false);
+            $("#withSubType").prop("checked",true);
+        }
+        changeType(form_criteria.is_normal);
         $("#modalCriteria").modal('show');
     }
 
     $("#formCriteria").submit(function(e) {
         e.preventDefault();
 
-        if(form_criteria.details.length > 0){
-
-            let totalPoints = 0;
-            for (let detail of form_criteria.details) {
-                totalPoints += detail.points;
-            }
-
-            if(totalPoints != form_criteria.points){
-                swal_info("Criteria Management","The points for the Sub Criteria must be equal to the points for the Main Criteria.");
-            }else{
-                var form_data = JSON.stringify(form_criteria);
-                $("#btn_submit_criteria")
-                    .prop("disabled",true)
-                    .html("<span class='fa fa-spin fa-spinner'></span> Loading");
-
-                $.post("ajax/add_event_criteria.php", {
-                    data:form_data
-                }, function(data, status) {
-                    if(data == 1){
-                        isUpdate > 0 ? success_update("Criteria"):  success_add("Criteria");
-                    }
-                    $("#modalCriteria").modal('hide');
-                    renderCriteriaData();
-                    $("#btn_submit_criteria").prop("disabled",false).html("<span class='fa fa-check-circle'></span> Submit");
-                });
-            }
+        if(form_criteria.is_normal == 1){
+            addCriteria();
         }else{
-            $("#sub_criteria").focus();
-            swal_info("Criteria Management","Please add details first.");
+            if(form_criteria.details.length > 0){
+
+                let totalPoints = 0;
+                for (let detail of form_criteria.details) {
+                    totalPoints += detail.points;
+                }
+
+                if(totalPoints != form_criteria.points){
+                    swal_info("Criteria Management","The points for the Sub Criteria must be equal to the points for the Main Criteria.");
+                }else{
+                    addCriteria();
+                }
+            }else{
+                $("#sub_criteria").focus();
+                swal_info("Criteria Management","Please add details first.");
+            }
         }
     });
+
+    function addCriteria(){
+        var form_data = JSON.stringify(form_criteria);
+        $("#btn_submit_criteria")
+            .prop("disabled",true)
+            .html("<span class='fa fa-spin fa-spinner'></span> Loading");
+
+        $.post("ajax/add_event_criteria.php", {
+            data:form_data
+        }, function(data, status) {
+            if(data == 1){
+                isUpdate > 0 ? success_update("Criteria"):  success_add("Criteria");
+            }
+            $("#modalCriteria").modal('hide');
+            renderCriteriaData();
+            $("#btn_submit_criteria").prop("disabled",false).html("<span class='fa fa-check-circle'></span> Submit");
+        });
+    }
 
     function deleteCriteriaEntry(ch_id){
         Swal.fire({
@@ -283,6 +329,7 @@
             event_id:event_id,
             criteria:"",
             points:0,
+            is_normal:0,
             details:[],
             deleted_criterias:[]
         };
