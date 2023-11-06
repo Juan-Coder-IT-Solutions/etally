@@ -19,10 +19,10 @@ if (isset($event_id) && isset($judge_id)) {
     while ($row = $fetch->fetch_assoc()) {
         $list = array();
 
-
         $list['participant_id'] = $row['participant_id'];
         $list['participant_name'] = $row['participant_name'];
         $list['participant_affiliation'] = $row['participant_affiliation'];
+        $list['participant_img'] = $row['participant_img'];
 
         $response_criteria_header = array();
         $fetch_criteria_header = $mysqli->query("SELECT * from tbl_event_criteria_header WHERE event_id='$event_id'");
