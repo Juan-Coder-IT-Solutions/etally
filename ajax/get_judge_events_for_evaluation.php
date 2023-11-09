@@ -34,6 +34,8 @@ while ($row = $fetch->fetch_assoc()) {
 	$row['score'] = $main_score;
 	$row['main_criterias'] = $main_criterias;
 	$row['participant_name'] = getParticipantName($row['participant_id']);
+	$row['participant'] = getParticipantData($row['participant_id'],['participant_name','participant_img','participant_year','program_id']);
+    $row['participant']['program_name'] = getProgramData($row['participant']['program_id']);
 	array_push($response['participants'], $row);
 }
 

@@ -113,12 +113,16 @@
 
         for (let cmIndex = 0; cmIndex < pRow.main_criterias.length; cmIndex++) {
           const cmRow = pRow.main_criterias[cmIndex];
-          pc_tbody += `<tr data-participant-id="${pIndex}" data-main-criteria-id="${cmIndex}">
+          var hide_main = cmRow.is_normal == 1 ? "style='display:none;'" : "";
+          pc_tbody += `<tr data-participant-id="${pIndex}" data-main-criteria-id="${cmIndex}" ${hide_main}>
             <th style="padding:5px;">${cmIndex+1}</th>
             <th style="padding:5px;" colspan="2">${cmRow.criteria}</th>
-            <th style="padding:5px;">${cmRow.points*1}</th>
             <th style="padding:5px;">
-              <span style="float:right;" id="pmc-${pIndex}-${cmIndex}">${cmRow.score*1}</span>
+              <div class="range-container">
+                  <input type="number" value="${cmRow.score * 1}" class="form-control" id="pmc-${pIndex}-${cmIndex}" readonly>
+                  <span class="range-value">/</span>
+                  <span class="range-value">${cmRow.points * 1}</span>
+                </div>
             </th>
           </tr>`;
           for (let cIndex = 0; cIndex < cmRow.criterias.length; cIndex++) {
@@ -129,34 +133,63 @@
             };
 
             form_participants.criterias.push(form_criterias);
-
-            pc_tbody += `<tr data-participant-id="${pIndex}" data-criteria-id="${criteria_index}" data-main-criteria-id="${cmIndex}">
-              <td style="padding:5px;"></td>
-              <td style="padding:5px;"></td>
-              <td style="padding:5px;">${pcRow.criteria}</td>
-              <td style="padding:5px;">${pcRow.points*1}</td>
-              <td style="padding:5px;">
-                <div class="range-container">
-                  <input type="range" min="0" max="${pcRow.points * 1}" value="${pcRow.score * 1}" class="form-control pc-${pIndex} pmc-${pIndex}-${cmIndex}" onchange="evaluateParticipant(this)">
-                  <span class="range-value" id="pc-${pIndex}-${criteria_index}-${cmIndex}">${pcRow.score * 1}</span>
-                </div>
-              </td>
-            </tr>`;
+            if(cmRow.is_normal == 1){
+              pc_tbody += `<tr data-participant-id="${pIndex}" data-criteria-id="${criteria_index}" data-main-criteria-id="${cmIndex}">
+                <th style="padding:5px;">${cmIndex+1}</th>
+                <th style="padding:5px;" colspan="2">${cmRow.criteria.replace(/\n/g, "<br>")}</th>
+                <th style="padding:5px;">
+                  <div class="range-container">
+                    <input type="number" min="0" max="${pcRow.points * 1}" value="${pcRow.score * 1}" class="form-control pc-${pIndex} pmc-${pIndex}-${cmIndex}" onchange="evaluateParticipant(this)">
+                      <span class="range-value">/</span>
+                      <span class="range-value" id="pc-${pIndex}-${criteria_index}-${cmIndex}">${pcRow.points * 1}</span>
+                    </div>
+                </th>
+              </tr>`;
+            }else{
+              pc_tbody += `<tr data-participant-id="${pIndex}" data-criteria-id="${criteria_index}" data-main-criteria-id="${cmIndex}">
+                <td style="padding:5px;"></td>
+                <td style="padding:5px;"></td>
+                <td style="padding:5px;">${pcRow.criteria.replace(/\n/g, "<br>")}</td>
+                <td style="padding:5px;">
+                  <div class="range-container">
+                    <input type="number" min="0" max="${pcRow.points * 1}" value="${pcRow.score * 1}" class="form-control pc-${pIndex} pmc-${pIndex}-${cmIndex}" onchange="evaluateParticipant(this)">
+                    <span class="range-value">/</span>
+                    <span class="range-value" id="pc-${pIndex}-${criteria_index}-${cmIndex}">${pcRow.points * 1}</span>
+                  </div>
+                </td>
+              </tr>`;
+            }
             criteria_index++;
           }
         }
 
         form_evaluation.push(form_participants);
 
-        modalRateParticipants_body += `<table class="table table-bordered mt-2">
+        modalRateParticipants_body += `
+        <div class="col-md-6">
+          <div class="card shadow h-100 py-2">
+              <div class="card-body">
+                  <div class="row no-gutters align-items-center">
+                      <div class="col mr-2">
+                        <img class="img-account-profile rounded-circle" src="assets/img/profiles/${pRow.participant.participant_img}" alt="Image" style="width: 100px;height: 100px;">
+                      </div>
+                      <div class="col-auto">
+                      <div class="text-lg font-weight-bold text-success text-uppercase mb-1">${pRow.participant_name}</div>
+                      <div class="font-weight-bold text-primary text-uppercase mb-1">${pRow.participant.participant_year}</div>
+                      <div class="text-xxl font-weight-bold text-warning text-uppercase mb-1">${pRow.participant.program_name}</div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+        </div>
+        <table class="table table-bordered mt-2 mb-5">
           <thead>
             <tr>
-              <th colspan="5">${pRow.participant_name}</th>
+              <th colspan="4">${pRow.participant_name}</th>
             </tr>
             <tr>
               <th style="width:5%;">#</th>
               <th colspan="2">Criteria</th>
-              <th style="width:5%;">Points</th>
               <th style="width:25%;">Score</th>
             </tr>
           </thead>
@@ -164,7 +197,6 @@
           <tfooter>
             <tr>
               <th style="text-align:right;" colspan="3">Total Points</th>
-              <th></th>
               <th id="participant-${pIndex}">${pRow.score*1}</th>
             </tr>
           </tfooter>
@@ -183,7 +215,7 @@
 
     // alert(ele.value);
     form_evaluation[participant_id].criterias[criteria_id].score = ele.value * 1;
-    $("#pc-"+participant_id+"-"+criteria_id+"-"+main_criteria_id).html(ele.value);
+    // $("#pc-"+participant_id+"-"+criteria_id+"-"+main_criteria_id).html(ele.value);
   
     const pc_class = document.querySelectorAll(".pc-"+participant_id);
     const pmc_class = document.querySelectorAll(".pmc-"+participant_id+"-"+main_criteria_id);
@@ -191,7 +223,7 @@
     let pc_sum = sumWithClass(pc_class);
     let pmc_sum = sumWithClass(pmc_class);
     $("#participant-"+participant_id).html(pc_sum);
-    $("#pmc-"+participant_id+"-"+main_criteria_id).html(pmc_sum);
+    $("#pmc-"+participant_id+"-"+main_criteria_id).val(pmc_sum);
   }
 
   function sumWithClass(element_class){

@@ -55,7 +55,7 @@
                     <td>${participantElem.participants.participant_name}</td>
                     <td>${participantElem.participants.participant_year}</td>
                     <td>${participantElem.program_name}</td>
-                    <td><img class="img-profile img-rounded" src="assets/img/profiles/${participantElem.participants.participant_img}" alt="Image" style="width: 100px;"></td>
+                    <td><img class="img-account-profile rounded-circle" src="assets/img/profiles/${participantElem.participants.participant_img}" alt="Image" style="width: 100px;height: 100px;"></td>
                 </tr>`;
             }
             $("#tblParticipant tbody").html(tbody_tr);

@@ -23,7 +23,7 @@
 
                         <div class="form-group">
                             <label for="criteria">Criteria</label>
-                            <textarea class="form-control form-input" id="criteria" name="criteria" placeholder="Criteria" onchange="form_criteria.criteria = this.value" required></textarea>
+                            <textarea class="form-control form-input" id="criteria" name="criteria" placeholder="Criteria" rows="4" onchange="form_criteria.criteria = this.value" required></textarea>
                         </div>
                         <div class="form-group">
                             <label for="points">Points</label>
@@ -121,7 +121,7 @@
                 criteria_data[chIndex] = chRow;
                 tbody_tr += `<tr>
                     <th>${chIndex+1}</th>
-                    <th colspan="2">${chRow.criteria}</th>
+                    <th colspan="2">${chRow.criteria.replace(/\n/g, "<br>")}</th>
                     <th>${chRow.points}</th>
                     <th>
                         <button type="button" class="btn btn-warning btn-rounded btn-icon btn-sm" onclick="editCriteriaModal(${chIndex})"><i class="fas fa-edit"></i></button>
