@@ -38,7 +38,7 @@
         <div class="row">
           <div class="col-md-6">
             <center>
-            <img id="image-preview" class="img-account-profile rounded-circle mb-2" src="assets/img/profiles/user.png" alt="" style="width: 300px; height: 300px;">
+            <img id="image-preview" class="img-account-profile rounded-circle mb-2" src="assets/img/profiles/user.png" alt="" style="width: 300px; height: 300px;object-fit: cover;">
           </center>
           </div>
             <div class="col-md-6">
@@ -185,7 +185,7 @@ function renderData(){
         },
         { 
             mRender:function(data,type,row){
-                return `<img class="img-rounded" src="assets/img/profiles/${row.participant_img}" alt="Image" style="width: 50px;">`;
+                return `<img class="img-account-profile rounded-circle" src="assets/img/profiles/${row.participant_img}" alt="Image" style="width: 100px; height: 100px;object-fit: cover;">`;
             }
          },
         { data: 'participant_name' },

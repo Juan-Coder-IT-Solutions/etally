@@ -11,7 +11,7 @@
                 <!-- Profile picture label for file input -->
                 <label for="profile-image" style="cursor: pointer">
                     <!-- Profile picture image -->
-                    <img id="image-preview" class="img-account-profile rounded-circle mb-2" src="assets/img/profiles/<?=$_SESSION['etally']['user_img']?>" alt="" style="width: 200px; height: 200px;">
+                    <img id="image-preview" class="img-account-profile rounded-circle mb-2" src="assets/img/profiles/<?=$_SESSION['etally']['user_img']?>" alt="" style="width: 200px; height: 200px;object-fit:cover;">
                     <!-- Profile picture help block -->
                     <div class="small font-italic text-muted mb-4">Click profile picture to change a new one.</div>
                 </label>
