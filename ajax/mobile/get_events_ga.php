@@ -36,8 +36,15 @@ if (isset($user_id)) {
             $list_judges['judge_no'] = $judges_row['judge_no'];
             array_push($list_judges_response, $list_judges);
         }
-
         $list['judges_row'] = $list_judges_response;
+
+        // fetch participants
+        $list_participants_response = array();
+        $fetch_participants = $mysqli->query("SELECT * FROM tbl_participants p LEFT JOIN tbl_event_participants ep ON p.participant_id=ep.participant_id WHERE event_id='$row[event_id]'");
+        while ($participants_row = $fetch_participants->fetch_assoc()) {
+            array_push($list_participants_response, $participants_row);
+        }
+        $list['participants_row'] = $list_participants_response;
 
         array_push($response, $list);
     }
