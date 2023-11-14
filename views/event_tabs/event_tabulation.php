@@ -45,10 +45,99 @@
     var results_data = [];
     $(document).ready(function(){
         renderTabulationData();
+        renderSelectJudgeData();
+        renderTabulationJudgeData();
 
         $("#sortableList").sortable();
         $("#sortableList").disableSelection();
     });
+
+    function renderSelectJudgeData(){
+        var params = `WHERE event_id = '${event_id}'`;
+        var option = '<option value="0"> &mdash; Please Select Judge &mdash; </option>';
+        $.post("ajax/get_event_judges.php",{
+            params:params
+        },function(data,status){
+            var res = JSON.parse(data);
+            console.log(res.data);
+            for (let judgeIndex = 0; judgeIndex < res.data.length; judgeIndex++) {
+                const judgeElem = res.data[judgeIndex];
+                option += `<option value='${judgeElem.judge_id}'>${judgeElem.judge_name}</option>`;
+            }
+            $("#judge_select").html(option);
+        });
+    }
+
+    function renderTabulationJudgeData(){
+        $.post("ajax/get_event_tabulation_per_judge.php",{
+            event_id:event_id,
+            judge_id:$("#judge_select").val()
+        },function(data,status){
+            var res = JSON.parse(data);
+            skinJudgeTabulationHeader(res.criterias);
+            skinJudgeTabulationBody(res.participants);
+        });
+    }
+
+    function skinJudgeTabulationBody(participants){
+        var tr = "";
+        for (let pIndex = 0; pIndex < participants.length; pIndex++) {
+            const participant = participants[pIndex];
+            tr += `<tr>
+                <td align="center">${participant.participant_name}</td>
+                ${skinJudgeTabulationBodyScores(participant.scores)}
+                <td align="center">${participant.rank}</td>
+            </tr>`;
+        }
+        $("#tblJudgeTabulation tbody").html(tr);
+    }
+
+    function skinJudgeTabulationBodyScores(scores){
+        var td = "";
+        var total = 0;
+        for (let cIndex = 0; cIndex < scores.length; cIndex++) {
+            const score = scores[cIndex];
+            if(score.is_normal == 1){
+                td += `<td align="center" style="vertical-align: middle;">${score.criterias[0].score}</td>`;
+                total += score.criterias[0].score;
+            }else{
+                var sub_total = 0;
+                for (let ccIndex = 0; ccIndex < score.criterias.length; ccIndex++) {
+                    const score_d = score.criterias[ccIndex];
+                    sub_total += score_d.score;
+                    td += `<td align="center" style="vertical-align: middle;">${score_d.score}</td>`;
+                }
+                td += `<td align="center" style="vertical-align: middle;">${sub_total}</td>`;
+                total += sub_total;
+            }
+        }
+        td += `<td align="center" style="vertical-align: middle;">${total}</td>`;
+        return td;
+    }
+
+    function skinJudgeTabulationHeader(criterias){
+        var th = "",th2 = "";
+        for (let cIndex = 0; cIndex < criterias.length; cIndex++) {
+            const cRow = criterias[cIndex];
+            if(cRow.is_normal == 1){
+                th += `<th rowspan="2" style="vertical-align: middle;">${cRow.criteria} &nbsp; ${cRow.points}%</th>`;
+            }else{
+                th += `<th colspan="${cRow.criterias.length+1}" style="vertical-align: middle;">${cRow.criteria} &nbsp; ${cRow.points}%</th>`;
+                for (let ccIndex = 0; ccIndex < cRow.criterias.length; ccIndex++) {
+                    const ccRow = cRow.criterias[ccIndex];
+                    th2 += `<th style="vertical-align: middle;">${ccRow.criteria} &nbsp; ${ccRow.points}%</th>`;
+                }
+                th2 += `<th style="vertical-align: middle;">TOTAL</th>`;
+            }
+        }
+        th += `<th rowspan="2" style="vertical-align: middle;">OVERALL</th>`;
+        th += `<th rowspan="2" style="vertical-align: middle;">RESULT</th>`;
+        $("#tblJudgeTabulation thead").html(`<tr>
+            <th rowspan="2" style="vertical-align: middle;">CONTESTANT</th>
+            ${th}
+        </tr>
+        <tr>${th2}</tr>`);
+    }
 
     function renderTabulationData(){
 

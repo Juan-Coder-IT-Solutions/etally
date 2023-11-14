@@ -35,11 +35,35 @@
         <div class="tab-pane active container" id="tabulation">
             <div class="row">
                 <div class="card shadow mt-4 col border-left-success">
+                    <div class="card-header">
+                        <h5>Overall Score</h5>
+                    </div>
                     <div class="card-body">
                         <div class="d-sm-flex align-items-center justify-content-between mb-4"  id="tabulation_resolve">
                         </div>
                         <div class="table-responsive">
                             <table class="table table-bordered" id="tblTabulation" cellspacing="0" width="100%">
+                                <thead style="text-align: center;">
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="card shadow mt-4 col border-left-success">
+                    <div class="card-header">
+                        <h5>Score per Judges</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="col-md-6 d-sm-flex align-items-center justify-content-between mb-4">
+                            <select name="judge_name" id="judge_select" class="form-control" onchange="renderTabulationJudgeData()"></select>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-bordered" id="tblJudgeTabulation" cellspacing="0" width="100%">
                                 <thead style="text-align: center;">
                                 </thead>
                                 <tbody>
