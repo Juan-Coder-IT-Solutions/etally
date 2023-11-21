@@ -7,9 +7,12 @@
         <input type="hidden" id="event_status">
     </div>
 
-    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+    <div class="d-sm-flex mb-4">
         <h1 class="h3 mb-0 text-gray-800">&nbsp;</h1>
-        <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-outline-success shadow-sm" id="btn_event_status"></a>
+        <button id="btn_event_timer" style="display: none;" class="btn btn-sm btn-outline-warning shadow-sm mr-1" onclick="setTimer()">
+            <span class="fa fa-clock"></span> Set Timer
+        </button>
+        <button id="btn_event_status" class="btn btn-sm btn-outline-success shadow-sm"></button>
     </div>
     <!-- Nav tabs -->
     <ul class="nav nav-tabs">
@@ -48,6 +51,7 @@
                                 <tbody>
                                 </tbody>
                             </table>
+                            <div class="d-sm-flex col-md-12 center" id="resolver"></div>
                         </div>
                     </div>
                 </div>
@@ -150,7 +154,7 @@
                                     <tr>
                                         <th>Judge #</th>
                                         <th>Judge Name</th>
-                                        <th>Action</th>
+                                        <th>Title</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -197,12 +201,14 @@
                 <p>This browser does not support PDFs. Please download the PDF to view it: <a href="" id="downloadLink" target="_blank">Download PDF</a>.</p>
               </object>`);
 
+            $("#btn_event_timer").hide();
             if(event_data.event_status == 'S'){
                 $("#btn_event_status").html('<i class="fas fa-play fa-sm"></i> Start Event').attr("onclick","startEvent()");
             }else if(event_data.event_status == 'P'){
                 $("#btn_event_status").html('<i class="fas fa-stop fa-sm"></i> Finish Event').attr("onclick","finishEvent()");
+               $("#btn_event_timer").show();
             }else{
-                $("#btn_event_status").parent().remove();
+                $("#btn_event_status").remove();
                 $(".btn-events").remove();
             }
         });
@@ -224,7 +230,7 @@
                     if(data == 1){
                         success_update("Event");
                     }else if(data == -1){
-                        swal_warning("Event Criteria","Please check total points of criteria.");
+                        swal_warning("Event Criteria","Please encode a criteria.");
                     }
                     getEventData();
                     showHideButtons();
@@ -265,6 +271,47 @@
 
     function showHideButtons(){
         $(".btn-event-saved").hide();
+    }
+
+    function setTimer(){
+        Swal.fire({
+            icon: 'warning',
+            title: 'Input number of minutes',
+            input: 'number',
+            inputAttributes: {
+                step: 1
+            },
+            showCancelButton: true,
+            confirmButtonText: 'Submit',
+            showLoaderOnConfirm: true,
+            preConfirm: (inputValue) => {
+                inputValue = inputValue * 1;
+                // Process the input value (e.g., send it to the server)
+                return new Promise((resolve) => {
+                setTimeout(() => {
+                    if (Number.isInteger(inputValue)) {
+                    // If the input is valid, resolve the promise
+                    resolve();
+                    } else {
+                    // If the input is not valid, reject the promise with an error message
+                    Swal.showValidationMessage('Invalid input');
+                    }
+                }, 1000);
+                });
+            },
+            allowOutsideClick: () => !Swal.isLoading()
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.post("ajax/set_event_timer.php", {
+                    event_id:event_id,
+                    time:result.value
+                }, function(data, status) {
+                    if(data == 1){
+                        success_update("Event Timer");
+                    }
+                });
+            }
+        });
     }
 </script>
 <?php include 'event_tabs/event_tabulation.php' ?>

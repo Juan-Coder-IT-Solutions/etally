@@ -7,7 +7,7 @@ $event_id = $_POST['event_id'];
 $fetch = $mysqli->query("SELECT SUM(points) AS points FROM tbl_event_criterias WHERE event_id = '$event_id'");
 $row_points = $fetch->fetch_assoc();
 
-if($row_points['points'] != 100){
+if($row_points['points'] < 1){
     echo -1;
     die;
 }

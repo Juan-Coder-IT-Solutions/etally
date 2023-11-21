@@ -43,6 +43,8 @@
 
 <script>
     var results_data = [];
+    var tie_scores = [];
+    var tie_bg = ["warning","info","danger","error","success"];
     $(document).ready(function(){
         renderTabulationData();
         renderSelectJudgeData();
@@ -144,6 +146,7 @@
         var params = `WHERE event_id = '${event_id}'`;
         var tbody_tr = '';
         results_data = [];
+        tie_scores = [];
         $.post("ajax/get_event_tabulation.php",{
             params:params,
             event_id:event_id
@@ -153,7 +156,7 @@
             skinTabulation(res.judges);
             for (let tabIndex = 0; tabIndex < res.data.length; tabIndex++) {
                 const tabElem = res.data[tabIndex];
-                var judge_points = "", champion = "",trophy = "",resolve="";
+                var judge_points = "", champion = "",trophy = "",resolve="",tr_tie_class="";
                 var rank_result = tabElem.result*1;
                 results_data.push({
                     event_participant_id:tabElem.event_participant_id,
@@ -166,14 +169,20 @@
                 }
 
                 if(rank_result == 1){
-                    champion = "class='champion'";
+                    champion = "champion";
                     trophy = "<span class='fa fa-trophy trophy'></span>";
                 }
 
                 if(!Number.isInteger(rank_result)){
-                    resolve = `<button class='btn btn-sm btn-outline-danger' style='float:right' onclick="resolveTieBreakerModal(${rank_result})"><i class="fas fa-check-circle fa-sm"></i> Resolve Tie</button>`;
+                    if (!tie_scores.includes(rank_result)) {
+                        tie_scores.push(rank_result);
+                    }
+                    let tie_index = tie_scores.indexOf(rank_result);
+                    tr_tie_class = "text-white bg-" + tie_bg[tie_index];
+                    // resolve = `<button class='btn btn-sm btn-outline-danger' style='float:right' onclick="resolveTieBreakerModal(${rank_result})"><i class="fas fa-check-circle fa-sm"></i> Resolve Tie</button>`;
                 }
-                tbody_tr += `<tr ${champion}>
+
+                tbody_tr += `<tr class='${champion} ${tr_tie_class}'>
                     <td>${tabElem.participant_name} ${trophy} ${resolve}</td>
                     ${judge_points}
                     <td align="center">${tabElem.ranks}</td>
@@ -181,6 +190,12 @@
                 </tr>`;
             }
             $("#tblTabulation tbody").html(tbody_tr);
+
+            $("#resolver").html('');
+            for (let tIndex = 0; tIndex < tie_scores.length; tIndex++) {
+                const tie_score = tie_scores[tIndex];
+                $("#resolver").append(`<button class='btn btn-sm btn-outline-${tie_bg[tIndex]} mr-1'  onclick="resolveTieBreakerModal(${tie_score})"><i class="fas fa-check-circle fa-sm"></i> Resolve Tie (${tie_score})</button>`);
+            }
             // if(res.has_tie > 0){
             //     $("#tabulation_resolve").html(`<h1 class="h3 mb-0 text-gray-800">&nbsp;</h1>
             //     <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-outline-success shadow-sm" onclick="resolveTieBreakerModal()">

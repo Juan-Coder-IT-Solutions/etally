@@ -53,7 +53,7 @@
                 tbody_tr += `<tr>
                     <td>${judgeElem.judge_no}</td>
                     <td>${judgeElem.judge_name}</td>
-                    <td></td>
+                    <td>${judgeElem.judge_no==1?"Head ":""}Judge</td>
                 </tr>`;
             }
             $("#tblJudge tbody").html(tbody_tr);
