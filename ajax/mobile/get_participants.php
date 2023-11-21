@@ -11,7 +11,7 @@ $event_id = $data->event_id;
 $judge_id = $data->user_id;
 
 if (isset($event_id) && isset($judge_id)) {
-    $sql = "SELECT * FROM tbl_participants p LEFT JOIN tbl_event_participants ep ON p.participant_id=ep.participant_id WHERE event_id='$event_id'";
+    $sql = "SELECT * FROM tbl_participants p LEFT JOIN tbl_event_participants ep ON p.participant_id=ep.participant_id LEFT JOIN tbl_programs pr ON p.program_id=pr.program_id WHERE event_id='$event_id'";
     $fetch = $mysqli->query($sql);
 
     $response = array();
@@ -23,6 +23,7 @@ if (isset($event_id) && isset($judge_id)) {
         $list['participant_name'] = $row['participant_name'];
         $list['participant_affiliation'] = $row['participant_affiliation'];
         $list['participant_img'] = $row['participant_img'];
+        $list['program'] = $row['program_name'];
 
         $response_criteria_header = array();
         $fetch_criteria_header = $mysqli->query("SELECT * from tbl_event_criteria_header WHERE event_id='$event_id'");

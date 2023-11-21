@@ -10,7 +10,7 @@ $data = json_decode(file_get_contents("php://input"));
 $event_id = $data->event_id;
 $judge_id = $data->user_id;
 
-if (isset($event_id) && isset($judge_id)) {
+if (isset($event_id)) {
 
     $response = array();
     $response['criteria'] = array();
