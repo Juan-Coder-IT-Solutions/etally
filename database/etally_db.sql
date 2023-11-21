@@ -14,11 +14,6 @@
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
-
--- Dumping database structure for etally_db
-CREATE DATABASE IF NOT EXISTS `etally_db` /*!40100 DEFAULT CHARACTER SET latin1 */;
-USE `etally_db`;
-
 -- Dumping structure for table etally_db.tbl_events
 CREATE TABLE IF NOT EXISTS `tbl_events` (
   `event_id` int(11) NOT NULL AUTO_INCREMENT,
@@ -27,7 +22,7 @@ CREATE TABLE IF NOT EXISTS `tbl_events` (
   `event_description` varchar(255) DEFAULT NULL,
   `event_mechanics` varchar(15) NOT NULL DEFAULT 'no_image.png',
   `event_start` date NOT NULL,
-  `event_end` date NOT NULL,
+  `event_end` datetime NOT NULL,
   `event_status` varchar(1) NOT NULL DEFAULT 'S' COMMENT 'S=Open For Registration;P=Ongoing;F=Finish',
   `participant_needed` int(11) NOT NULL DEFAULT '0',
   `judge_needed` int(11) NOT NULL DEFAULT '0',
@@ -39,8 +34,8 @@ CREATE TABLE IF NOT EXISTS `tbl_events` (
 
 -- Dumping data for table etally_db.tbl_events: ~2 rows (approximately)
 INSERT INTO `tbl_events` (`event_id`, `event_category_id`, `event_name`, `event_description`, `event_mechanics`, `event_start`, `event_end`, `event_status`, `participant_needed`, `judge_needed`, `encoded_by`, `date_added`, `date_modified`) VALUES
-	(1, 0, 'Choral Singing', 'Singing Contest', 'eEsfcpXSs.pdf', '2023-10-28', '0000-00-00', 'S', 10, 5, 0, '2023-10-28 14:18:34', '2023-10-28 14:18:34'),
-	(2, 0, 'Badminton', 'Male Category', 'jlW0rT7Cp.pdf', '2023-10-28', '0000-00-00', 'S', 10, 3, 0, '2023-10-28 15:52:37', '2023-10-28 15:52:37');
+	(1, 0, 'Choral Singing', 'Singing Contest', 'eEsfcpXSs.pdf', '2023-10-28', '2023-11-21 14:35:46', 'P', 10, 5, 0, '2023-10-28 14:18:34', '2023-11-21 14:33:46'),
+	(2, 0, 'Badminton', 'Male Category', 'jlW0rT7Cp.pdf', '2023-10-28', '0000-00-00 00:00:00', 'P', 10, 3, 0, '2023-10-28 15:52:37', '2023-11-21 14:20:54');
 
 -- Dumping structure for table etally_db.tbl_event_categories
 CREATE TABLE IF NOT EXISTS `tbl_event_categories` (
@@ -70,13 +65,14 @@ CREATE TABLE IF NOT EXISTS `tbl_event_criterias` (
   `date_added` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `date_modified` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`criteria_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
 
--- Dumping data for table etally_db.tbl_event_criterias: ~0 rows (approximately)
+-- Dumping data for table etally_db.tbl_event_criterias: ~4 rows (approximately)
 INSERT INTO `tbl_event_criterias` (`criteria_id`, `ch_id`, `event_id`, `criteria`, `points`, `date_added`, `date_modified`) VALUES
 	(1, 1, 1, 'Performance\n  - Mastery\n  - Presence', 50.00, '2023-11-06 16:22:39', '2023-11-06 16:22:39'),
 	(2, 2, 1, 'Mastery of Skills', 25.00, '2023-11-06 16:38:45', '2023-11-06 16:38:45'),
-	(3, 2, 1, 'Presence', 25.00, '2023-11-06 16:38:45', '2023-11-06 16:38:45');
+	(3, 2, 1, 'Presence', 25.00, '2023-11-06 16:38:45', '2023-11-06 16:38:45'),
+	(4, 3, 2, 'a', 20.00, '2023-11-21 14:20:51', '2023-11-21 14:20:51');
 
 -- Dumping structure for table etally_db.tbl_event_criteria_header
 CREATE TABLE IF NOT EXISTS `tbl_event_criteria_header` (
@@ -88,12 +84,13 @@ CREATE TABLE IF NOT EXISTS `tbl_event_criteria_header` (
   `date_added` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `date_modified` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`ch_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
 
--- Dumping data for table etally_db.tbl_event_criteria_header: ~0 rows (approximately)
+-- Dumping data for table etally_db.tbl_event_criteria_header: ~3 rows (approximately)
 INSERT INTO `tbl_event_criteria_header` (`ch_id`, `event_id`, `is_normal`, `criteria`, `points`, `date_added`, `date_modified`) VALUES
 	(1, 1, 1, 'Performance\n  - Mastery\n  - Presence', 50.00, '2023-11-06 16:22:39', '2023-11-06 16:22:39'),
-	(2, 1, 0, 'Performance', 50.00, '2023-11-06 16:38:45', '2023-11-06 16:38:45');
+	(2, 1, 0, 'Performance', 50.00, '2023-11-06 16:38:45', '2023-11-06 16:38:45'),
+	(3, 2, 1, 'a', 20.00, '2023-11-21 14:20:51', '2023-11-21 14:20:51');
 
 -- Dumping structure for table etally_db.tbl_event_judges
 CREATE TABLE IF NOT EXISTS `tbl_event_judges` (
@@ -131,12 +128,12 @@ CREATE TABLE IF NOT EXISTS `tbl_event_participants` (
 
 -- Dumping data for table etally_db.tbl_event_participants: ~6 rows (approximately)
 INSERT INTO `tbl_event_participants` (`event_participant_id`, `event_id`, `participant_id`, `status`, `total_ranks`, `rank`, `date_added`, `date_modified`) VALUES
-	(1, 1, 1, 1, 0.00, 0.00, '2023-10-28 15:26:41', '2023-11-06 15:14:46'),
-	(2, 1, 2, 1, 0.00, 0.00, '2023-10-28 15:42:15', '2023-11-06 15:14:46'),
-	(3, 1, 6, 1, 0.00, 0.00, '2023-10-28 15:42:32', '2023-11-06 15:14:46'),
+	(1, 1, 1, 1, 7.00, 4.00, '2023-10-28 15:26:41', '2023-11-21 11:58:10'),
+	(2, 1, 2, 1, 7.00, 3.00, '2023-10-28 15:42:15', '2023-11-21 11:58:10'),
+	(3, 1, 6, 1, 3.00, 1.50, '2023-10-28 15:42:32', '2023-11-21 11:38:49'),
 	(4, 2, 1, 1, 0.00, 0.00, '2023-10-28 15:52:52', '2023-10-28 15:52:52'),
 	(5, 2, 4, 1, 0.00, 0.00, '2023-10-28 15:52:52', '2023-10-28 15:52:52'),
-	(6, 1, 8, 1, 0.00, 0.00, '2023-11-06 15:14:46', '2023-11-06 15:14:46');
+	(6, 1, 8, 1, 3.00, 1.50, '2023-11-06 15:14:46', '2023-11-21 11:38:49');
 
 -- Dumping structure for table etally_db.tbl_event_ranks
 CREATE TABLE IF NOT EXISTS `tbl_event_ranks` (
@@ -149,9 +146,18 @@ CREATE TABLE IF NOT EXISTS `tbl_event_ranks` (
   `date_added` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `date_modified` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`rank_id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 ROW_FORMAT=COMPACT;
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=latin1 ROW_FORMAT=COMPACT;
 
--- Dumping data for table etally_db.tbl_event_ranks: ~0 rows (approximately)
+-- Dumping data for table etally_db.tbl_event_ranks: ~8 rows (approximately)
+INSERT INTO `tbl_event_ranks` (`rank_id`, `event_id`, `judge_id`, `participant_id`, `rank`, `scores`, `date_added`, `date_modified`) VALUES
+	(9, 1, 3, 1, 4.00, 72.00, '2023-11-15 10:08:00', '2023-11-15 10:08:00'),
+	(10, 1, 3, 2, 3.00, 76.00, '2023-11-15 10:08:00', '2023-11-15 10:08:00'),
+	(11, 1, 3, 6, 2.00, 84.00, '2023-11-15 10:08:00', '2023-11-15 10:08:00'),
+	(12, 1, 3, 8, 1.00, 91.00, '2023-11-15 10:08:00', '2023-11-15 10:08:00'),
+	(13, 1, 1, 1, 3.00, 90.00, '2023-11-21 11:36:19', '2023-11-21 11:36:19'),
+	(14, 1, 1, 2, 4.00, 77.00, '2023-11-21 11:36:19', '2023-11-21 11:36:20'),
+	(15, 1, 1, 6, 1.00, 100.00, '2023-11-21 11:36:19', '2023-11-21 11:36:19'),
+	(16, 1, 1, 8, 2.00, 99.00, '2023-11-21 11:36:19', '2023-11-21 11:36:19');
 
 -- Dumping structure for table etally_db.tbl_event_scores
 CREATE TABLE IF NOT EXISTS `tbl_event_scores` (
@@ -164,9 +170,34 @@ CREATE TABLE IF NOT EXISTS `tbl_event_scores` (
   `date_added` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `date_modified` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`score_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=49 DEFAULT CHARSET=latin1;
 
--- Dumping data for table etally_db.tbl_event_scores: ~0 rows (approximately)
+-- Dumping data for table etally_db.tbl_event_scores: ~24 rows (approximately)
+INSERT INTO `tbl_event_scores` (`score_id`, `event_id`, `criteria_id`, `judge_id`, `participant_id`, `points`, `date_added`, `date_modified`) VALUES
+	(25, 1, 1, 3, 1, 40.00, '2023-11-15 10:08:00', '2023-11-15 10:08:00'),
+	(26, 1, 2, 3, 1, 15.00, '2023-11-15 10:08:00', '2023-11-15 10:08:00'),
+	(27, 1, 3, 3, 1, 17.00, '2023-11-15 10:08:00', '2023-11-15 10:08:00'),
+	(28, 1, 1, 3, 2, 50.00, '2023-11-15 10:08:00', '2023-11-15 10:08:00'),
+	(29, 1, 2, 3, 2, 11.00, '2023-11-15 10:08:00', '2023-11-15 10:08:00'),
+	(30, 1, 3, 3, 2, 15.00, '2023-11-15 10:08:00', '2023-11-15 10:08:00'),
+	(31, 1, 1, 3, 6, 50.00, '2023-11-15 10:08:00', '2023-11-15 10:08:00'),
+	(32, 1, 2, 3, 6, 20.00, '2023-11-15 10:08:00', '2023-11-15 10:08:00'),
+	(33, 1, 3, 3, 6, 14.00, '2023-11-15 10:08:00', '2023-11-15 10:08:00'),
+	(34, 1, 1, 3, 8, 48.00, '2023-11-15 10:08:00', '2023-11-15 10:08:00'),
+	(35, 1, 2, 3, 8, 18.00, '2023-11-15 10:08:00', '2023-11-15 10:08:00'),
+	(36, 1, 3, 3, 8, 25.00, '2023-11-15 10:08:00', '2023-11-15 10:08:00'),
+	(37, 1, 1, 1, 1, 43.00, '2023-11-21 11:36:19', '2023-11-21 11:36:19'),
+	(38, 1, 2, 1, 1, 24.00, '2023-11-21 11:36:19', '2023-11-21 11:36:19'),
+	(39, 1, 3, 1, 1, 23.00, '2023-11-21 11:36:19', '2023-11-21 11:36:19'),
+	(40, 1, 1, 1, 2, 38.00, '2023-11-21 11:36:19', '2023-11-21 11:36:19'),
+	(41, 1, 2, 1, 2, 21.00, '2023-11-21 11:36:19', '2023-11-21 11:36:19'),
+	(42, 1, 3, 1, 2, 18.00, '2023-11-21 11:36:19', '2023-11-21 11:36:19'),
+	(43, 1, 1, 1, 6, 50.00, '2023-11-21 11:36:19', '2023-11-21 11:36:19'),
+	(44, 1, 2, 1, 6, 25.00, '2023-11-21 11:36:19', '2023-11-21 11:36:19'),
+	(45, 1, 3, 1, 6, 25.00, '2023-11-21 11:36:19', '2023-11-21 11:36:19'),
+	(46, 1, 1, 1, 8, 50.00, '2023-11-21 11:36:19', '2023-11-21 11:36:19'),
+	(47, 1, 2, 1, 8, 25.00, '2023-11-21 11:36:19', '2023-11-21 11:36:19'),
+	(48, 1, 3, 1, 8, 24.00, '2023-11-21 11:36:19', '2023-11-21 11:36:19');
 
 -- Dumping structure for table etally_db.tbl_judges
 CREATE TABLE IF NOT EXISTS `tbl_judges` (
@@ -207,7 +238,7 @@ INSERT INTO `tbl_participants` (`participant_id`, `participant_name`, `participa
 	(5, 'Participant 4', 'as', 3, 'Fourth Year', 'user_img.png', '2023-10-18 11:36:37', '2023-10-28 15:46:06'),
 	(6, 'Participant 5', 'sasasd', 3, 'Second Year', 'user_img.png', '2023-10-18 11:36:43', '2023-10-28 15:46:07'),
 	(7, 'Participant 6', NULL, 2, 'Second Year', 'user_img.png', '2023-11-06 15:10:19', '2023-11-06 15:10:19'),
-	(8, 'Participant 7', NULL, 2, 'First Year', 'dd8UWwGRP.jpg', '2023-11-06 15:13:23', '2023-11-06 15:13:23');
+	(8, 'Participant 7', NULL, 2, 'First Year', 'm3RY4xBpF.jpg', '2023-11-06 15:13:23', '2023-11-09 15:05:23');
 
 -- Dumping structure for table etally_db.tbl_programs
 CREATE TABLE IF NOT EXISTS `tbl_programs` (
