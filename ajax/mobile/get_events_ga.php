@@ -40,7 +40,7 @@ if (isset($user_id)) {
 
         // fetch participants
         $list_participants_response = array();
-        $fetch_participants = $mysqli->query("SELECT * FROM tbl_participants p LEFT JOIN tbl_event_participants ep ON p.participant_id=ep.participant_id WHERE event_id='$row[event_id]'");
+        $fetch_participants = $mysqli->query("SELECT * FROM tbl_participants p LEFT JOIN tbl_event_participants ep ON p.participant_id=ep.participant_id LEFT JOIN tbl_programs pr ON p.program_id=pr.program_id WHERE event_id='$row[event_id]'");
         while ($participants_row = $fetch_participants->fetch_assoc()) {
             array_push($list_participants_response, $participants_row);
         }
