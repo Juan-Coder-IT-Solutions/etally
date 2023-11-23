@@ -30,22 +30,22 @@
         <div class="card mb-4">
             <div class="card-header">Account Details</div>
             <div class="card-body">
-                <form>
+                <form id="frm_account">
                     <!-- Form Group (username)-->
                     <div class="mb-3">
                         <label class="small mb-1" for="inputUsername">Username</label>
-                        <input class="form-control" id="inputUsername" type="text" placeholder="Enter your username" value="<?=$_SESSION['etally']['username']?>">
+                        <input class="form-control" name="username" id="inputUsername" type="text" placeholder="Enter your username" value="<?=$_SESSION['etally']['username']?>">
                     </div>
                     <!-- Form Row-->
                     <div class="row gx-3 mb-3">
                         <!-- Form Group (first name)-->
                         <div class="col-md-12">
                             <label class="small mb-1" for="inputFirstName">Account name</label>
-                            <input class="form-control" id="inputFirstName" type="text" placeholder="Enter your first name" value="<?=$_SESSION['etally']['account_name']?>">
+                            <input class="form-control" id="inputFirstName" type="text" placeholder="Enter your first name" name="account_name" value="<?=$_SESSION['etally']['account_name']?>">
                         </div>
                     </div>
                     <!-- Save changes button-->
-                    <button class="btn btn-sm btn-outline-primary" type="button"><span class="fa fa-check-circle"></span> Save changes</button>
+                    <button class="btn btn-sm btn-outline-primary" type="submit"><span class="fa fa-check-circle"></span> Save changes</button>
                 </form>
             </div>
         </div>
@@ -92,4 +92,24 @@
             }
         });
     }
+    $("#frm_account").submit(function(e){
+        e.preventDefault();
+        $.ajax({
+            url: 'ajax/change_account_details.php', // Change to the path of your PHP file
+            method: 'POST',
+            data: $(this).serialize(),
+            dataType: 'json',
+            success: function (response) {
+                // Handle the response from the server, if needed
+                if(response == 1){
+                    swal_success("Account","Successfully change account details");
+                }else{
+                    swal_error("Account","Error occur while updating account");
+                }
+            },
+            error: function () {
+                swal_error("Account","Error occur while updating account");
+            }
+        });
+    });
 </script>

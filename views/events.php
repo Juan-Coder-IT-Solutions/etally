@@ -47,7 +47,7 @@
             </div>
             <div class="form-group">
               <label for="event_name">Event Category</label>
-              <select name="event_category" id="event_category" class="form-control form-input" required>
+              <select name="event_category_id" id="event_category_id" class="form-control form-input" required>
               </select>
             </div>
             <div class="form-group">
@@ -92,7 +92,8 @@
   var table;
   var event_file_dir = "assets/img/mechanics/";
   $(document).ready(function() {
-      renderData();
+    renderData();
+    renderSelectEventCategories();
 
       $('#tblEntry tbody').on('click', '.btn-update-data', function() {
           var data = table.row($(this).closest('tr')).data();
@@ -108,18 +109,17 @@
     $('#formEntry')[0].reset();
     $(".pdfviewer").html(`<object id="preview" data="${event_file_dir}no_image.png" type="application/pdf" width="100%" style="min-height:450px;max-height: 450px;"><p>This browser does not support PDFs. Please download the PDF to view it: <a href="" id="downloadLink" target="_blank">Download PDF</a>.</p></object>`);
     $("#event_mechanics").prop("required",true);
-    renderSelectEventCategories();
   }
 
   
   function renderSelectEventCategories(){
-    $("#event_category").html("<option value=''> Please Select </option>");
+    $("#event_category_id").html("<option value=''> Please Select </option>");
     $.post("ajax/get_event_categories.php",{},function(data,status){
         var res = JSON.parse(data);
         console.log(res.data);
         for (let categoryIndex = 0; categoryIndex < res.data.length; categoryIndex++) {
           const category_row = res.data[categoryIndex];
-          $("#event_category").append(`<option value='${category_row.event_category_id}'>${category_row.event_category}</option>`);
+          $("#event_category_id").append(`<option value='${category_row.event_category_id}'>${category_row.event_category}</option>`);
         }
     });
   }
