@@ -21,7 +21,8 @@ if (isset($user_id)) {
         $list['event_name'] = $row['event_name'];
         $list['event_mechanics'] = $row['event_mechanics'];
         $list['event_description'] = $row['event_description'];
-        $list['event_start'] = date("M d, Y", strtotime(($row['event_start'])));
+        $list['event_venue'] = $row['event_venue'];
+        $list['event_start'] = date("M d, Y h:i A", strtotime(($row['event_start'])));
         $list['status'] = $row['event_status'];
 
         // fetch judges

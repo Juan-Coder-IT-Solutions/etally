@@ -10,7 +10,7 @@ $data = json_decode(file_get_contents("php://input"));
 $user_id = $data->user_id;
 
 if (isset($user_id)) {
-    $sql = "SELECT e.event_id, ej.event_judge_id, e.event_name, e.event_description, e.event_start, e.event_status, e.event_mechanics FROM tbl_event_judges ej LEFT JOIN tbl_events e ON ej.event_id=e.event_id WHERE judge_id='$user_id' ORDER BY e.event_start DESC";
+    $sql = "SELECT e.event_id, ej.event_judge_id, e.event_name, e.event_description, e.event_start, e.event_status, e.event_mechanics, e.event_venue FROM tbl_event_judges ej LEFT JOIN tbl_events e ON ej.event_id=e.event_id WHERE judge_id='$user_id' ORDER BY e.event_start DESC";
     $fetch = $mysqli->query($sql);
 
     $response = array();
@@ -22,7 +22,8 @@ if (isset($user_id)) {
         $list['event_name'] = $row['event_name'];
         $list['event_mechanics'] = $row['event_mechanics'];
         $list['event_description'] = $row['event_description'];
-        $list['event_start'] = date("M d, Y", strtotime(($row['event_start'])));
+        $list['event_venue'] = $row['event_venue'];
+        $list['event_start'] = date("M d, Y h:i A", strtotime(($row['event_start'])));
         $list['status'] = $row['event_status'];
 
         // fetch judges
