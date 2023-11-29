@@ -10,6 +10,7 @@ $event_description	= $_POST['event_description'];
 $event_start        = $_POST['event_start'];
 $participant_needed = $_POST['participant_needed'];
 $judge_needed		= $_POST['judge_needed'];
+$event_venue		= $_POST['event_venue'];
 
 $form_data = array(
 	'event_name'            => $event_name,
@@ -17,7 +18,8 @@ $form_data = array(
 	'event_description'		=> $event_description,
 	'event_start'           => $event_start,
 	'participant_needed'	=> $participant_needed,
-	'judge_needed'			=> $judge_needed
+	'judge_needed'			=> $judge_needed,
+	'event_venue'			=> $event_venue
 );
 
 if (isset($_FILES["event_mechanics"]) && $_FILES["event_mechanics"]["error"] == 0) {

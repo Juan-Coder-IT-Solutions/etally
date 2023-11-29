@@ -42,6 +42,7 @@
             <label for="user_category">Category</label>
             <select class="form-control form-input" id="user_category" name="user_category" required>
               <option value="">&mdash; Please Select &mdash;</option>
+              <option value="A"> Admin </option>
               <option value="O"> Organizer </option>
               <option value="J"> Judge </option>
             </select>
@@ -88,7 +89,7 @@
         { data: 'username' },
         {
           mRender: function(data, type, row) {
-            return row.user_category == 'O' ? "Organizer" : (row.user_category == 'J' ? "Judge" : "");
+            return row.user_category == 'O' ? "Organizer" : (row.user_category == 'J' ? "Judge" : "Admin");
           }
         },
         {

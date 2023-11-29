@@ -21,7 +21,8 @@ CREATE TABLE IF NOT EXISTS `tbl_events` (
   `event_name` varchar(150) NOT NULL,
   `event_description` varchar(255) DEFAULT NULL,
   `event_mechanics` varchar(15) NOT NULL DEFAULT 'no_image.png',
-  `event_start` date NOT NULL,
+  `event_venue` varchar(255) NOT NULL,
+  `event_start` datetime NOT NULL,
   `event_end` datetime NOT NULL,
   `event_status` varchar(1) NOT NULL DEFAULT 'S' COMMENT 'S=Open For Registration;P=Ongoing;F=Finish',
   `participant_needed` int(11) NOT NULL DEFAULT '0',
@@ -33,9 +34,9 @@ CREATE TABLE IF NOT EXISTS `tbl_events` (
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 
 -- Dumping data for table etally_db.tbl_events: ~2 rows (approximately)
-INSERT INTO `tbl_events` (`event_id`, `event_category_id`, `event_name`, `event_description`, `event_mechanics`, `event_start`, `event_end`, `event_status`, `participant_needed`, `judge_needed`, `encoded_by`, `date_added`, `date_modified`) VALUES
-	(1, 0, 'Choral Singing', 'Singing Contest', 'eEsfcpXSs.pdf', '2023-10-28', '2023-11-21 14:35:46', 'P', 10, 5, 0, '2023-10-28 14:18:34', '2023-11-21 14:33:46'),
-	(2, 0, 'Badminton', 'Male Category', 'jlW0rT7Cp.pdf', '2023-10-28', '0000-00-00 00:00:00', 'P', 10, 3, 0, '2023-10-28 15:52:37', '2023-11-21 14:20:54');
+INSERT INTO `tbl_events` (`event_id`, `event_category_id`, `event_name`, `event_description`, `event_mechanics`, `event_venue`, `event_start`, `event_end`, `event_status`, `participant_needed`, `judge_needed`, `encoded_by`, `date_added`, `date_modified`) VALUES
+	(1, 1, 'Choral Singing', 'Singing Contest', 'eEsfcpXSs.pdf', '', '2023-10-28 00:00:00', '2023-11-21 14:35:46', 'P', 10, 5, 0, '2023-10-28 14:18:34', '2023-11-23 09:43:05'),
+	(2, 2, 'Badminton', 'Male Category', 'jlW0rT7Cp.pdf', 'University Gym', '2023-10-28 02:57:00', '0000-00-00 00:00:00', 'P', 10, 3, 0, '2023-10-28 15:52:37', '2023-11-29 14:02:56');
 
 -- Dumping structure for table etally_db.tbl_event_categories
 CREATE TABLE IF NOT EXISTS `tbl_event_categories` (
@@ -46,7 +47,7 @@ CREATE TABLE IF NOT EXISTS `tbl_event_categories` (
   PRIMARY KEY (`event_category_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
 
--- Dumping data for table etally_db.tbl_event_categories: ~5 rows (approximately)
+-- Dumping data for table etally_db.tbl_event_categories: ~6 rows (approximately)
 INSERT INTO `tbl_event_categories` (`event_category_id`, `event_category`, `date_added`, `date_modified`) VALUES
 	(1, 'Literary Arts', '2023-10-27 15:45:06', '2023-10-27 15:46:14'),
 	(2, 'Visual Arts', '2023-10-28 14:07:49', '2023-10-28 14:07:49'),
@@ -86,7 +87,7 @@ CREATE TABLE IF NOT EXISTS `tbl_event_criteria_header` (
   PRIMARY KEY (`ch_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
 
--- Dumping data for table etally_db.tbl_event_criteria_header: ~3 rows (approximately)
+-- Dumping data for table etally_db.tbl_event_criteria_header: ~2 rows (approximately)
 INSERT INTO `tbl_event_criteria_header` (`ch_id`, `event_id`, `is_normal`, `criteria`, `points`, `date_added`, `date_modified`) VALUES
 	(1, 1, 1, 'Performance\n  - Mastery\n  - Presence', 50.00, '2023-11-06 16:22:39', '2023-11-06 16:22:39'),
 	(2, 1, 0, 'Performance', 50.00, '2023-11-06 16:38:45', '2023-11-06 16:38:45'),
@@ -285,11 +286,11 @@ CREATE TABLE IF NOT EXISTS `tbl_users` (
   `date_added` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `date_modified` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`user_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=latin1;
 
 -- Dumping data for table etally_db.tbl_users: ~3 rows (approximately)
 INSERT INTO `tbl_users` (`user_id`, `account_id`, `account_name`, `username`, `password`, `user_category`, `user_img`, `date_added`, `date_modified`) VALUES
-	(1, 0, 'Event Organizer', 'admin', '0cc175b9c0f1b6a831c399e269772661', 'O', 'iaXlMxv4s.png', '2023-10-12 09:22:59', '2023-10-24 16:36:12'),
+	(1, 0, 'Event Organizer', 'admin', '0cc175b9c0f1b6a831c399e269772661', 'A', 'iaXlMxv4s.png', '2023-10-12 09:22:59', '2023-11-29 13:54:42'),
 	(11, 1, 'Eduard RIno Cartons', 'eduard1', '0cc175b9c0f1b6a831c399e269772661', 'J', 'user_img.png', '2023-10-13 13:47:59', '2023-10-13 13:47:59'),
 	(13, 3, 'Judge 1', 'judge1', '0cc175b9c0f1b6a831c399e269772661', 'J', 'user_img.png', '2023-10-13 14:24:25', '2023-10-13 14:24:25');
 

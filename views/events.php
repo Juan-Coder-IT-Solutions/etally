@@ -56,6 +56,10 @@
                 required>
             </div>
             <div class="form-group">
+              <label for="event_name">Venue</label>
+              <input type="text" name="event_venue" id="event_venue" class="form-control form-input" required>
+            </div>
+            <div class="form-group">
               <label for="event_mechanics">Mechanics</label>
               <input class="form-control" type="file" name="event_mechanics" id="event_mechanics" accept=".pdf" onchange="previewPDF()" required />
             </div>
@@ -71,7 +75,7 @@
             </div>
             <div class="form-group">
               <label for="event_start">Event Start</label>
-              <input type="date" class="form-control form-input" id="event_start" name="event_start" required>
+              <input type="datetime-local" class="form-control form-input" id="event_start" name="event_start" required>
             </div>
           </form>
           </div>
