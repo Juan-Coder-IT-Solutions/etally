@@ -96,7 +96,7 @@
           mRender: function(data, type, row) {
             var btn_delete = row.user_category == 'O' ? `<button type="button" class="btn btn-danger btn-rounded btn-icon btn-sm" onclick="deleteEntry(${row.user_id})"><i class="fas fa-trash"></i></button>` : "";
             return `<button type="button" class="btn btn-warning btn-rounded btn-icon btn-sm btn-update-data"><i class="fas fa-edit"></i></button>
-            ${btn_delete}`;
+            <button type="button" class="btn btn-danger btn-rounded btn-icon btn-sm" onclick="deleteEntry(${row.user_id})"><i class="fas fa-trash"></i></button>`;
           }
         },
       ]
