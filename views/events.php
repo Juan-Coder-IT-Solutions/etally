@@ -73,9 +73,15 @@
                 <input type="number" min="0" class="form-control form-input" id="judge_needed" name="judge_needed" required>
               </div>
             </div>
-            <div class="form-group">
-              <label for="event_start">Event Start</label>
-              <input type="datetime-local" class="form-control form-input" id="event_start" name="event_start" required>
+            <div class="row">
+              <div class="form-group col-md-6">
+                <label for="event_start">Event Start</label>
+                <input type="datetime-local" class="form-control form-input" id="event_start" name="event_start" required>
+              </div>
+              <div class="form-group col-md-6">
+                <label for="protest_hrs">Protest Hrs</label>
+                <input type="number" min="0" class="form-control form-input" id="protest_hrs" name="protest_hrs" required>
+              </div>
             </div>
           </form>
           </div>

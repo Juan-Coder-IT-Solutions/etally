@@ -44,6 +44,7 @@
               <option value="">&mdash; Please Select &mdash;</option>
               <option value="A"> Admin </option>
               <option value="O"> Organizer </option>
+              <option value="P"> Participant </option>
               <option value="J"> Judge </option>
             </select>
           </div>

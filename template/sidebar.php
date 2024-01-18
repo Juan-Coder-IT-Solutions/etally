@@ -6,7 +6,7 @@
     </a>
 </li>
 
-<?php if($_SESSION['etally']['user_category'] == 'O' || $_SESSION['etally']['user_category'] == 'A'){ ?>
+<?php if($_SESSION['etally']['user_category'] == 'O'){ ?>
 <!-- Divider -->
 <hr class="sidebar-divider my-0">
 
@@ -60,15 +60,17 @@
         <i class="fas fa-fw fa-users"></i>
         <span>Participants</span></a>
 </li>
+<!-- Divider -->
+<hr class="sidebar-divider d-none d-md-block">
+<?php } ?>
+
 <?php if($_SESSION['etally']['user_category'] == 'A'){ ?>
+<hr class="sidebar-divider d-none d-md-block">
 <li class="nav-item <?=$page == 'users'?'active':'';?>">
     <a class="nav-link" href="index.php?page=users">
         <i class="fas fa-fw fa-user"></i>
         <span>User</span></a>
 </li>
-<?php } ?>
-<!-- Divider -->
-<hr class="sidebar-divider d-none d-md-block">
 <?php } ?>
 <?php if($_SESSION['etally']['user_category'] == 'J'){ ?>
 <hr class="sidebar-divider my-0">

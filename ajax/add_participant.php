@@ -34,6 +34,36 @@ if (isset($_FILES["participant_img"]) && $_FILES["participant_img"]["error"] == 
 }
 
 
+if($participant_id < 1){
+	$username	= $_POST['username'];
+	$password	= $_POST['password'];
+	if(checkIfUsernameExists($username) > 0){
+		echo 2;
+		unlink($uploadDirectory . $filename);
+		die;
+	}
+}
+
+
 $sql = $participant_id > 0? sql_update($table_name, $form_data, "participant_id = '$participant_id'") : sql_insert($table_name, $form_data);
 
-echo $mysqli->query($sql);
+$res = $mysqli->query($sql);
+
+if($participant_id < 1){
+	$account_id = $mysqli->insert_id;
+
+	$form_data = array(
+		'account_name'	=> $judge_name,
+		'account_id'	=> $account_id,
+		'user_category' => "P",
+		'username'		=> $username,
+		'password'		=> md5($password)
+	);
+	
+	$sql = sql_insert("tbl_users", $form_data);
+	echo $mysqli->query($sql);
+	die;
+}
+
+echo $res;
+

@@ -64,7 +64,7 @@
             console.log(res.data);
             for (let judgeIndex = 0; judgeIndex < res.data.length; judgeIndex++) {
                 const judgeElem = res.data[judgeIndex];
-                option += `<option value='${judgeElem.judge_id}'>${judgeElem.judge_name}</option>`;
+                option += `<option value='${judgeElem.judge_id}'>Judge ${judgeElem.judge_no}</option>`;
             }
             $("#judge_select").html(option);
         });

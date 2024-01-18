@@ -67,6 +67,16 @@
               <select name="program_id" id="program_id" class="form-control select2" style="width: 100%;" required>
               </select>
             </div>
+            <div class="form-group form-hide-group">
+              <label for="username">Username</label>
+              <input type="text" class="form-control form-hide" id="username" name="username" placeholder="Username"
+                required>
+            </div>
+            <div class="form-group form-hide-group">
+              <label for="password">Password</label>
+              <input type="password" class="form-control form-hide" id="password" name="password" placeholder="Password"
+                required>
+            </div>
           </div>
         </div>
         </form>
@@ -118,6 +128,8 @@ function addModal() {
   $("#participant_img").prop({"required":true}).val('');
   const imagePreview = document.getElementById('image-preview');
   imagePreview.src = "assets/img/profiles/user.png";
+  $(".form-hide-group").show();
+  $(".form-hide").prop("required",true);
 }
 
   
@@ -148,6 +160,9 @@ function editModal(form_data) {
   $(".select2").select2();
   const imagePreview = document.getElementById('image-preview');
   imagePreview.src = "assets/img/profiles/"+form_data.participant_img;
+
+  $(".form-hide-group").hide();
+  $(".form-hide").prop("required",false);
 }
 
 function deleteEntry(participant_id){

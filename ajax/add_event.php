@@ -19,7 +19,8 @@ $form_data = array(
 	'event_start'           => $event_start,
 	'participant_needed'	=> $participant_needed,
 	'judge_needed'			=> $judge_needed,
-	'event_venue'			=> $event_venue
+	'event_venue'			=> $event_venue,
+	'protest_hrs'			=> $protest_hrs
 );
 
 if (isset($_FILES["event_mechanics"]) && $_FILES["event_mechanics"]["error"] == 0) {
