@@ -4,11 +4,12 @@ include '../core/config.php';
 $event_id	= $_POST['event_id'];
 $protest	= $_POST['protest'];
 
+$event_start	= getEventData($event_id,'event_start');
 $event_end		= getEventData($event_id,'event_end');
 $protest_hrs	= getEventData($event_id,'protest_hrs') * 1;
 
 $date_now = date("Y-m-d H:i:s");
-$date_end = date("Y-m-d H:i:s",strtotime("$event_end +$protest_hrs hours"));
+$date_end = date("Y-m-d H:i:s",strtotime("$event_start +$protest_hrs hours"));
 
 if($date_now > $date_end){
 	echo -1;
