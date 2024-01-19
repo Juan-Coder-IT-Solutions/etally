@@ -11,6 +11,7 @@ $event_start        = $_POST['event_start'];
 $participant_needed = $_POST['participant_needed'];
 $judge_needed		= $_POST['judge_needed'];
 $event_venue		= $_POST['event_venue'];
+$protest_hrs		= $_POST['protest_hrs'];
 
 $form_data = array(
 	'event_name'            => $event_name,
