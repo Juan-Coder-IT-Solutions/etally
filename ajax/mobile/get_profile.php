@@ -22,12 +22,19 @@ if (isset($user_id)) {
         $list['account_id'] = $row['account_id'];
         $list['account_name'] = $row['account_name'];
 
-        $fetch_judge = $mysqli->query("SELECT * FROM tbl_judges WHERE judge_id='$row[account_id]'");
-        $judge_row = $fetch_judge->fetch_assoc();
-        $list['judge_name'] = $judge_row['judge_name'];
-        $list['judge_affiliation'] = $judge_row['judge_affiliation'];
-        $list['judge_qualification'] = $judge_row['judge_qualification'];
-        $list['judge_img'] = $judge_row['judge_img'];
+        if ($row['user_category'] == "J") {
+            $fetch_judge = $mysqli->query("SELECT * FROM tbl_judges WHERE judge_id='$row[account_id]'");
+            $judge_row = $fetch_judge->fetch_assoc();
+            $list['user_name'] = $judge_row['judge_name'];
+            $list['judge_affiliation'] = $judge_row['judge_affiliation'];
+            $list['judge_qualification'] = $judge_row['judge_qualification'];
+            $list['judge_img'] = $judge_row['judge_img'];
+        } else {
+            $fetch = $mysqli->query("SELECT * FROM tbl_participants WHERE participant_id='$row[account_id]'");
+            $participant_row = $fetch->fetch_assoc();
+            $list['user_name'] = $participant_row['participant_name'];
+            $list['participant_img'] = $participant_row['participant_img'];
+        }
 
         array_push($response, $list);
     }

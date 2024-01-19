@@ -11,7 +11,7 @@ $username = $data->username;
 $password = $data->password;
 
 if (isset($username)) {
-    $sql = "SELECT * FROM tbl_users WHERE username='$username' and password=md5('$password') and user_category='J'";
+    $sql = "SELECT * FROM tbl_users WHERE username='$username' and password=md5('$password') and (user_category='J' or user_category='P')";
     $fetch = $mysqli->query($sql);
 
     $response = array();
@@ -24,6 +24,7 @@ if (isset($username)) {
             $list['user_id'] = $row['user_id'];
             $list['account_id'] = $row['account_id'];
             $list['account_name'] = $row['account_name'];
+            $list['user_category'] = $row['user_category'];
 
             $fetch_judge = $mysqli->query("SELECT * FROM tbl_judges WHERE judge_id='$row[account_id]'");
             $judge_row = $fetch_judge->fetch_assoc();
@@ -38,6 +39,7 @@ if (isset($username)) {
         $list = array();
         $list['username'] = "";
         $list['user_id'] = 0;
+        $list['user_category'] = "";
         $list['account_id'] = 0;
         $list['account_name'] = "";
 

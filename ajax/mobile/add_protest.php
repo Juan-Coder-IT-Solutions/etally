@@ -23,13 +23,26 @@ if (isset($event_id)) {
         $response['response'] = -1;
         $response['user_token'] = $user_token;
     } else {
-        $sql = $mysqli->query("INSERT INTO tbl_protests (user_token, event_id, protest) VALUES ('$user_token', '$event_id', '$protest') ");
-        if ($sql) {
-            $response['response'] = 1;
-            $response['user_token'] = $user_token;
+        $fetch_event = $mysqli->query("SELECT * from tbl_events WHERE event_id='$event_id'");
+        $event_row = $fetch_event->fetch_array();
+        $event_start = $event_row['event_start'];
+        $protest_hrs = $event_row['protest_hrs'];
+
+        $date_now = date("Y-m-d H:i:s");
+        $date_end = date("Y-m-d H:i:s", strtotime("$event_start +$protest_hrs hours"));
+
+        if ($date_now > $date_end) {
+            $response['response'] = -2;
+            $response['user_token'] = $date_end; //$user_token;
         } else {
-            $response['response'] = 0;
-            $response['user_token'] = $user_token;
+            $sql = $mysqli->query("INSERT INTO tbl_protests (user_token, event_id, protest) VALUES ('$user_token', '$event_id', '$protest') ");
+            if ($sql) {
+                $response['response'] = 1;
+                $response['user_token'] = $user_token;
+            } else {
+                $response['response'] = 0;
+                $response['user_token'] = $user_token;
+            }
         }
     }
 

@@ -3,8 +3,8 @@
 // START THE SESSION
 session_start();
 
-//$mysqli = new mysqli("localhost", "root", "", "etally_db");
-$mysqli = new mysqli("localhost", "u814036432_root", "#VM>:m&8oQ", "u814036432_etally");
+$mysqli = new mysqli("localhost", "root", "", "etally_db");
+//$mysqli = new mysqli("localhost", "u814036432_root", "#VM>:m&8oQ", "u814036432_etally");
 // Check connection
 if ($mysqli->connect_errno) {
 	echo "Failed to connect to MySQL: " . $mysqli->connect_error;
@@ -76,7 +76,7 @@ function getParticipantName($participant_id)
 function getParticipantData($participant_id, $data_column = "participant_name")
 {
 	global $mysqli;
-	$select = is_array($data_column) ? implode(",",$data_column) : $data_column;
+	$select = is_array($data_column) ? implode(",", $data_column) : $data_column;
 	$sql = "SELECT $select FROM tbl_participants WHERE participant_id = '$participant_id'";
 	$fetch = $mysqli->query($sql);
 	$row = $fetch->fetch_assoc();
@@ -89,10 +89,10 @@ function getParticipantEvents($participant_id)
 	$events = [];
 	$sql = "SELECT e.event_name FROM tbl_participants AS p,tbl_event_participants AS ep,tbl_events AS e WHERE ep.participant_id = p.participant_id AND e.event_id = ep.event_id AND p.participant_id = '$participant_id'";
 	$fetch = $mysqli->query($sql);
-	while($row = $fetch->fetch_assoc()){
+	while ($row = $fetch->fetch_assoc()) {
 		$events[] = $row['event_name'];
 	}
-	return implode("<br>",$events);
+	return implode("<br>", $events);
 }
 
 function getEventData($event_id, $data_column = "event_name")
