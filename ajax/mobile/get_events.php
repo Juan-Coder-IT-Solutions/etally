@@ -44,6 +44,21 @@ if (isset($user_id)) {
 
             $list['judges_row'] = $list_judges_response;
 
+            // fetch participants
+            $list_participants_response = array();
+            $fetch_participants = $mysqli->query("SELECT * FROM tbl_participants p LEFT JOIN tbl_event_participants ep ON p.participant_id=ep.participant_id LEFT JOIN tbl_programs pr ON p.program_id=pr.program_id WHERE event_id='$row[event_id]'");
+            while ($participants_row = $fetch_participants->fetch_assoc()) {
+                $list_participants = array();
+                $list_participants['participant_id'] = $participants_row['participant_id'];
+                $list_participants['participant_name'] = $participants_row['participant_name'];
+                $list_participants['participant_affiliation'] = $participants_row['participant_affiliation'];
+                $list_participants['participant_img'] = $participants_row['participant_img'];
+                $list_participants['program'] = $participants_row['program_name'];
+                array_push($list_participants_response, $list_participants);
+            }
+
+            $list['participants_row'] = $list_participants_response;
+
             array_push($response, $list);
         }
     } else {
@@ -76,6 +91,22 @@ if (isset($user_id)) {
             }
 
             $list['judges_row'] = $list_judges_response;
+
+            // fetch participants
+            $list_participants_response = array();
+            $fetch_participants = $mysqli->query("SELECT * FROM tbl_participants p LEFT JOIN tbl_event_participants ep ON p.participant_id=ep.participant_id LEFT JOIN tbl_programs pr ON p.program_id=pr.program_id WHERE event_id='$row[event_id]'");
+            while ($participants_row = $fetch_participants->fetch_assoc()) {
+                $list_participants = array();
+                $list_participants['participant_id'] = $participants_row['participant_id'];
+                $list_participants['participant_name'] = $participants_row['participant_name'];
+                $list_participants['participant_affiliation'] = $participants_row['participant_affiliation'];
+                $list_participants['participant_img'] = $participants_row['participant_img'];
+                $list_participants['program'] = $participants_row['program_name'];
+                array_push($list_participants_response, $list_participants);
+            }
+
+            $list['participants_row'] = $list_participants_response;
+
 
             array_push($response, $list);
         }
