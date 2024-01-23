@@ -36,7 +36,7 @@ if (isset($event_id)) {
             $response['response'] = -2;
             $response['user_token'] = $date_end; //$user_token;
         } else {
-            $sql = $mysqli->query("INSERT INTO tbl_protests (user_token, event_id, protest, user_id) VALUES ('$user_token', '$event_id', '$protest', '$user_id') ");
+            $sql = $mysqli->query("INSERT INTO tbl_protests (user_token, event_id, protest, user_id, status) VALUES ('$user_token', '$event_id', '$protest', '$user_id', 'P') ");
             if ($sql) {
                 $response['response'] = 1;
                 $response['user_token'] = $user_token;
