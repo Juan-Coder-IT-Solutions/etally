@@ -21,6 +21,8 @@ if ($page == 'dashboard') {
 	require_once 'views/profile.php';
 } else if ($page == 'programs') {
 	require_once 'views/program.php';
+} else if ($page == 'protests') {
+	require_once 'views/protests.php';
 } else {
 	require_once 'views/404.php';
 }
